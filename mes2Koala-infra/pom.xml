@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+    <modelVersion>4.0.0</modelVersion>  
+    <parent> 
+        <groupId>org.seu.acetec</groupId>  
+        <artifactId>mes2Koala</artifactId>  
+        <version>1.0.0-SNAPSHOT</version> 
+    </parent>  
+    <artifactId>mes2Koala-infra</artifactId>  
+    <name>mes2Koala-infra</name>  
+    <packaging>jar</packaging>  
+    <url>http://maven.apache.org</url>  
+    <properties> 
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+        <project.type>infra</project.type>  
+        <base.package>org.seu.acetec.mes2Koala.infra</base.package> 
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.8.10</version>
+        </dependency>
+
+        <!--poi与Excel处理相关-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>3.8</version>
+        </dependency>
+
+        <!--jxls与Excel模板相关-->
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls</artifactId>
+            <version>2.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-jexcel</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-poi</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-reader</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openoffice</groupId>
+            <artifactId>juh</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openoffice</groupId>
+            <artifactId>jurt</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openoffice</groupId>
+            <artifactId>ridl</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openoffice</groupId>
+            <artifactId>unoil</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.artofsolving</groupId>
+            <artifactId>jodconverter</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.8</version>
+        </dependency>
+
+        <!--本地jar-->
+        <dependency>
+            <groupId>ooo.connector</groupId>
+            <artifactId>bootstrapconnector</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/bootstrapconnector.jar</systemPath>
+        </dependency>
+        
+        <dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>2.1</version>
+		</dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+    </dependencies>
+</project>

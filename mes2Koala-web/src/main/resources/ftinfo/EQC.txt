@@ -1,0 +1,167 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>FT 生产测试站别：FT+EQC</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC:ACE-MFG-WI-0001 最终测试与卷包装作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                FT良率要求：NA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 首测实时良率: 大于99%
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生良率异常请填写“FT品质异常通知单” (Low Yield Report#):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                接口电路板/负载板编号(DUT interface board#):NA &nbsp; &nbsp;&nbsp;
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="261" valign="top" style="word-break: break-all;">
+                <p>
+                    <strong>机台类型 Tester Type</strong>
+                </p>
+            </td>
+            <td width="261" valign="top" style="word-break: break-all;">
+                <strong>正測程式(Normal Test Program.)</strong>
+            </td>
+            <td width="261" valign="top" style="word-break: break-all;">
+                <strong>版次 Program Version</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="261" valign="top"></td>
+            <td width="261" valign="top"></td>
+            <td width="261" valign="top"></td>
+        </tr>
+    </tbody>
+</table>
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="1">
+                <p>
+                    温度 &nbsp; &nbsp;<br/>
+                </p>
+                <p>
+                    Temp (℃)
+                </p>
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                &nbsp;室温
+            </td>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="1">
+                <p>
+                    测试注意事项
+                </p>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            每批LOT开始前都需要清洁socket、nozzle、pogo pin &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Golden sample Test由技术员操作,并保存GU值。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            若RT 良率＞20%，继续RT,直至RT良率＜20%,测试结束；
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            EQC on line 作业，如有fail，待所有retest结束后再测试fail品。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            EQCV 若有fail需整批HOLD, fail品单独放在自封袋中，并按bin别分开。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT后测试若有Fail,需手动复测，至3遍后依然fail,作LAT fail品妥善保存。
+                        </p>
+                        <p>
+                            手动压测间隔需大于5S。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            □NX16:Setup时量测2Ptable处压杆、转向1、2处压杆与吸嘴的间距为0.3mm
+                        </p>
+                        <p>
+                            （吸嘴下有当批产品）
+                        </p>
+                        <p>
+                            □同时查看第一颗及前20颗塑封体无刮痕及撞伤后，方可正常测试;
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    &nbsp; &nbsp;Mark设置项：Mark设置时核对流程单上信息，保证与实物一致，
+                </p>
+                <p>
+                    &nbsp; &nbsp;□Pin1 Inspect &nbsp;□Mark Inspect &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;技术员签名：
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    8.参数检查：
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NX16参数
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;vision 5S mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;tape leader length &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;52
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;tape trailer length &nbsp; &nbsp; &nbsp; &nbsp; 52
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GPIB test mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GPIB Interface
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;test1 mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;extra force pusher 1 mode &nbsp; &nbsp; disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;test2 mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; enable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;extra force pusher 2 mode &nbsp; &nbsp; enable
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    handler： &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;OP确认：
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

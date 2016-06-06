@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="mes2Koala-web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="mes2Koala-application-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-application/mes2Koala-application">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mes2Koala-core-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-core/mes2Koala-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mes2Koala-facade-impl-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-facade-impl/mes2Koala-facade-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mes2Koala-facade-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-facade/mes2Koala-facade">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mes2Koala-conf-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-conf/mes2Koala-conf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mes2Koala-infra-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mes2Koala-infra/mes2Koala-infra">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="mes2Koala-web"/>
+        <property name="java-output-path" value="/mes2Koala-web/target/classes"/>
+    </wb-module>
+</project-modules>

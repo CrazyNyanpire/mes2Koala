@@ -1,0 +1,37 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Packing
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                <p>
+                    SPC: 1203客户包装作业指导书 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                </p>
+                <p>
+                    1，包装参照作业指导书
+                </p>
+                <p>
+                    2, 晶舟盒： 抽真空时间：参考机台实际参数。
+                </p>
+                <p>
+                    &nbsp;圆盒： 抽真空时间：参考机台实际参数。
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    备注(Notes)：
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="2"></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

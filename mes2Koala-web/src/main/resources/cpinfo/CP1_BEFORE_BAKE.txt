@@ -1,0 +1,52 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CP前BAKE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                <p>
+                    烘烤设定：
+                </p>
+                <p>
+                    SPC: 烘烤作业指导书
+                </p>
+                <p>
+                    烘烤温度(Bake Temperature)：250℃
+                </p>
+                <p>
+                    烘烤时间(Bake Time)：24H
+                </p>
+                <p>
+                    烘烤时间段：升温：1H; 恒温:24H;降温：3H
+                </p>
+                <p>
+                    烘烤注意事项(Notice)：请参照&quot;烘烤作业指导书&quot;
+                </p>
+                <p>
+                    OVEN No. : __________
+                </p>
+                <p>
+                    Start date /time：____ / ____ &nbsp;____ : ____ &nbsp; &nbsp; &nbsp; &nbsp;Start Tech.：__________
+                </p>
+                <p>
+                    End date / time：____ / ____ &nbsp;____ : ____ &nbsp; &nbsp; &nbsp; &nbsp; End Tech：__________
+                </p>
+                <p>
+                    备注(Notes)：
+                </p>
+                <p>
+                    N/A
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="2"></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

@@ -1,0 +1,66 @@
+<p>
+    <br/>
+</p>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                <strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; FT 生产测试站别：PACKING&nbsp;</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC: ACE-1201-QFN包装作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生品质异常请填写“FT品质异常通知单” (Reject Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    注意事项(Notes):&nbsp;
+                </p>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            Reel盘标签贴与载带链孔相反的一面，并盖上QC pass章
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Reel盘标签朝铝箔袋开口方向放入袋内
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <span style="color: rgb(255, 0, 0);">真空参数以机台上工程师与质量签字确认后的标签为准</span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            内盒包装：1卷/盒，标签上盖上QCPass章，并在内盒贴上QA封条。最后用透明胶封住QA封条(QA封条无需盖章)，内盒包装增加气泡袋。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            对于Fail品用MBB包装(要分BIN别)标签上打上:出货型号+F.只要BIN 别fail数超过50ea,都需要称重.(保税品)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            对LAT 3*reflow好品,标签打上:出货型号+R.每个LOT 的LAT不需称重,但整包铝箔袋需称重,并且记录.(保税品）&nbsp;
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            内盒包装增加气泡袋<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

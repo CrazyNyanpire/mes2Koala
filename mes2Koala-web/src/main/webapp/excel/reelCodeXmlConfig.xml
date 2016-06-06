@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+    <worksheet idx="0">
+        <section startRow="0" endRow="0"/>
+        <loop startRow="1" endRow="1" items="reelDisks" var="reelDisk"
+              varType="org.seu.acetec.mes2Koala.facade.dto.ReelDiskDTO">
+            <section startRow="1" endRow="1">
+                <mapping row="1" col="0">reelDisk.reelCode</mapping>
+                <mapping row="1" col="1">reelDisk.quantity</mapping>
+                <mapping row="1" col="2">reelDisk.partNumber</mapping>
+                <mapping row="1" col="3">reelDisk.dateCode</mapping>
+                <mapping row="1" col="4">reelDisk.importedLotNumber</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0"></cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

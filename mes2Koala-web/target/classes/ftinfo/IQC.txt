@@ -1,0 +1,140 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;FT 生产测试站别：IQC
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="10">
+                SPC: ACE-QRE-WI-0001 来料质量检验
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                如果发生品质异常请填写“FT品质异常通知单” (Discharge Monitoring Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                可接受质量水平AQL:0.065% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 取样方式(Sampling Plan):任意选取
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all; background-color: rgb(255, 255, 255);" rowspan="1" colspan="10">
+                注意事项Note:<br/>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            资料核对：
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    &nbsp;核对流程卡，实物和MES系统三者的数量，品名，规格，批次，出货型号等信息是否一致。
+                </p>
+                <p>
+                    2.数量清点
+                </p>
+                <p>
+                    □散装 IQC来料重量：_________g,实际重量：_________ g，实际与来料相差________ g,对应约________ ea
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    □Tray盘来料，请统计每盘Tray IC数量，并相加填写下表。
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                序号(盒)：
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                1
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                2
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                3
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                4
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                5
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                6
+            </td>
+            <td width="72" valign="top" style="word-break: break-all;" height="25">
+                7
+            </td>
+            <td valign="top" colspan="1" rowspan="1" width="72" style="word-break: break-all;" height="25">
+                合计(PCS)
+            </td>
+        </tr>
+        <tr>
+            <td width="72" valign="top" style="word-break: break-all;">
+                数量(PCS):
+            </td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td width="72" valign="top"></td>
+            <td valign="top" colspan="1" rowspan="1" width="72"></td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    3.尺寸量测:
+                </p>
+                <p>
+                    &nbsp;取10pcs量测尺寸（长、宽、厚度）,测试结果填在附页中。
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    4.外观检验
+                </p>
+                <p>
+                    A、IC外观、边缘完整无缺、没有裂纹、刮等明显痕迹
+                </p>
+                <p>
+                    B、Mark内容正确、印制清晰、完整
+                </p>
+                <p>
+                    C、Mark位置目视判断：
+                </p>
+                <p>
+                    □ Mark无偏移；
+                </p>
+                <p>
+                    □ 目视Mark明显偏移，每批挑10ea最严重的IC，按附页尺寸量测表中的项目量测并记录。规范内的记录放行，超出规范的，开立QDN单通知QA处理。
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

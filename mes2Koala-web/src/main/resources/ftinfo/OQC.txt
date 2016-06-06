@@ -1,0 +1,52 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>&nbsp;FT 生产测试站别：OQC&nbsp;</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC:ACE-QRE-WI-0005 出货质量检验&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生异常请填写“FT品质异常通知单” (Reject Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    取样方式( Sampling Plan):全检
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
+                作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            Label检查（内容、破损、打印质量、合批数量）
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            不满盘检查（多料、少料）
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            铝箔袋真空封装、外箱包装质量检查.<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

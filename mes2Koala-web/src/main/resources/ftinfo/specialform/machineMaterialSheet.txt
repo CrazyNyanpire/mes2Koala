@@ -1,0 +1,336 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;FT 机台落料记录表
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                机台（Tester)
+            </td>
+            <td valign="top" rowspan="1" colspan="3"></td>
+            <td valign="top" rowspan="1" colspan="3" style="word-break: break-all;">
+                产品型号
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                生产批号：
+            </td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;" rowspan="2" colspan="1">
+                <p>
+                    序
+                </p>
+                <p>
+                    号
+                </p>
+            </td>
+            <td width="64" valign="top" rowspan="2" colspan="1" style="word-break: break-all;">
+                日期 时间
+            </td>
+            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;">
+                拾料
+            </td>
+            <td valign="top" rowspan="1" colspan="3" style="word-break: break-all;">
+                处理
+            </td>
+            <td width="64" valign="top" rowspan="2" colspan="1" style="word-break: break-all;">
+                备注
+            </td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                制程
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                Mark
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                <p>
+                    数量
+                </p>
+                <p>
+                    （ea)
+                </p>
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                <p>
+                    拾料人员
+                </p>
+                <p>
+                    (姓名）
+                </p>
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                <p>
+                    颗数
+                </p>
+                <p>
+                    （ea)
+                </p>
+            </td>
+            <td width="64" valign="top" style="word-break: break-all;">
+                <p>
+                    处理人员
+                </p>
+                <p>
+                    (姓名）
+                </p>
+            </td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                1
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                2
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                3
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                4
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                5
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                6
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
+                7
+            </td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+        </tr>
+    </tbody>
+</table>
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td width="64" valign="top" style="word-break: break-all;">
+                8
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                9
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                10
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                11
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                12
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                13
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                14
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="64" valign="top" style="word-break: break-all;">
+                15
+            </td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+            <td width="64" valign="top"></td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="10" style="word-break: break-all;">
+                <p>
+                    落料范围：机台上及周边区域
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    落料处理流程： 1、检查Mark,确认是否为本批次；
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2、若是当前本批产品，确认产品外观有无异常：无异常，放入未测品中进行测试；外观异常，计入Other外观
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;次品中；
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3、若不是本批产品，放入BGA落料盒。
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    落料处理目的： 防止混料
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    落料处理方式： ① 放入未测品中测试 &nbsp; &nbsp; ② 放入BGA落料盒 &nbsp; &nbsp; &nbsp;③ 放入Other外次 &nbsp;&nbsp;
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

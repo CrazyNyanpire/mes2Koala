@@ -1,0 +1,169 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reel code 记录表
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;"></td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                reel code
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                Qty
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                备注
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                1
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                2
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                3
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                4
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                5
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                6
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                7
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                8
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="190" valign="top" style="word-break: break-all;">
+                9
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                10
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                11
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                12
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                13
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                14
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                15
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                16
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                17
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                18
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+    </tbody>
+</table>

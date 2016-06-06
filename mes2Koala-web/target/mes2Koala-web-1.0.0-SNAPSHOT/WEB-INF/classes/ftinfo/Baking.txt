@@ -1,0 +1,53 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong> FT 生产测试环境 BAKING</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC:ACE-MFG-WI-0002 烘烤作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                烤箱编号(Oven No): &nbsp; &nbsp; &nbsp; &nbsp; 烘烤温度(Baking Temp. ): 150℃ &nbsp; &nbsp; &nbsp; &nbsp;烘烤时数(BakingTime): 8H
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                进炉时间(Check In Time): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;出炉时间(Check Out Time): &nbsp; &nbsp; &nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                烤盘编号（Tray No.): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;进烤箱人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    注意事項(Notes):
+                </p>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            产品烘烤后48H内进入铝箔袋真空包装
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            产品烘烤时，每个LOT 相对应的烤盘不能混淆
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            烘烤完成之后，核对铝箔袋标签、实物与流程单信息，保持三者一致。 &nbsp; &nbsp; &nbsp; &nbsp;出烤箱人员(Operator):<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

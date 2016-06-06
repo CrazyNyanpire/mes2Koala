@@ -1,0 +1,53 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>&nbsp;FT 生产测试站别： FVI</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC:ACE-QRE-WI-0004 最终质量检验
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生良率异常请填写“FT品质异常通知单” (Low Yield Report#):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                取样方式 Sampling Plan:全检 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    注意事项(Notes):&nbsp;
+                </p>
+                <ol class=" list-paddingleft-2">
+                    <li>
+                        <p>
+                            Mark内容正确，印字清晰、完整、位置正确
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            零件塑封体外观干净、光滑、完整，无缺损、裂缝、刮伤、脏污、残胶、毛刺等不良
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            编带热封质量、零件包装数量、包装方向检查， reel盘型号、颜色、外观质量检查
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            若fail数量超过4颗，则通知设备工程师处理。<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

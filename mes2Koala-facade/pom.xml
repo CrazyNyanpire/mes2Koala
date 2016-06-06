@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.seu.acetec</groupId>
+		<artifactId>mes2Koala</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>mes2Koala-facade</artifactId>
+	<name>mes2Koala-facade</name>
+	<packaging>jar</packaging>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.type>facade</project.type>
+		<base.package>org.seu.acetec.mes2Koala.facade.dto</base.package>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-facade</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.seu.acetec</groupId>
+			<artifactId>mes2Koala-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- Javamail API 用于发邮件 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+
+		<!--定时任务 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.seu.acetec</groupId>
+			<artifactId>mes2Koala-application</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+	</dependencies>
+</project>

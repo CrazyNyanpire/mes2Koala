@@ -1,0 +1,306 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;IQC
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;">
+                <p>
+                    IQC设定 (IQC setting)：
+                </p>
+                <p>
+                    SPC: &nbsp;晶圆IQC检验指导书
+                </p>
+                <p>
+                    IQC芯片刻批号：Cassette Label 批号:_______________ &nbsp; &nbsp; Wafer 片号:_______________
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                序号
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                客户packing wafer ID
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                SLOT序号
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;">
+                实物wafer ID
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                1
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                2
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                3
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                4
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                5
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                6
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                7
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                8
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                9
+            </td>
+            <td width="190" valign="top" style="word-break: break-all;"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                10
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                11
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                12
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                13
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                14
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                15
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                16
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                17
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                18
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                19
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                20
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                21
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                22
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                23
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                24
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" style="word-break: break-all;">
+                25
+            </td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+            <td width="190" valign="top"></td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="4" rowspan="1" style="word-break: break-all;">
+                IQC抽样计划(IQC Sampling plan)：
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="4" rowspan="1" style="word-break: break-all;">
+                <p>
+                    （1）强光灯下，外观100% &nbsp;检验晶背和晶面
+                </p>
+                <p>
+                    ( 2）显微镜下微观检验，每5片抽1片（满批抽5片，不足5片全检），每片抽9个区。
+                </p>
+                <p>
+                    正常检验每片抽样数量：按MIL-STD-105E正常抽样标准,AQL=0.065%抽，每区检验数=每片抽样数/9&nbsp;
+                </p>
+                <p>
+                    （3）发现异常时加严检验，由原先的每5片抽1片，加严至25片全检。加严检每片按按MIL-STD-105E
+                </p>
+                <p>
+                    加严抽样标准,AQL=0.065%抽,每区检验数=每片抽样数/9
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    <img src="/images/cpinfo/IQC_image1.png" title="" alt="demo.jpg"/>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="4" rowspan="1" style="word-break: break-all;">
+                <p>
+                    IQC检验区域(IQC Inspection area)：
+                </p>
+                <p>
+                    正常/加严9区（S1-S9）
+                </p>
+                <p>
+                    IQC注意事项(IQC Notice)：
+                </p>
+                <p>
+                    1,检验完成后再将晶圆转换成白色透明cassette
+                </p>
+                <p>
+                    2，晶面有脏污请勿擦拭
+                </p>
+                <p>
+                    开始检验日期 / 时间 (Start inspecting date/ time)：____________ /____________ &nbsp;检验人员(Tech.)：_______
+                </p>
+                <p>
+                    检验刻号 (Wafer ID)：________________________________________________________________________________
+                </p>
+                <p>
+                    结束检验日期 / 时间 (End inspecting date / time)：____________ / ________________ &nbsp; &nbsp;检验人员 (Tech.)：__________
+                </p>
+                <p>
+                    检验结果 (Inspected result)：□ Pass &nbsp;□ Fail → 异常单编号 (Deviation notice no.)：_____________
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+            <td valign="top" colspan="1" rowspan="1"></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

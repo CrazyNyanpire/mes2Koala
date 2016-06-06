@@ -1,0 +1,49 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OQC
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="2">
+                <p>
+                    OQC设定 (OQC setting)：
+                </p>
+                <p>
+                    OQC作业规范(OQC Instruction)：参考[ACE OQC作业指导书]
+                </p>
+                <p>
+                    开始检验日期 / 时间 (Start inspecting date / time)：_____________ / _________________ &nbsp;检验人员(Tech.)：__________
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    结束检验日期 / 时间 (End inspecting date / time)：______________ / _________________ &nbsp; 检验人员 (Tech.)：__________
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    检验结果 (Inspected result)：□ Pass &nbsp;□ Fail → 异常单编号 (Deviation notice no.)：_____________
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    备注(Notes)：
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" rowspan="1" colspan="2"></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+    <worksheet idx="0">
+        <section startRow="0" endRow="0"/>
+        <loop startRow="1" endRow="1" items="bomTemplates" var="bomTemplate"
+              varType="org.seu.acetec.mes2Koala.facade.excelvo.BomTemplateVo">
+            <section startRow="1" endRow="1">
+                <mapping row="1" col="0">bomTemplate.bomId</mapping>
+                <mapping row="1" col="1">bomTemplate.modelNumber</mapping>
+                <mapping row="1" col="2">bomTemplate.number</mapping>
+                <mapping row="1" col="3">bomTemplate.revision</mapping>
+                <mapping row="1" col="4">bomTemplate.description</mapping>
+                <mapping row="1" col="5">bomTemplate.customerCode</mapping>
+                <mapping row="1" col="6">bomTemplate.um</mapping>
+                <mapping row="1" col="7">bomTemplate.quantity</mapping>
+                <mapping row="1" col="8">bomTemplate.theoryQuantity</mapping>
+                <mapping row="1" col="9">bomTemplate.manufacturerName</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0"></cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

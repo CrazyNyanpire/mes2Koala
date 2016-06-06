@@ -1,0 +1,60 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>FT 生产测试环境：LAT</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC: ACE-QRE-WI-0008 产品LAT作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生异常请填写“FT品质异常通知单” (Reject Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                取样方式( Sampling Plan): 如下
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <ol class=" list-paddingleft-2">
+                    <li>
+                        <p>
+                            FT测试pass品中同时截取LAT1:1000pcs与LAT2:22pcs，LAT1 进行1Xreflow，LAT2进行3Xreflow
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LOT QTY≥10k:LAT1取1000pcs,LAT2取22pcs;1k≤LOT QTY&lt;10k:LAT1取100pcs且不用做LAT2。LOT QTY≤1k，LAT不取
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT1 fail≤1pcs可pass,否则HOLD.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            一次reflow后pass的样品可以合并和量产批一起出货；三次reflow以后pass的样品不能按照量产批出货，
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT取料从______________ea到______________ea.<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

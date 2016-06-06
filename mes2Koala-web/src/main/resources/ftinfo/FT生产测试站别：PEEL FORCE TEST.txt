@@ -1,0 +1,48 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong>FT 生产测试站别：PEEL FORCE TEST</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC: ACE-MFG-WI-0004 拉力测试仪作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                拉力测试报告 &nbsp;(Peel Force Test Report #) :附在流程单后面
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    注意事項(Notes):
+                </p>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            双边拉力测试，要求拉力在20～60g之间
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            测试速度：300±10mm/min；测试长度：200mm
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            NX16/NY20 封合温度:150-205℃,测试环境:22℃±3℃/50%RH±10%；启动延迟：20mm
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            每开始新的LOT/换料/机台保养结束需做拉力测试。测试报告按统一路径以批号命名存档<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,222 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" valign="top" width="824">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>FT 生产测试站别：FT+EQC</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                SPC:ACE-MFG-WI-0001 最终测试与卷包装作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                FT良率要求：NA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 首测实时良率: 大于99%
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                如果发生良率异常请填写“FT品质异常通知单” (Low Yield Report#):
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                接口电路板/负载板编号(DUT interface board#): &nbsp;NA&nbsp;
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" valign="top" width="261">
+                <p>
+                    <strong>机台类型 Tester Type</strong>
+                </p>
+            </td>
+            <td style="word-break: break-all;" valign="top" width="261">
+                <strong>正測程式(Normal Test Program.)</strong>
+            </td>
+            <td style="word-break: break-all;" valign="top" width="261">
+                <strong>版次 Program Version</strong>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" width="261"></td>
+            <td valign="top" width="261"></td>
+            <td valign="top" width="261"></td>
+        </tr>
+    </tbody>
+</table>
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                温度Temp.(℃)
+            </td>
+            <td style="word-break: break-all;" valign="top" width="64">
+                室温
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                <p>
+                    测试注意事项
+                </p>
+                <ol class=" list-paddingleft-2" style="list-style-type: decimal;">
+                    <li>
+                        <p>
+                            每批LOT开始前都需要清洁socket、nozzle、pogo pin&nbsp;
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Golden sample Test由技术员操作,并保存GU值。&nbsp;
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            若RT 良率＞20%，继续RT,直至RT良率＜20%,测试结束；
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            EQC on line 作业，如有fail，待所有retest结束后再测试fail品。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            EQCV 若有fail需整批HOLD, fail品单独放在自封袋中，并按bin别分开
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT后测试若有Fail,需手动复测，至3遍后依然fail,作LAT fail品妥善保存。
+                        </p>
+                        <p>
+                            手动压测间隔需大于5S.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            □NX16:Setup时量测2Ptable处压杆、转向1、2处压杆与吸嘴的间距为0.3mm
+                        </p>
+                        <p>
+                            （吸嘴下有当批产品）
+                        </p>
+                        <p>
+                            □同时查看第一颗及前20颗塑封体无刮痕及撞伤后，方可正常测试;
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    &nbsp; &nbsp;Mark设置项：Mark设置时核对流程单上信息，保证与实物一致，
+                </p>
+                <p>
+                    &nbsp;&nbsp; □Pin1 Inspect &nbsp;□Mark Inspect &nbsp; &nbsp; &nbsp; &nbsp; 技术员签名：
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    8.参数检查：
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NX16参数
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; vision 5S mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tape leader length &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;52
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tape trailer length &nbsp; &nbsp; &nbsp; &nbsp; 52
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GPIB test mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GPIB Interface
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; test1 mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; extra force pusher 1 mode &nbsp; &nbsp; disable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; test2 mode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; enable
+                </p>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; extra force pusher 2 mode &nbsp; &nbsp; enable
+                </p>
+                <p>
+                    <br/>
+                </p>
+                <p>
+                    handler： &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;OP确认：
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" valign="top" width="824">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>FT 生产测试环境：LAT</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                SPC: ACE-QRE-WI-0008 产品LAT作业指导书
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                如果发生异常请填写“FT品质异常通知单” (Reject Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                取样方式( Sampling Plan): 如下
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="824">
+                <ol class=" list-paddingleft-2">
+                    <li>
+                        <p>
+                            FT测试pass品中同时截取LAT1:1000pcs与LAT2:22pcs，LAT1 进行1Xreflow，LAT2进行3Xreflow
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LOT QTY≥10k:LAT1取1000pcs,LAT2取22pcs;1k≤LOT QTY&lt;10k:LAT1取100pcs且不用做LAT2。LOT QTY≤1k，LAT不取
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT1 fail≤1pcs可pass,否则HOLD.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            一次reflow后pass的样品可以合并和量产批一起出货；三次reflow以后pass的样品不能按照量产批出货，
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            LAT取料从______________ea到______________ea.<br/>
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

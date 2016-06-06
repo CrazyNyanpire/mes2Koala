@@ -1,0 +1,48 @@
+<table>
+    <tbody>
+        <tr class="firstRow">
+            <td width="824" valign="top" style="word-break: break-all;">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>&nbsp;FT 生产测试站别：FQC</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                SPC:ACE-QRE-WI-0004 最终质量检验
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                如果发生异常请填写“FT品质异常通知单” (Reject Report #) :
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                取样方式 Sampling Plan:全检 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 作业人员(Operator):
+            </td>
+        </tr>
+        <tr>
+            <td width="824" valign="top" style="word-break: break-all;">
+                <p>
+                    注意事项(Notes):&nbsp;
+                </p>
+                <ol class=" list-paddingleft-2">
+                    <li>
+                        <p>
+                            整卷包装数量为3000pcs/Reel，Carrier前空距需不少于400mm，后空距需不少于160mm
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            内标签（reel、铝箔袋、pizza box）所贴位置、内容
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            抽检部分ICL标签条形码，扫描检验信息，并做好记录
+                        </p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:security="http://www.springframework.org/schema/security" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+		<!-- 配置邮件 senderbean -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.smtp.host}"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+			</props>
+		</property>
+		<property name="username" value="${mail.smtp.username}"></property>
+		<property name="password" value="${mail.smtp.password}"></property>
+		<!-- 端口号 -->
+		<property name="port" value="25" />
+	</bean>
+
+	<bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+		<!-- 发件人email -->
+		<property name="from" value="${mail.smtp.from}" />
+		<!-- 收件人email <property name="to" value="to@yeah.net" /> email主题(标题) <property 
+			name="subject" value="Subject" /> email主题内容 <property name="text"> <value>ContentText</value> 
+			</property> -->
+	</bean>
+
+	<bean id="senderMailFacade" class="org.seu.acetec.mes2Koala.facade.common.SenderMailUtils">
+		<property name="mailSender" ref="mailSender" />
+		<property name="simpleMailMessage" ref="simpleMailMessage" />
+	</bean>
+	
+	<bean id="holdMailFacade" class="org.seu.acetec.mes2Koala.facade.impl.HoldMailFacadeImpl">
+		<property name="holdUsers" value="${mail.hold.users}" />
+		<property name="holdTDE" value="${mail.hold.tde}" />
+		<property name="holdQA" value="${mail.hold.qa}" />
+		<property name="holdPP" value="${mail.hold.pp}" />
+		<property name="holdCS" value="${mail.hold.cs}" />
+		<property name="holdEE" value="${mail.hold.ee}" />
+	</bean>
+</beans>
