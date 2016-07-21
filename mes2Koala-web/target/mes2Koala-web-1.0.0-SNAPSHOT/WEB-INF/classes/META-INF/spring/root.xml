@@ -14,4 +14,5 @@
 	<import resource="classpath:META-INF/spring/security-extend.xml"></import>
 	<import resource="classpath:META-INF/spring/quartz.xml"></import>
 	<import resource="classpath:META-INF/spring/spring-mail.xml"></import>
+	<import resource="classpath:META-INF/spring/spring-extend.xml"></import>
 </beans>

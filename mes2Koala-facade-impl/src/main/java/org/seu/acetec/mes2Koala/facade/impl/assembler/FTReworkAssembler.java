@@ -44,6 +44,7 @@ public class FTReworkAssembler {
 		result.setApprove(fTRework.getApprove());
 		result.setApproveDate(fTRework.getApproveDate());
 		result.setApproveRemark(fTRework.getApproveRemark());
+		result.setTesterNo(fTRework.getTesterNo());
 		return result;
 	}
 

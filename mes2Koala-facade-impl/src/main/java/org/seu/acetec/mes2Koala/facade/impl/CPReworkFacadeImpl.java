@@ -5,10 +5,12 @@ import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.seu.acetec.mes2Koala.application.CPLotApplication;
+import org.seu.acetec.mes2Koala.application.CPProductionScheduleApplication;
 import org.seu.acetec.mes2Koala.application.CPReworkApplication;
 import org.seu.acetec.mes2Koala.application.IncrementNumberApplication;
 import org.seu.acetec.mes2Koala.core.common.BeanUtils;
 import org.seu.acetec.mes2Koala.core.domain.CPLot;
+import org.seu.acetec.mes2Koala.core.domain.CPProductionSchedule;
 import org.seu.acetec.mes2Koala.core.domain.CPRework;
 import org.seu.acetec.mes2Koala.core.domain.CPReworkItem;
 import org.seu.acetec.mes2Koala.facade.CPReworkFacade;
@@ -16,9 +18,11 @@ import org.seu.acetec.mes2Koala.facade.CPReworkItemFacade;
 import org.seu.acetec.mes2Koala.facade.dto.CPReworkDTO;
 import org.seu.acetec.mes2Koala.facade.dto.CPReworkItemDTO;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.CPReworkAssembler;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,6 +44,9 @@ public class CPReworkFacadeImpl implements CPReworkFacade {
 	@Inject
 	private IncrementNumberApplication incrementNumberApplication;
 
+	@Inject
+	private CPProductionScheduleApplication cpProductionScheduleApplication;
+
 	private QueryChannelService queryChannel;
 
 	private QueryChannelService getQueryChannelService() {
@@ -55,6 +62,7 @@ public class CPReworkFacadeImpl implements CPReworkFacade {
 				.success(CPReworkAssembler.toDTO(application.get(id)));
 	}
 
+	@Transactional
 	public InvokeResult creatCPRework(CPReworkDTO cpReworkDTO) {
 		CPLot internalLot = cpLotapplication.get(cpReworkDTO.getLotId());
 
@@ -79,6 +87,16 @@ public class CPReworkFacadeImpl implements CPReworkFacade {
 			cpReworkItem.setCpRework(cpRework);
 			set.add(cpReworkItem);
 		}
+		CPProductionSchedule cpProductionSchedule = cpProductionScheduleApplication
+				.findOne(
+						"select o from CPProductionSchedule o where o.cpLot.id = ? and o.testSys is not null ",
+						cpReworkDTO.getLotId());
+		if(cpProductionSchedule != null){
+			cpRework.setTesterNo(cpProductionSchedule.getTestSys()
+					.getTesterNumber());
+		}
+		cpRework.setProduct(internalLot.getCustomerCPLot().getCpInfo()
+				.getInternalProductNumber());
 		cpRework.setReworkItems(set);
 		application.create(cpRework);
 		return InvokeResult.success();

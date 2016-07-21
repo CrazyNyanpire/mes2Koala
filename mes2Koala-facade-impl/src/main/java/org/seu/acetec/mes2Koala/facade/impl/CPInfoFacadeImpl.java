@@ -6,20 +6,24 @@ import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.seu.acetec.mes2Koala.application.*;
-import org.seu.acetec.mes2Koala.core.domain.*;
+import org.seu.acetec.mes2Koala.core.common.BeanUtils;
+import org.seu.acetec.mes2Koala.core.domain.CPInfo;
+import org.seu.acetec.mes2Koala.core.domain.CPRuncardTemplate;
+import org.seu.acetec.mes2Koala.core.domain.Label;
+import org.seu.acetec.mes2Koala.core.domain.SBLTemplate;
 import org.seu.acetec.mes2Koala.facade.CPInfoFacade;
 import org.seu.acetec.mes2Koala.facade.dto.CPInfoDTO;
 import org.seu.acetec.mes2Koala.facade.dto.LabelDTO;
-import org.seu.acetec.mes2Koala.facade.dto.RawDataDTO;
 import org.seu.acetec.mes2Koala.facade.dto.SBLTemplateDTO;
 import org.seu.acetec.mes2Koala.facade.dto.vo.CPInfoPageVo;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.CPInfoAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.LabelAssembler;
-import org.seu.acetec.mes2Koala.facade.impl.assembler.RawDataAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.SBLTemplateAssembler;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -33,6 +37,7 @@ import java.util.Set;
  * @version 2016/2/13
  */
 @Named
+@Transactional
 public class CPInfoFacadeImpl implements CPInfoFacade {
 
     @Inject
@@ -57,7 +62,7 @@ public class CPInfoFacadeImpl implements CPInfoFacade {
 
     @Override
     public InvokeResult getCPInfo(Long id) {
-        return InvokeResult.success(CPInfoAssembler.toDTO(cpInfoApplication.get(id)));
+        return InvokeResult.success(CPInfoAssembler.toDTO(cpInfoApplication.get(id),true));
     }
 
     @Override
@@ -68,7 +73,9 @@ public class CPInfoFacadeImpl implements CPInfoFacade {
 
     @Override
     public InvokeResult updateCPInfo(CPInfoDTO cpInfoDTO) {
-        cpInfoApplication.update(CPInfoAssembler.toEntity(cpInfoDTO));
+    	CPInfo cpInfo = cpInfoApplication.get(cpInfoDTO.getId());
+    	BeanUtils.copyProperties(CPInfoAssembler.toEntity(cpInfoDTO), cpInfo);
+        cpInfoApplication.update(cpInfo);
         return InvokeResult.success();
     }
 
@@ -90,10 +97,11 @@ public class CPInfoFacadeImpl implements CPInfoFacade {
 
     @Override
     public List<CPInfoDTO> findAllCPInfo() {
-        return CPInfoAssembler.toDTOs(cpInfoApplication.findAll());
+        return CPInfoAssembler.toDTOs(cpInfoApplication.findAll(),false);
     }
 
     @Override
+    @Transactional
     public Page<CPInfoPageVo> pageQueryCPInfo(CPInfoDTO queryVo, int currentPage, int pageSize) {
         List<Object> conditionVals = new ArrayList<Object>();
         StringBuilder jpql = new StringBuilder("select _cpInfo from CPInfo _cpInfo  where 1=1 ");
@@ -154,7 +162,14 @@ public class CPInfoFacadeImpl implements CPInfoFacade {
                 .setParameters(conditionVals)
                 .setPage(currentPage, pageSize)
                 .pagedList();
-        return new Page<>(pages.getStart(), pages.getResultCount(), pageSize, CPInfoAssembler.toPageVos(pages.getData()));
+        List<CPInfoPageVo> cpList = new ArrayList<CPInfoPageVo>();
+
+        List<CPInfoPageVo> cpInfoPageVos = CPInfoAssembler.toPageVos(pages.getData());
+        for (CPInfoPageVo cpInfoPageVo : cpInfoPageVos) {
+            cpInfoPageVo.setRuncardApproval(this.cpRuncardTemplateApplication.isRuncardSignedMsg(cpInfoPageVo.getId()));
+        	cpList.add(cpInfoPageVo);
+        }
+        return new Page<>(pages.getStart(), pages.getResultCount(), pageSize, cpList);
     }
 
     @Override

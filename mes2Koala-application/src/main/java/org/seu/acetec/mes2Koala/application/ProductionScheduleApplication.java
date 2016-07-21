@@ -1,13 +1,14 @@
 package org.seu.acetec.mes2Koala.application;
 
 
+import org.seu.acetec.mes2Koala.core.domain.CPTestingNode;
 import org.seu.acetec.mes2Koala.core.domain.ProductionSchedule;
 
 public interface ProductionScheduleApplication extends GenericMES2Application<ProductionSchedule> {
 
     public void createNewFtSchedule(Long testSysId, Long ftComposedTestNodeId);
     
-    public void createNewCpSchedule(Long testSysId, Long cpTestingNodeId );
+    public void createNewCpSchedule(Long testSysId, CPTestingNode cpTestingNode);
 
     public void basicScheduling( Long id, Integer version, Long testSysId );
     

@@ -1,7 +1,10 @@
 package org.seu.acetec.mes2Koala.application;
 
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import org.seu.acetec.mes2Koala.core.domain.CPCustomerWafer;
 import org.seu.acetec.mes2Koala.core.domain.CPLot;
+import org.seu.acetec.mes2Koala.core.domain.CPRuncard;
+import org.seu.acetec.mes2Koala.core.domain.CPRuncardTemplate;
 import org.seu.acetec.mes2Koala.core.domain.CustomerCPLot;
 import org.seu.acetec.mes2Koala.core.domain.CustomerFTLot;
 import org.seu.acetec.mes2Koala.core.enums.TestTypeForWms;
@@ -23,9 +26,9 @@ public interface CustomerCPLotApplication extends
 
 	CustomerCPLot findByParentIntegrationId(String parentIntegrationId);
 
-	void order(Long customerCPLotId, CPLot cpLot, Long cpInfoId);
+	void order(Long customerCPLotId, CPLot cpLot, Long cpInfoId,SaveBaseBean sbb);
 
-	List<Long> batchOrder(Long[] customerCPLotIds, Map<String, Integer> messages);
+	List<Long> batchOrder(Long[] customerCPLotIds, Map<String, Integer> messages,Long cpInfoId,SaveBaseBean sbb);
 
 	String peekLotNumber(Long customerCPLotId);
 
@@ -38,4 +41,6 @@ public interface CustomerCPLotApplication extends
 	public void orderWithOutWMS(Long customerCPLotId, CPLot cpLot);
 
 	void deleteOrder(CPLot cpLot);
+	
+	public CPRuncard createCPRuncard(CPRuncardTemplate cpRuncardTemplate);
 }

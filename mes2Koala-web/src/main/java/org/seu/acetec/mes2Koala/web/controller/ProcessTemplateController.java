@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+
 import org.springframework.web.bind.WebDataBinder;
 
 import java.io.FileInputStream;
@@ -67,7 +68,9 @@ public class ProcessTemplateController extends BaseController{
     	//从字典表中取出授权者的工号，并根据工号获取id
         List<String> sns = systemDictionaryFacade.getValueByType("processAuthorizerSN");
         List<EmployeeVo> employeeVos = empolyeeFacade.findEmployeeByAccount(sns);
-        
+        if(	employeeVos== null || employeeVos.size() < 1){
+        	throw new RuntimeException("未设置流程签核人员！");
+        }
         ArrayList<Long> aids = new ArrayList<Long>();
         for ( EmployeeVo each : employeeVos ) {
             AcetecAuthorizationDTO acetecAuthorizationDTO = new AcetecAuthorizationDTO();

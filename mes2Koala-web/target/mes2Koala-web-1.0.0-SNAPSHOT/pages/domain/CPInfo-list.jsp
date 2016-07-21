@@ -55,6 +55,7 @@
     </style>
 
     <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+    <%@include file="/commons/taglibs.jsp"%>
     <%@ page import="java.util.Date" %>
     <script type="text/javascript" src="<%=contextPath %>/js/common.js"></script>
     <LINK rel="stylesheet" type="text/css"
@@ -367,13 +368,31 @@
             }
             $.get("${pageContext.request.contextPath}/CPInfo/getTestProgramTemplateByProduct/" + id + ".koala")
                     .done(function (data) {
+                        data.sort(function sortby(a, b) {
+                            debugger
+                            if (a.site != b.site) {
+                                return a.site < b.site ? -1 : 1;
+                            }
+                            else {
+
+                                return (new Date(b["acetecAuthorizationDTOs"][0]["lastModifyTime"])).getTime() - (new Date(a["acetecAuthorizationDTOs"][0]["lastModifyTime"])).getTime();
+                            }
+
+                        })
                         var html = "";
                         var th = "<table class='table table-bordered'  style='background-color:#fff;margin-top:10px'><tr height='30px'><td width='20px'></td><td>Customer_No</td><td>version</td><td>测试程序</td><td>程序版本</td><td>可用机台</td><td>标注</td><td>授权时间</td><td>理论UPH</td><td>实际UPH</td><td>IS_YELLOW</td><td>授权人</td><td>站点</td></tr>";
                         html += th;
+                        var site = "";
                         $.each(data, function (index) {
                             var b = index;
                             ++b;
-                            html += "<tr height='30px'><td>" + b + "</td><td>" +
+                            if (site != data[index]["site"]) {
+                                site = data[index]["site"];
+                                html += "<tr height='30px' bgcolor='#cde6c7'>";
+                            }
+                            else html += "<tr height='30px' >";
+
+                            html += "<td>" + b + "</td><td>" +
                                     data[index]["customerDirectNumber"] + "</td><td>" +
                                     data[index]["productVersion"] + "</td><td>" +
                                     data[index]["name"] + "</td><td>" +
@@ -610,7 +629,8 @@
                             html += "<tr height='30px'>";
 
                             for (var i = 0; i < str.length; i++) {
-                                if (str[i] === 'Incoming' ||str[i] === 'INK' || str[i] === 'INKBake' ) {
+                            	//if (str[i] === 'Incoming' ||str[i] === 'INK' || str[i] === 'INKBake' ) {
+                                if (str[i] === 'Incoming'  || str[i] === 'INKBake' ) {
                                     html += '<td style="color:#888888">' + str[i] + "</td>";
                                     continue;
                                 }
@@ -682,9 +702,9 @@
                         processSelect_CPInfo.empty();
                         processSelect_CPInfo.append("<option value='' selected='selected'>请选择</option>");
                         debugger;
-                        for (var a in data) {
+                        $.each(data, function (a) {
                             processSelect_CPInfo.append("<option value='" + data[a]['id'] + "'>" + data[a]['name'] + "</option>");
-                        }
+                        });
                     });
 
         });
@@ -1098,12 +1118,12 @@
                         $selectLabelName.empty();
                         $selectLabelName.append(
                                 "<option value='' selected='selected'>请选择</option>");
-                        for (var a in json) {
+                        $.each(json,function(a){
                             $selectLabelName.append(
                                     "<option value='" + json[a]['id'] + "'>"
                                     + json[a]['labelName']
                                     + "</option>");
-                        }
+                        });
                     });
         }
 
@@ -1264,19 +1284,19 @@
                         identity: "id",
                         buttons: [
                             {
-                                content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+                                content: '<ks:hasSecurityResource identifier="CPInfoAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
                                 action: 'add'
                             },
                             {
-                                content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+                                content: '<ks:hasSecurityResource identifier="CPInfoModify"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
                                 action: 'modify'
                             },
                             {
-                                content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+                                content: '<ks:hasSecurityResource identifier="CPInfoDelete"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
                                 action: 'delete'
                             },
                             {
-                                content: '<button class="btn btn-primary" type="button" style="float:right;"><span class="glyphicon glyphicon-export"><span>导出Excel</button>',
+                                content: '<ks:hasSecurityResource identifier="CPInfoExportExcel"><button class="btn btn-primary" type="button" style="float:right;"><span class="glyphicon glyphicon-export"><span>导出Excel</button></ks:hasSecurityResource>',
                                 action: 'exportExcel'
                             }
                         ],
@@ -1290,7 +1310,7 @@
                                 width: 180
                             },
                             {
-                                title: 'PID',
+                                title: '艾科内部产品型号',
                                 name: 'internalProductNumber',
                                 width: width,
                             },
@@ -1306,6 +1326,7 @@
                             {title: '测试时间/片', name: 'testTime', width: width},
                             {title: '产品制程要求', name: 'productRequire', width: width},
                             {title: '每片接触次数', name: 'touchQty', width: width},
+                            {title: 'Runcard签核', name: 'runcardApproval', width: width},
                             {
                                 title: '质量部主要负责人',
                                 name: 'keyQuantityManagerName',
@@ -1612,7 +1633,10 @@
                                     } else if (index == 'customerDirectDTO') {
                                         elm.setValue(json[index]['id']);
                                     } else if (index == 'customerIndirectDTO') {
-                                        elm.setValue(json[index]['id']);
+                                    	if(!!json[index]!=0)
+                                   		{
+                                   			elm.setValue(json[index]['id']);
+                                   		}
                                     } else {
                                         elm.setValue(json[index]);
                                     }
@@ -1981,6 +2005,11 @@
                         <div style="margin-left:15px;float:left;">
                             <div class="btn-group select" id="numberID"></div>
                             <input type="hidden" id="numberID_" name="customerDirectDTO.number" class="form-control"/>
+                        </div>
+                        <label class="control-label" style="width:110px;float:left;">产品型号:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input type="text" id="customerProductNumberID" name="customerProductNumber" class="form-control"
+                                   style="width:150px;"/>
                         </div>
                     </div>
                 </td>

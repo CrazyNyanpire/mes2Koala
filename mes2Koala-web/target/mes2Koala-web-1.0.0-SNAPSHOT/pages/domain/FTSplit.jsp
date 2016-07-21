@@ -12,7 +12,7 @@
     <input type="hidden" id="customerLotDTOidID" name="customerLotDTO.id" />
     <input type="hidden" id="customerLotDTOversionID" name="customerLotDTO.version" />
         <div class="form-group">
-            <label class="col-lg-2 control-label">客户批号:</label>
+            <label class="col-lg-2 control-label">内部批号:</label>
             <div class="col-lg-4">
                 <input name="lotNumber" style="display:inline; width:94%;" class="form-control"  type="text"  id="lotNumberID" disabled />
             </div>

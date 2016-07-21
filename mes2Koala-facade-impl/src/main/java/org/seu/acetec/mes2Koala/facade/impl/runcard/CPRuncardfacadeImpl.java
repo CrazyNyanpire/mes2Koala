@@ -1,6 +1,8 @@
 package org.seu.acetec.mes2Koala.facade.impl.runcard;
 
 import help.FilenameHelper;
+
+import org.apache.poi.hslf.model.Placeholder;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.core.domain.Employee;
@@ -13,19 +15,16 @@ import org.seu.acetec.mes2Koala.facade.common.SenderMailUtils;
 import org.seu.acetec.mes2Koala.facade.dto.RuncardSignDTO;
 import org.seu.acetec.mes2Koala.facade.dto.vo.CPSpecialFormStatusVo;
 import org.seu.acetec.mes2Koala.facade.service.CPRuncardfacade;
-import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +51,10 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
     private CPLotApplication cpLotApplication;
     @Inject
     private CustomerCPLotApplication customerCPLotApplication;
+    @Inject
+    private CPNodeApplication cpNodeApplication;
+    @Inject
+    private PlaceHolderApplication placeHolderApplication;
 
 
     /**
@@ -179,6 +182,9 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             case "CP":
             case "CP1":
                 cpRuncardTemplate.setCP1(data);
+                break;
+            case "INK":
+                cpRuncardTemplate.setINK(data);
                 break;
             case "CP_After_Bake":
             case "CP_After_Bake1":
@@ -359,6 +365,15 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         }
         return CP1;
     }
+    
+
+    private String getINK(Long id) {
+    	String INK = validateRuncardTemplate(id).getINK();
+        if (INK == null) {
+            INK = readRuncardinfoFromFiles("INK");
+        }
+        return INK;
+	}
 
 
     @Override
@@ -485,12 +500,23 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return OQC;
     }
 
+
+    /**
+     * 根据站点名获得runcardinfo数据
+     *
+     * @param id
+     * @param siteName
+     * @return
+     */
     @Override
     public String getRuncardInfoBySiteName(Long id, String siteName) {
         String data = null;
         switch (siteName) {
             case "CP1":
                 data = getCP1(id);
+                break;
+            case "INK":
+                data = getINK(id);
                 break;
             case "CP_After_Bake1":
             case "CP1_After_Bake":
@@ -573,6 +599,16 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return data;
     }
 
+
+
+
+	/**
+     * 判断runcard是否已经填写完成
+     *
+     * @param id
+     * @param runcardinfo
+     * @return
+     */
     @Override
     public boolean isRuncardFinished(Long id, String[] runcardinfo) {
         CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication.findByInternalProductId(id);
@@ -586,6 +622,9 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             switch (s) {
                 case "CP1":
                     data = cpRuncardTemplate.getCP1();
+                    break;
+                case "INK":
+                    data = cpRuncardTemplate.getINK();
                     break;
                 case "CP_After_Bake1":
                 case "CP1_After_Bake":
@@ -664,12 +703,27 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return true;
     }
 
+
+    /**
+     * 判断runcard是否已经填写完成
+     * 此时传入的id是customerCPLotId
+     *
+     * @param id
+     * @param runcardinfo
+     * @return
+     */
     @Override
     public boolean isRuncardFinished2(Long id, String[] runcardinfo) {
         CustomerCPLot customerCPLot = customerCPLotApplication.get(id);
         return isRuncardFinished(customerCPLot.getCpInfo().getId(), runcardinfo);
     }
 
+    /**
+     * 判断runcard是否已经签核
+     *
+     * @param id
+     * @return
+     */
     @Override
     public boolean isRuncardInfoSigned(Long id) {
         boolean isFinished = true;
@@ -710,6 +764,15 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
     }
 
 
+    /**
+     * 对runcard进行签核
+     *
+     * @param cpinfoId
+     * @param userId
+     * @param opinion
+     * @param note
+     * @return
+     */
     @Override
     public InvokeResult signRuncardInfo(Long cpinfoId, Long userId, String opinion, String note) {
         CPInfo cpInfo = cpInfoApplication.get(cpinfoId);
@@ -774,11 +837,19 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             acetecAuthorization.setNote(note);
             cpRuncardTemplate.setAssistTDEAuthorization(acetecAuthorization);
         }
-
+        cpRuncardTemplate.setSignedTime(new Date());
         cpRuncardTemplateApplication.update(cpRuncardTemplate);
         return InvokeResult.success("签核成功");
     }
 
+
+    /**
+     * 获得人员的部门信息
+     *
+     * @param cpinfoId
+     * @param userId
+     * @return
+     */
     @Override
     public String getDepartmentByEmployeeId(Long cpinfoId, Long userId) {
         Long employeeId = getEmployeeIdByUserId(userId);
@@ -804,6 +875,14 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         }
     }
 
+
+    /**
+     * 获得runcard的签核记录
+     *
+     * @param cpinfoId
+     * @param userId
+     * @return
+     */
     @Override
     public RuncardSignDTO getRuncardSignInfo(Long cpinfoId, Long userId) {
 
@@ -875,6 +954,14 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return runcardSignDTO;
     }
 
+
+    /**
+     * 获得特殊表单数据
+     *
+     * @param cpinfoId
+     * @param sheetType
+     * @return
+     */
     @Override
     public String getSpecialFormByCPinfoId(Long cpinfoId, String sheetType) {
         CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication.findByInternalProductId(cpinfoId);
@@ -930,6 +1017,14 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return data;
     }
 
+
+    /**
+     * 保存特殊表单的打印状态
+     *
+     * @param id
+     * @param cpSpecialFormStatusVo
+     * @return
+     */
     @Override
     public InvokeResult saveSpecialFormStatus(Long id, CPSpecialFormStatusVo cpSpecialFormStatusVo) {
         CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication.findByInternalProductId(id);
@@ -948,6 +1043,13 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return InvokeResult.success("保存成功");
     }
 
+
+    /**
+     * 保存特殊表单的打印状态
+     *
+     * @param id
+     * @return
+     */
     @Override
     public InvokeResult getSpecialFormStatus(Long id) {
         CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication.findByInternalProductId(id);
@@ -967,12 +1069,78 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return InvokeResult.success(cpSpecialFormStatusVo);
     }
 
+
+    /**
+     * 保存特殊表单的打印状态
+     *
+     * @param id
+     * @return
+     */
     @Override
-    public InvokeResult saveSpecialForm(Long id, String formType, String data) {
-        //TODO
-        return null;
+    public InvokeResult getSpecialFormStatusByCPLotId(Long id) {
+        CPLot cpLot = cpLotApplication.get(id);
+        CPSpecialFormStatusVo cpSpecialFormStatusVo = new CPSpecialFormStatusVo();
+        if (cpLot == null) {
+            return InvokeResult.success(cpSpecialFormStatusVo);
+        }
+        CPRuncard cpRuncard = cpLot.getCpRuncard();
+        CPSpecialFormTemplate cpSpecialFormTemplate = cpRuncard.getCpSpecialFormTemplate();
+        cpSpecialFormStatusVo.setCP1SheetStatus(cpSpecialFormTemplate.getCP1SheetStatus());
+        cpSpecialFormStatusVo.setCP2SheetStatus(cpSpecialFormTemplate.getCP2SheetStatus());
+        cpSpecialFormStatusVo.setMAP_SHIFT1Status(cpSpecialFormTemplate.getMap_Shift1SheetStatus());
+        cpSpecialFormStatusVo.setMCP_COVER1SheetStatus(cpSpecialFormTemplate.getMCP_Cover1SheetStatus());
+        cpSpecialFormStatusVo.setSheet1Status(cpSpecialFormTemplate.getSheet1Status());
+        cpSpecialFormStatusVo.setSheet2Status(cpSpecialFormTemplate.getSheet2Status());
+        return InvokeResult.success(cpSpecialFormStatusVo);
     }
 
+    @Override
+    public InvokeResult saveSpecialForm(Long id, String formType, String data) {
+        CPInfo cpInfo = cpInfoApplication.get(id);
+
+        CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication.findByInternalProductId(id);
+        if (cpRuncardTemplate == null) {
+            cpRuncardTemplate = createCPRuncardTemplate();
+            cpRuncardTemplate.setInternalProduct(cpInfo);
+        }
+
+        CPSpecialFormTemplate cpSpecialFormTemplate = cpRuncardTemplate.getCpSpecialFormTemplate();
+
+        switch (formType) {
+            case "CP1SHEET":
+                cpSpecialFormTemplate.setCP1Sheet(data);
+                break;
+            case "CP2SHEET":
+                cpSpecialFormTemplate.setCP2Sheet(data);
+                break;
+            case "MAP_SHIFT1SHEET":
+                cpSpecialFormTemplate.setMap_Shift1Sheet(data);
+                break;
+            case "SHEET1":
+                cpSpecialFormTemplate.setSheet1(data);
+                break;
+            case "SHEET2":
+                cpSpecialFormTemplate.setSheet2(data);
+                break;
+            case "MCP_COVER1SHEET":
+                cpSpecialFormTemplate.setMCP_Cover1Sheet(data);
+                break;
+            default:
+                break;
+        }
+
+        cpRuncardTemplate.save();
+
+        return InvokeResult.success();
+    }
+
+
+    /**
+     * 获得runcardinfo数据
+     *
+     * @param id
+     * @return
+     */
     @Override
     public String getRuncardInfo(Long id) {
 
@@ -1000,6 +1168,9 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             switch (site) {
                 case "CP1":
                     sb.append(convertData(cpRuncardTemplate.getCP1()));
+                    break;
+                case "INK":
+                    sb.append(convertData(cpRuncardTemplate.getINK()));
                     break;
                 case "CP_After_Bake1":
                 case "CP1_After_Bake":
@@ -1101,13 +1272,12 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
         return sb.toString();
     }
 
-    public String getRuncardInfoBeforeOrdered(Long id){
+    public String getRuncardInfoBeforeOrdered(Long id) {
         CustomerCPLot customerCPLot = customerCPLotApplication.get(id);
         CPInfo cpInfo = customerCPLot.getCpInfo();
         return getRuncardInfo(cpInfo.getId());
 
     }
-
 
 
     @Override
@@ -1140,6 +1310,9 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             switch (site) {
                 case "CP1":
                     sb.append(convertData(cpRuncard.getCP1()));
+                    break;
+                case "INK":
+                    sb.append(convertData(cpRuncard.getINK()));
                     break;
                 case "CP_After_Bake1":
                 case "CP1_After_Bake":
@@ -1352,6 +1525,13 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
     }
 
 
+    /**
+     * 获得runcard中每个站点的保存状态
+     *
+     * @param cpinfoId
+     * @param totalSites
+     * @return
+     */
     @Override
     public InvokeResult getRuncardFinishedStatus(Long cpinfoId, String[] totalSites) {
         Map<String, Boolean> resultMap = new HashMap<>();
@@ -1364,6 +1544,9 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             switch (s) {
                 case "CP1":
                     data = cpRuncardTemplate.getCP1();
+                    break;
+                case "INK":
+                    data = cpRuncardTemplate.getINK();
                     break;
                 case "CP_After_Bake1":
                 case "CP1_After_Bake":
@@ -1443,6 +1626,320 @@ public class CPRuncardfacadeImpl implements CPRuncardfacade {
             }
         }
         return InvokeResult.success(resultMap);
+    }
+
+
+    @Override
+    public InvokeResult getRuncardInfoByState(Long cpLotId, String[] specialFormArr, Long state) {
+        CPLot cpLot = cpLotApplication.get(cpLotId);
+        CPRuncard cpRuncard = cpLot.getCpRuncard();
+
+        StringBuilder sb = new StringBuilder();
+
+        PlaceHolderCP placeholder = new PlaceHolderCP();
+        placeholder = placeHolderApplication.findByCPLot(cpLotId);
+
+        for (String specialForm : specialFormArr) {
+            switch (specialForm) {
+                case "mcp_COVER1Sheet":
+                    sb.append(replaceMcpCoverPlaceholder(cpRuncard, placeholder));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        if (state.equals(0L)) {
+            List<CPNode> endStartCPNodes = cpNodeApplication.findEndedCPNodeByCPLotId(cpLotId);
+            Collections.sort(endStartCPNodes);
+            for (CPNode cpNode : endStartCPNodes) {
+                sb.append(getRuncardInfoBySiteName(cpRuncard, cpNode.getName(), placeholder));
+            }
+        } else if (state.equals(1L)) {
+            List<CPNode> unreachedTestNodes = cpNodeApplication.findUnreachedCPNodeByCPLotId(cpLotId);
+            Collections.sort(unreachedTestNodes);
+            for (CPNode cpNode : unreachedTestNodes) {
+                sb.append(getRuncardInfoBySiteName(cpRuncard, cpNode.getName(), placeholder));
+            }
+        } else if (state.equals(2L)) {
+            List<CPNode> toStartCPNode = cpNodeApplication.findToStartCPNodeByCPLotId(cpLotId);
+            if (!toStartCPNode.isEmpty()) {
+                sb.append(getRuncardInfoBySiteName(cpRuncard, toStartCPNode.get(0).getName(), placeholder));
+            } else {
+                List<CPNode> startCPNode = cpNodeApplication.findStartedCPNodeByCPLotId(cpLotId);
+                sb.append(getRuncardInfoBySiteName(cpRuncard, startCPNode.get(0).getName(), placeholder));
+            }
+        }
+        for (String specialForm : specialFormArr) {
+            CPSpecialFormTemplate cpSpecialFormTemplate = cpRuncard.getCpSpecialFormTemplate();
+            switch (specialForm) {
+                case "cp1Sheet":
+                    sb.append(cpSpecialFormTemplate.getCP1Sheet());
+                    break;
+                case "cp2Sheet":
+                    sb.append(cpSpecialFormTemplate.getCP2Sheet());
+                    break;
+                case "sheet1":
+                    sb.append(cpSpecialFormTemplate.getSheet1());
+                    break;
+                case "sheet2":
+                    sb.append(cpSpecialFormTemplate.getSheet2());
+                    break;
+                case "map_SHIFT1":
+                    sb.append(cpSpecialFormTemplate.getMap_Shift1Sheet());
+                    break;
+                default:
+                    break;
+            }
+        }
+        return InvokeResult.success(sb.toString());
+    }
+
+
+    private String getRuncardInfoBySiteName(CPRuncard cpRuncard, String siteName, PlaceHolderCP placeholder) {
+        String data = null;
+        switch (siteName) {
+            case "CP1":
+//                data = cpRuncard.getCP1();
+                data = replaceCPPlaceholder(cpRuncard.getCP1(), placeholder, "CP1");
+                break;
+            case "INK":
+//              data = cpRuncard.getCP1();
+              data = replaceCPPlaceholder(cpRuncard.getINK(), placeholder, "INK");
+              break;
+            case "CP_After_Bake1":
+            case "CP1_After_Bake":
+                data = cpRuncard.getCP1_After_Bake();
+                break;
+            case "CP_Bake1":
+            case "CP1_Bake":
+                data = cpRuncard.getCP1_Before_Bake();
+                break;
+            case "CP1_DT":
+                data = cpRuncard.getCP1_DT();
+                break;
+            case "CP2":
+//                data = cpRuncard.getCP2();
+                data = replaceCPPlaceholder(cpRuncard.getCP2(), placeholder, "CP2");
+                break;
+            case "CP_After_Bake2":
+            case "CP2_After_Bake":
+                data = cpRuncard.getCP2_After_Bake();
+                break;
+            case "CP_Bake2":
+            case "CP2_Bake":
+                data = cpRuncard.getCP2_Before_Bake();
+                break;
+            case "CP2_DT":
+                data = cpRuncard.getCP2_DT();
+                break;
+            case "CP3":
+//                data = cpRuncard.getCP3();
+                data = replaceCPPlaceholder(cpRuncard.getCP3(), placeholder, "CP3");
+                break;
+            case "CP_After_Bake3":
+            case "CP3_After_Bake":
+                data = cpRuncard.getCP3_After_Bake();
+                break;
+            case "CP_Bake3":
+            case "CP3_Bake":
+                data = cpRuncard.getCP3_Before_Bake();
+                break;
+            case "CP3_DT":
+                data = cpRuncard.getCP3_DT();
+                break;
+            case "CP4":
+//                data = cpRuncard.getCP4();
+                data = replaceCPPlaceholder(cpRuncard.getCP4(), placeholder, "CP4");
+                break;
+            case "CP_After_Bake4":
+            case "CP4_After_Bake":
+                data = cpRuncard.getCP4_After_Bake();
+                break;
+            case "CP_Bake4":
+            case "CP4_Bake":
+                data = cpRuncard.getCP4_Before_Bake();
+                break;
+            case "CP4_DT":
+                data = cpRuncard.getCP4_DT();
+                break;
+
+            case "FQC":
+                data = cpRuncard.getFQC();
+                break;
+            case "IQC":
+                data = replceIQCPlaceholder(cpRuncard.getIQC(), placeholder);
+                break;
+            case "OQC":
+                data = cpRuncard.getOQC();
+                break;
+            case "Packing":
+                data = cpRuncard.getPacking();
+                break;
+            default:
+                data = "";
+                break;
+        }
+        return data;
+    }
+
+
+    private String replaceMcpCoverPlaceholder(CPRuncard cpRuncard, PlaceHolderCP placeholder) {
+        String data = cpRuncard.getCpSpecialFormTemplate().getMCP_Cover1Sheet();
+        String customerCode = ResourcesUtil.getValue("cpplaceholder", "customerCode");
+        String productName = ResourcesUtil.getValue("cpplaceholder", "productName");
+        String customerLot = ResourcesUtil.getValue("cpplaceholder", "customerLot");
+        String acetecLot = ResourcesUtil.getValue("cpplaceholder", "acetecLot");
+        String customerPPO = ResourcesUtil.getValue("cpplaceholder", "customerPPO");
+        String receiveQty = ResourcesUtil.getValue("cpplaceholder", "receiveQty");
+        String receiveData = ResourcesUtil.getValue("cpplaceholder", "receiveData");
+        String packageSize = ResourcesUtil.getValue("cpplaceholder", "packageSize");
+        String packingType = ResourcesUtil.getValue("cpplaceholder", "packingType");
+        String shippingType = ResourcesUtil.getValue("cpplaceholder", "shippingType");
+        String keyQuantityAuthorization = ResourcesUtil.getValue("cpplaceholder", "keyQuantityAuthorization");
+        String keyProductionAuthorization = ResourcesUtil.getValue("cpplaceholder", "keyProductionAuthorization");
+        String keyTDEAuthorization = ResourcesUtil.getValue("cpplaceholder", "keyTDEAuthorization");
+        String signedTime = ResourcesUtil.getValue("cpplaceholder", "signedTime");
+        String printDate = ResourcesUtil.getValue("cpplaceholder", "printDate");
+        String waferSize = ResourcesUtil.getValue("cpplaceholder", "waferSize");
+        String maskName = ResourcesUtil.getValue("cpplaceholder", "maskName");
+        String grossDie = ResourcesUtil.getValue("cpplaceholder", "grossDie");
+        String internalProductNumber = ResourcesUtil.getValue("cpplaceholder", "internalProductNumber");
+
+        String customerCodeReplace = placeholder.getCustomerCode();
+        String productNameReplace = placeholder.getProductName();
+        String customerLotReplace = placeholder.getCustomerLot();
+        String acetecLotReplace = placeholder.getAcetecLot();
+        String customerPPOReplace = placeholder.getCustomerPPO();
+        String receiveQtyReplace = placeholder.getReceiveQty();
+        String receiveDataReplace = placeholder.getReceiveData();
+        String packageSizeReplace = placeholder.getPackageSize();
+        String packingTypeReplace = placeholder.getPackingType();
+        String shippingTypeReplace = placeholder.getShippingType();
+        String keyQuantityAuthorizationReplace = placeholder.getKeyQuantityAuthorization();
+        String keyProductionAuthorizationReplace = placeholder.getKeyProductionAuthorization();
+        String keyTDEAuthorizationreplace = placeholder.getKeyTDEAuthorization();
+        Date signedTimeReplace = cpRuncard.getSignedTime();
+        String printDateReplace = placeholder.getPrintDate();
+        String waferSizeReplace = placeholder.getWaferSize();
+        String maskNameReplace = placeholder.getMaskName();
+        String grossDieReplace = placeholder.getGrossDie();
+        String internalProductNumberReplace = placeholder.getInternalProductNumber();
+
+
+        if (customerCodeReplace != null) {
+            data = data.replace(customerCode, customerCodeReplace);
+        }
+        if (productNameReplace != null) {
+            data = data.replace(productName, productNameReplace);
+        }
+        if (customerLotReplace != null) {
+            data = data.replace(customerLot, customerLotReplace);
+        }
+        if (acetecLotReplace != null) {
+            data = data.replace(acetecLot, acetecLotReplace);
+        }
+        if (customerPPOReplace != null) {
+            data = data.replace(customerPPO, customerPPOReplace);
+        }
+        if (receiveQtyReplace != null) {
+            data = data.replace(receiveQty, receiveQtyReplace);
+        }
+        if (receiveDataReplace != null) {
+            data = data.replace(receiveData, receiveDataReplace);
+        }
+        if (packingTypeReplace != null) {
+            data = data.replace(packingType, packingTypeReplace);
+        }
+        if (shippingTypeReplace != null) {
+            data = data.replace(shippingType, shippingTypeReplace);
+        }
+        if (keyQuantityAuthorizationReplace != null) {
+            data = data.replace(keyQuantityAuthorization, keyQuantityAuthorizationReplace);
+        }
+        if (keyProductionAuthorizationReplace != null) {
+            data = data.replace(keyProductionAuthorization, keyProductionAuthorizationReplace);
+        }
+        if (keyTDEAuthorizationreplace != null) {
+            data = data.replace(keyTDEAuthorization, keyTDEAuthorizationreplace);
+        }
+
+        if (signedTimeReplace != null) {
+            data = data.replace(signedTime, signedTimeReplace.toString());
+        }
+
+        if (printDateReplace != null) {
+            data = data.replace(printDate, printDateReplace);
+        }
+        if (waferSizeReplace != null) {
+            data = data.replace(waferSize, waferSizeReplace);
+        }
+        if (maskNameReplace != null) {
+            data = data.replace(maskName, maskNameReplace);
+        }
+        if (grossDieReplace != null) {
+            data = data.replace(grossDie, grossDieReplace);
+        }
+        if (internalProductNumberReplace != null) {
+            data = data.replace(internalProductNumber, internalProductNumberReplace);
+        }
+
+
+        String processContent = placeholder.getProcessContent();
+        String[] contents = processContent.split("\\|");
+        String siteNamePlaceholder = ResourcesUtil.getValue("cpplaceholder", "siteName");
+
+        for (int i = 1; i <= contents.length; i++) {
+            String tempPlaceholder = siteNamePlaceholder;
+            String value = contents[i - 1];
+            tempPlaceholder = String.format("%s%02d", tempPlaceholder, i);
+            data = data.replace(tempPlaceholder, value);
+        }
+
+        for (int i = contents.length + 1; i <= 19; i++) {
+            String tempPlaceholder = siteNamePlaceholder;
+            tempPlaceholder = String.format("%s%02d", tempPlaceholder, i);
+            data = data.replace(tempPlaceholder, "");
+        }
+
+
+        return data;
+    }
+
+
+    private String replceIQCPlaceholder(String data, PlaceHolderCP placeHolder) {
+
+        String waferPlaceholder = ResourcesUtil.getValue("cpplaceholder", "waferID");
+        List<CPWafer> cpWafers = placeHolder.getWafers();
+        for (CPWafer cpWafer : cpWafers) {
+            int length = cpWafer.getInternalWaferCode().length();
+            String index = cpWafer.getInternalWaferCode().substring(length - 2);
+            String replaceData = cpWafer.getInternalWaferCode();
+            data = data.replace(waferPlaceholder + index, replaceData);
+        }
+        for (int i = 1; i <= 9; i++) {
+            data = data.replace(waferPlaceholder + '0' + i, "");
+        }
+        for (int i = 10; i <= 25; i++) {
+            data = data.replace(waferPlaceholder + i, "");
+        }
+        return data;
+    }
+
+
+    private String replaceCPPlaceholder(String data, PlaceHolderCP placeholder, String siteName) {
+
+        Map<String, String> testProgram = placeholder.getTestPrograms();
+
+        String testProgramPlaceholder = ResourcesUtil.getValue("cpplaceholder", "testProgram");
+        if (testProgram != null && testProgram.containsKey(siteName)) {
+            String tempPlaceholder = testProgramPlaceholder;
+            String value = testProgram.get(siteName);
+            tempPlaceholder = tempPlaceholder + siteName;
+            data = data.replace(tempPlaceholder, value);
+        }
+        return data;
     }
 
 }

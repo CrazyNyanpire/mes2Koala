@@ -30,11 +30,14 @@ public class CPLotAssembler {
         result.setRcNumber(cpLot.getRcNumber());
         result.setHoldState(cpLot.getHoldState());
         result.setCurrentState(cpLot.getCurrentState());
-        result.setParentIntegrationIds(cpLot.getParentIntegrationIds());
+        //将母批的lot放到ParentIntegrationIds中，这个地方前后台不一致
+        result.setParentIntegrationIds(cpLot.getSourceParentSeparationNo());
         result.setParentSeparationId(cpLot.getParentSeparationId());
         result.setCustomerCPLotDTO(CustomerCPLotAssembler.toDTO(cpLot.getCustomerCPLot()));
         //result.setcPWaferDTOs(CPWaferAssembler.toDTOs(cpLot.getCpWafers()));
         result.setWmsTestId(cpLot.getWmsTestId());
+        result.setQuantity(cpLot.getQuantity());
+        
         return result;
     }
 

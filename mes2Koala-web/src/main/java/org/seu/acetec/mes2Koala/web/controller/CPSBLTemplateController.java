@@ -2,6 +2,9 @@ package org.seu.acetec.mes2Koala.web.controller;
 
 import javax.inject.Inject;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.web.bind.WebDataBinder;
 
 import java.text.SimpleDateFormat;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.dayatang.utils.Page;
 import org.seu.acetec.mes2Koala.facade.dto.*;
+import org.seu.acetec.mes2Koala.facade.sbl.SBLClient;
 import org.seu.acetec.mes2Koala.facade.CPSBLTemplateFacade;
 import org.openkoala.koala.commons.InvokeResult;
 
@@ -27,6 +31,9 @@ public class CPSBLTemplateController {
 		
 	@Inject
 	private CPSBLTemplateFacade cPSBLTemplateFacade;
+	
+	@Inject
+	private SBLClient sblClient;
 	
 	@ResponseBody
 	@RequestMapping("/add")
@@ -76,7 +83,21 @@ public class CPSBLTemplateController {
 	@RequestMapping("/findCPSBLTemplateByLotId/{id}")
 	public Map<String, Object> findCPSBLTemplateByLotId(@PathVariable Long id) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("data", cPSBLTemplateFacade.getCPSBLTemplatesByLotId(id));
+		JSONArray sbl = cPSBLTemplateFacade.getCPSBLTemplatesByLotId(id);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("data", sbl);
+		String insertSbl = sblClient.insertCPSBL(jsonObject.toString());
+		result.put("insertSbl", insertSbl);
+		result.put("data", sbl);
+		return result;
+	}
+    
+    @ResponseBody
+	@RequestMapping("/findCPSBLInfo")
+	public Map<String, Object> findCPSBLInfo(@RequestParam String lotNo, @RequestParam String stationName) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String sblInfo = sblClient.getErrorInfo(lotNo, stationName);
+		result.put("sblInfo", sblInfo);
 		return result;
 	}
 

@@ -3,6 +3,7 @@ package org.seu.acetec.mes2Koala.core.domain;
 import org.seu.acetec.mes2Koala.core.enums.CustomerLotState;
 
 import javax.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -38,6 +39,14 @@ public class CustomerLot extends MES2AbstractEntity {
     private String customerProductNumber;   // 来料型号（应该是客户产品型号？可与InternalProduct建立联系） CustomertProductNumber
     
     private String shipmentNumber;	// 出货型号
+    
+    private String orderUser;
+    
+    private Date orderDate;
+    
+    private String packingLot; //封装批号
+    
+    private String packageNumber; //封装型号
 
     public String getShipmentNumber() {
 		return shipmentNumber;
@@ -145,7 +154,39 @@ public class CustomerLot extends MES2AbstractEntity {
     }
 
 
-    @Override
+    public String getOrderUser() {
+		return orderUser;
+	}
+
+	public void setOrderUser(String orderUser) {
+		this.orderUser = orderUser;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public String getPackingLot() {
+		return packingLot;
+	}
+
+	public void setPackingLot(String packingLot) {
+		this.packingLot = packingLot;
+	}
+
+	public String getPackageNumber() {
+		return packageNumber;
+	}
+
+	public void setPackageNumber(String packageNumber) {
+		this.packageNumber = packageNumber;
+	}
+
+	@Override
     public String[] businessKeys() {
         return new String[0];
     }

@@ -23,6 +23,16 @@
         div {
             width: 100%;
         }
+        td{
+        	border:1px solid #333;
+        }
+        table{
+        	margin:0 auto;
+        	width:850px;
+        	border-collapse: collapse;
+        	page-break-after: auto;
+        	
+        }
     </style>
 </head>
 <body>
@@ -52,24 +62,33 @@
                 url: '<%=contextPath %>/ueditor/getRuncardInfoByState.koala?ftLotId=${ftLotId}&specialFormStr=${specialFormStr}&state=${state}',
                 type: 'GET',
                 success: function (data) {
-
+                    if (data.data == undefined){
+                        alert('脏数据错误，请清理数据重新运行！');
+                        return;
+                    }
 					var dialog = $("<div>");
 					dialog.html(data.data);
 
 					dialog.find(".barcodeArea").each(function(){
 						var bValue = this.getAttribute("value");
+						bValue.replace(/(^\s*)|(\s*$)/g, "");
 						$(this).barcode(bValue, "code128",{barWidth:2, barHeight:40,output:'svg'});
 					});
 
 					str = dialog[0].innerHTML;  
 					UE.getEditor('editor').execCommand('insertHtml', str);
+					//$("body").html(str);
 				},
 
-                error: function () {
+                error: function (error) {
+                    console.log('error');
                 }
             });
         }
-
+        
+        function print() {
+           UE.getEditor('editor').execCommand('print');
+        }
         ue.addListener('ready', function () {
             insertHtml();
             $("#btns").hide();

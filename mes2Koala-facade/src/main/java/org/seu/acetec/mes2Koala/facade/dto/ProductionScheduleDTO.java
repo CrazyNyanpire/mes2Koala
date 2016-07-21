@@ -10,192 +10,182 @@ public class ProductionScheduleDTO implements Serializable {
 
 	private int version;
 
-			
-		private String note;
-		
-				
-		private Long amount;
-		
-				
-		private Long doneQty;
-		
-				
-		private String planedEndTimestamp;
-		
-				
-		private String createEmployNo;
-		
-				
-		private String lotNumber;
-		
-		private String nodeName;
-		
-				
-		private Date createTimestamp;
-		
-		private Date createTimestampEnd;
-				
-		private String actualEndTimestamp;
-		
-				
-		private Date lastModifyTimestamp;
-		
-		private Date lastModifyTimestampEnd;
-				
-		private String lastModifyEmployNo;
-		
-				
-		private String planedStartTimestamp;
-		
-				
-		private String actualStartTimestamp;
-		
-				
-		private Integer logic;
-		
-				
-		private String state;
-		
-		private String subState;
-		
+	private String note;
 
-		private Long testSysId;//机台ID
-		
-		private String testSysName;//机台
-		
-		private String pPO;//PPO
-		
-		private String customerProductNumber;//客户（产品）型号
-		
-		private String packageNumber;//封装型号
-		
-		private String customerLotNumber;//客户批号
-		
-		private String plannedTimeTakes;//预计需时
-		
-		private String actualTimeTakes;//实际需时
-		
-		private String testType;//测试类型
+	private Long amount;
 
-		private String lotCurrentState;//批次当前状态
-		
-		private String lotHoldState;//批次hold状态
-		
-	
+	private Long doneQty;
+
+	private String planedEndTimestamp;
+
+	private String createEmployNo;
+
+	private String lotNumber;
+
+	private String nodeName;
+
+	private Date createTimestamp;
+
+	private Date createTimestampEnd;
+
+	private String actualEndTimestamp;
+
+	private Date lastModifyTimestamp;
+
+	private Date lastModifyTimestampEnd;
+
+	private String lastModifyEmployNo;
+
+	private String planedStartTimestamp;
+
+	private String actualStartTimestamp;
+
+	private Integer logic;
+
+	private String state;
+
+	private String subState;
+
+	private Long testSysId;// 机台ID
+
+	private String testSysName;// 机台
+
+	private String pPO;// PPO
+
+	private String customerProductNumber;// 客户（产品）型号
+
+	private String packageNumber;// 封装型号
+
+	private String customerLotNumber;// 客户批号
+
+	private String plannedTimeTakes;// 预计需时
+
+	private String actualTimeTakes;// 实际需时
+
+	private String testType;// 测试类型
+
+	private String lotCurrentState;// 批次当前状态
+
+	private String lotHoldState;// 批次hold状态
+
+	private String internalProductNumber;
+
+	private String customerNumber;
+
+	private String packingLot;
 
 	public String getLotCurrentState() {
-			return lotCurrentState;
-		}
+		return lotCurrentState;
+	}
 
-		public void setLotCurrentState(String lotCurrentState) {
-			this.lotCurrentState = lotCurrentState;
-		}
+	public void setLotCurrentState(String lotCurrentState) {
+		this.lotCurrentState = lotCurrentState;
+	}
 
-		public String getLotHoldState() {
-			return lotHoldState;
-		}
+	public String getLotHoldState() {
+		return lotHoldState;
+	}
 
-		public void setLotHoldState(String lotHoldState) {
-			this.lotHoldState = lotHoldState;
-		}
+	public void setLotHoldState(String lotHoldState) {
+		this.lotHoldState = lotHoldState;
+	}
 
 	public String getSubState() {
-			return subState;
-		}
+		return subState;
+	}
 
-		public void setSubState(String subState) {
-			this.subState = subState;
-		}
+	public void setSubState(String subState) {
+		this.subState = subState;
+	}
 
 	public String getNodeName() {
-			return nodeName;
-		}
+		return nodeName;
+	}
 
-		public void setNodeName(String nodeName) {
-			this.nodeName = nodeName;
-		}
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
 
 	public String getTestType() {
-			return testType;
-		}
+		return testType;
+	}
 
-		public void setTestType(String testType) {
-			this.testType = testType;
-		}
+	public void setTestType(String testType) {
+		this.testType = testType;
+	}
 
 	public Long getTestSysId() {
-			return testSysId;
-		}
+		return testSysId;
+	}
 
-		public void setTestSysId(Long testSysId) {
-			this.testSysId = testSysId;
-		}
+	public void setTestSysId(Long testSysId) {
+		this.testSysId = testSysId;
+	}
 
 	public String getTestSysName() {
-			return testSysName;
-		}
+		return testSysName;
+	}
 
-		public void setTestSysName(String testSysName) {
-			this.testSysName = testSysName;
-		}
+	public void setTestSysName(String testSysName) {
+		this.testSysName = testSysName;
+	}
 
-		public String getpPO() {
-			return pPO;
-		}
+	public String getpPO() {
+		return pPO;
+	}
 
-		public void setpPO(String pPO) {
-			this.pPO = pPO;
-		}
+	public void setpPO(String pPO) {
+		this.pPO = pPO;
+	}
 
-		public String getCustomerProductNumber() {
-			return customerProductNumber;
-		}
+	public String getCustomerProductNumber() {
+		return customerProductNumber;
+	}
 
-		public void setCustomerProductNumber(String customerProductNumber) {
-			this.customerProductNumber = customerProductNumber;
-		}
+	public void setCustomerProductNumber(String customerProductNumber) {
+		this.customerProductNumber = customerProductNumber;
+	}
 
-		public String getPackageNumber() {
-			return packageNumber;
-		}
+	public String getPackageNumber() {
+		return packageNumber;
+	}
 
-		public void setPackageNumber(String packageNumber) {
-			this.packageNumber = packageNumber;
-		}
+	public void setPackageNumber(String packageNumber) {
+		this.packageNumber = packageNumber;
+	}
 
-		public String getCustomerLotNumber() {
-			return customerLotNumber;
-		}
+	public String getCustomerLotNumber() {
+		return customerLotNumber;
+	}
 
-		public void setCustomerLotNumber(String customerLotNumber) {
-			this.customerLotNumber = customerLotNumber;
-		}
+	public void setCustomerLotNumber(String customerLotNumber) {
+		this.customerLotNumber = customerLotNumber;
+	}
 
-		public String getPlannedTimeTakes() {
-			return plannedTimeTakes;
-		}
+	public String getPlannedTimeTakes() {
+		return plannedTimeTakes;
+	}
 
-		public void setPlannedTimeTakes(String plannedTimeTakes) {
-			this.plannedTimeTakes = plannedTimeTakes;
-		}
+	public void setPlannedTimeTakes(String plannedTimeTakes) {
+		this.plannedTimeTakes = plannedTimeTakes;
+	}
 
-		public String getActualTimeTakes() {
-			return actualTimeTakes;
-		}
+	public String getActualTimeTakes() {
+		return actualTimeTakes;
+	}
 
-		public void setActualTimeTakes(String actualTimeTakes) {
-			this.actualTimeTakes = actualTimeTakes;
-		}
+	public void setActualTimeTakes(String actualTimeTakes) {
+		this.actualTimeTakes = actualTimeTakes;
+	}
 
-	public void setNote(String note) { 
+	public void setNote(String note) {
 		this.note = note;
 	}
 
 	public String getNote() {
 		return this.note;
 	}
-		
-			
+
 	public Long getAmount() {
 		return amount;
 	}
@@ -212,129 +202,110 @@ public class ProductionScheduleDTO implements Serializable {
 		this.doneQty = doneQty;
 	}
 
-	public void setPlanedEndTimestamp(String planedEndTimestamp) { 
+	public void setPlanedEndTimestamp(String planedEndTimestamp) {
 		this.planedEndTimestamp = planedEndTimestamp;
 	}
 
 	public String getPlanedEndTimestamp() {
 		return this.planedEndTimestamp;
 	}
-		
-			
-	
-	public void setCreateEmployNo(String createEmployNo) { 
+
+	public void setCreateEmployNo(String createEmployNo) {
 		this.createEmployNo = createEmployNo;
 	}
 
 	public String getCreateEmployNo() {
 		return this.createEmployNo;
 	}
-		
-			
-	
-	public void setLotNumber(String lotNumber) { 
+
+	public void setLotNumber(String lotNumber) {
 		this.lotNumber = lotNumber;
 	}
 
 	public String getLotNumber() {
 		return this.lotNumber;
 	}
-		
-			
-	
-	public void setCreateTimestamp(Date createTimestamp) { 
+
+	public void setCreateTimestamp(Date createTimestamp) {
 		this.createTimestamp = createTimestamp;
 	}
 
 	public Date getCreateTimestamp() {
 		return this.createTimestamp;
 	}
-		
-		public void setCreateTimestampEnd(Date createTimestampEnd) { 
+
+	public void setCreateTimestampEnd(Date createTimestampEnd) {
 		this.createTimestampEnd = createTimestampEnd;
 	}
 
 	public Date getCreateTimestampEnd() {
 		return this.createTimestampEnd;
 	}
-			
-	
-	public void setActualEndTimestamp(String actualEndTimestamp) { 
+
+	public void setActualEndTimestamp(String actualEndTimestamp) {
 		this.actualEndTimestamp = actualEndTimestamp;
 	}
 
 	public String getActualEndTimestamp() {
 		return this.actualEndTimestamp;
 	}
-		
-			
-	
-	public void setLastModifyTimestamp(Date lastModifyTimestamp) { 
+
+	public void setLastModifyTimestamp(Date lastModifyTimestamp) {
 		this.lastModifyTimestamp = lastModifyTimestamp;
 	}
 
 	public Date getLastModifyTimestamp() {
 		return this.lastModifyTimestamp;
 	}
-		
-		public void setLastModifyTimestampEnd(Date lastModifyTimestampEnd) { 
+
+	public void setLastModifyTimestampEnd(Date lastModifyTimestampEnd) {
 		this.lastModifyTimestampEnd = lastModifyTimestampEnd;
 	}
 
 	public Date getLastModifyTimestampEnd() {
 		return this.lastModifyTimestampEnd;
 	}
-			
-	
-	public void setLastModifyEmployNo(String lastModifyEmployNo) { 
+
+	public void setLastModifyEmployNo(String lastModifyEmployNo) {
 		this.lastModifyEmployNo = lastModifyEmployNo;
 	}
 
 	public String getLastModifyEmployNo() {
 		return this.lastModifyEmployNo;
 	}
-		
-			
-	
-	public void setPlanedStartTimestamp(String planedStartTimestamp) { 
+
+	public void setPlanedStartTimestamp(String planedStartTimestamp) {
 		this.planedStartTimestamp = planedStartTimestamp;
 	}
 
 	public String getPlanedStartTimestamp() {
 		return this.planedStartTimestamp;
 	}
-		
-			
-	
-	public void setActualStartTimestamp(String actualStartTimestamp) { 
+
+	public void setActualStartTimestamp(String actualStartTimestamp) {
 		this.actualStartTimestamp = actualStartTimestamp;
 	}
 
 	public String getActualStartTimestamp() {
 		return this.actualStartTimestamp;
 	}
-		
-			
-	
-	public void setLogic(Integer logic) { 
+
+	public void setLogic(Integer logic) {
 		this.logic = logic;
 	}
 
 	public Integer getLogic() {
 		return this.logic;
 	}
-		
-			
-	
-	public void setState(String state) { 
+
+	public void setState(String state) {
 		this.state = state;
 	}
 
 	public String getState() {
 		return this.state;
 	}
-		
-		
+
 	public Long getId() {
 		return id;
 	}
@@ -342,7 +313,7 @@ public class ProductionScheduleDTO implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public int getVersion() {
 		return version;
 	}
@@ -351,35 +322,98 @@ public class ProductionScheduleDTO implements Serializable {
 		this.version = version;
 	}
 
-    @Override
+	public String getInternalProductNumber() {
+		return internalProductNumber;
+	}
+
+	public void setInternalProductNumber(String internalProductNumber) {
+		this.internalProductNumber = internalProductNumber;
+	}
+
+	public String getCustomerNumber() {
+		return customerNumber;
+	}
+
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
+	}
+
+	public String getPackingLot() {
+		return packingLot;
+	}
+
+	public void setPackingLot(String packingLot) {
+		this.packingLot = packingLot;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((actualEndTimestamp == null) ? 0 : actualEndTimestamp.hashCode());
-		result = prime * result + ((actualStartTimestamp == null) ? 0 : actualStartTimestamp.hashCode());
-		result = prime * result + ((actualTimeTakes == null) ? 0 : actualTimeTakes.hashCode());
+		result = prime
+				* result
+				+ ((actualEndTimestamp == null) ? 0 : actualEndTimestamp
+						.hashCode());
+		result = prime
+				* result
+				+ ((actualStartTimestamp == null) ? 0 : actualStartTimestamp
+						.hashCode());
+		result = prime * result
+				+ ((actualTimeTakes == null) ? 0 : actualTimeTakes.hashCode());
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-		result = prime * result + ((createEmployNo == null) ? 0 : createEmployNo.hashCode());
-		result = prime * result + ((createTimestamp == null) ? 0 : createTimestamp.hashCode());
-		result = prime * result + ((createTimestampEnd == null) ? 0 : createTimestampEnd.hashCode());
-		result = prime * result + ((customerLotNumber == null) ? 0 : customerLotNumber.hashCode());
-		result = prime * result + ((customerProductNumber == null) ? 0 : customerProductNumber.hashCode());
+		result = prime * result
+				+ ((createEmployNo == null) ? 0 : createEmployNo.hashCode());
+		result = prime * result
+				+ ((createTimestamp == null) ? 0 : createTimestamp.hashCode());
+		result = prime
+				* result
+				+ ((createTimestampEnd == null) ? 0 : createTimestampEnd
+						.hashCode());
+		result = prime
+				* result
+				+ ((customerLotNumber == null) ? 0 : customerLotNumber
+						.hashCode());
+		result = prime
+				* result
+				+ ((customerProductNumber == null) ? 0 : customerProductNumber
+						.hashCode());
 		result = prime * result + ((doneQty == null) ? 0 : doneQty.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((lastModifyEmployNo == null) ? 0 : lastModifyEmployNo.hashCode());
-		result = prime * result + ((lastModifyTimestamp == null) ? 0 : lastModifyTimestamp.hashCode());
-		result = prime * result + ((lastModifyTimestampEnd == null) ? 0 : lastModifyTimestampEnd.hashCode());
+		result = prime
+				* result
+				+ ((lastModifyEmployNo == null) ? 0 : lastModifyEmployNo
+						.hashCode());
+		result = prime
+				* result
+				+ ((lastModifyTimestamp == null) ? 0 : lastModifyTimestamp
+						.hashCode());
+		result = prime
+				* result
+				+ ((lastModifyTimestampEnd == null) ? 0
+						: lastModifyTimestampEnd.hashCode());
 		result = prime * result + ((logic == null) ? 0 : logic.hashCode());
-		result = prime * result + ((lotNumber == null) ? 0 : lotNumber.hashCode());
+		result = prime * result
+				+ ((lotNumber == null) ? 0 : lotNumber.hashCode());
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		result = prime * result + ((pPO == null) ? 0 : pPO.hashCode());
-		result = prime * result + ((packageNumber == null) ? 0 : packageNumber.hashCode());
-		result = prime * result + ((planedEndTimestamp == null) ? 0 : planedEndTimestamp.hashCode());
-		result = prime * result + ((planedStartTimestamp == null) ? 0 : planedStartTimestamp.hashCode());
-		result = prime * result + ((plannedTimeTakes == null) ? 0 : plannedTimeTakes.hashCode());
+		result = prime * result
+				+ ((packageNumber == null) ? 0 : packageNumber.hashCode());
+		result = prime
+				* result
+				+ ((planedEndTimestamp == null) ? 0 : planedEndTimestamp
+						.hashCode());
+		result = prime
+				* result
+				+ ((planedStartTimestamp == null) ? 0 : planedStartTimestamp
+						.hashCode());
+		result = prime
+				* result
+				+ ((plannedTimeTakes == null) ? 0 : plannedTimeTakes.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		result = prime * result + ((testSysId == null) ? 0 : testSysId.hashCode());
-		result = prime * result + ((testSysName == null) ? 0 : testSysName.hashCode());
+		result = prime * result
+				+ ((testSysId == null) ? 0 : testSysId.hashCode());
+		result = prime * result
+				+ ((testSysName == null) ? 0 : testSysName.hashCode());
 		result = prime * result + version;
 		return result;
 	}

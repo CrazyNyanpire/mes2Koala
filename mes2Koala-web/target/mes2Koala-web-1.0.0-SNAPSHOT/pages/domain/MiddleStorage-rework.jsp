@@ -30,7 +30,7 @@
                      <label class="col-lg-2 control-label">Quantity:</label>
 	                 <div class="col-lg-4">
                     <div class="input-group" style="width:160px;float:left;" >
-                        <input name="qty" style="display:inline; width:94%;" class="form-control"  type="text"  id="qtyID" />
+                        <input name="quantity" style="display:inline; width:94%;" class="form-control"  type="text"  id="quantityID" />
                      </div>
 			    </div>
 	</div>

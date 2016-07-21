@@ -418,6 +418,7 @@ public class CustomerFTLotApplicationImpl extends
 
 	private FTRuncard createFTRuncard(FTRuncardTemplate ftRuncardTemplate) {
 		FTRuncard ftRuncard = new FTRuncard();
+		ftRuncard.setSignedTime(ftRuncardTemplate.getSignedTime());
 		ftRuncard.setIQC(ftRuncardTemplate.getIQC());
 		ftRuncard.setBaking(ftRuncardTemplate.getBaking());
 		ftRuncard.setSiteTest(ftRuncardTemplate.getSiteTest());
@@ -520,8 +521,8 @@ public class CustomerFTLotApplicationImpl extends
 		ftLot.setWmsTestId(ftTestLot.getID());
 		JSONObject obj = JSONObject.fromObject(ftTestLot);
 		String lotjson = "[" + obj.toString() + "]";
-		// wmsClientApplication.orderLots(TestTypeForWms.getStringValue(TestTypeForWms.FT),
-		// lotjson);
+		wmsClientApplication.orderLots(TestTypeForWms.getStringValue(TestTypeForWms.FT),
+		lotjson);
 	}
 
 	private FtTestLot ConverttoWMSFTLot(CustomerFTLot customerLot, FTLot ftLot) {
@@ -563,25 +564,29 @@ public class CustomerFTLotApplicationImpl extends
 	 * @return 返回批量下单结果
 	 * @version 2016/1/17 Howad
 	 * @version 2016/3/27 YuxiangQue
+	 * @version 2016/6/14 harlow 增加pid选择下单
 	 */
 	@Override
 	public List<Long> orderInBatches(Long[] customerFTLotIds,
-			Map<String, Integer> messages) {
+			Map<String, Integer> messages,Long ftInfoId) {
 
 		// 过滤订单，未下单或未知状态的，有绑定的process才可下单
 		List<CustomerFTLot> customerFTLots = new ArrayList<CustomerFTLot>();
+		FTInfo ftInfo = ftInfoApplication.get(ftInfoId);
+		if (ftInfo.getProcessTemplate() == null) {
+			throw new RuntimeException("选择的PID没有绑定流程！");
+		}
+		if (Strings.isNullOrEmpty(ftInfo
+				.getProcessTemplate().getContent())) {
+			throw new RuntimeException("选择的PID绑定流程错误！");
+		}
 		for (Long id : customerFTLotIds) {
 			CustomerFTLot customerFTLot = get(id);
 			if (customerFTLot.getState() == CustomerLotState.Ordered) {
 				continue;
 			}
-			if (customerFTLot.getFtInfo().getProcessTemplate() == null) {
-				continue;
-			}
-			if (Strings.isNullOrEmpty(customerFTLot.getFtInfo()
-					.getProcessTemplate().getContent())) {
-				continue;
-			}
+			//重新绑定产品信息
+			customerFTLot.setFtInfo(ftInfo);
 			customerFTLots.add(customerFTLot);
 		}
 
@@ -867,8 +872,8 @@ public class CustomerFTLotApplicationImpl extends
 		ftLot.setWmsTestId(ftTestLot.getID());
 		JSONObject obj = JSONObject.fromObject(ftTestLot);
 		String lotjson = "[" + obj.toString() + "]";
-		// wmsClientApplication.orderLots(TestTypeForWms.getStringValue(TestTypeForWms.FT),
-		// lotjson);
+		wmsClientApplication.orderLots(TestTypeForWms.getStringValue(TestTypeForWms.FT),
+		lotjson);
 
 		return ftLot.getId();
 	}

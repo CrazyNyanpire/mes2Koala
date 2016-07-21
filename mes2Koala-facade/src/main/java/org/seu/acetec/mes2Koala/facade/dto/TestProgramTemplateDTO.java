@@ -17,13 +17,13 @@ public class TestProgramTemplateDTO implements Serializable {
 
     private String revision;
 
-    private Integer UPHTheory;
+    private Float UPHTheory;
 
     private String testSys;
 
     private Boolean isYellow;
 
-    private Integer UPHReality;
+    private Float UPHReality;
 
     private String name;
 
@@ -82,11 +82,11 @@ public class TestProgramTemplateDTO implements Serializable {
         this.revision = revision;
     }
 
-    public Integer getUPHTheory() {
+    public Float getUPHTheory() {
         return this.UPHTheory;
     }
 
-    public void setUPHTheory(Integer UPHTheory) {
+    public void setUPHTheory(Float UPHTheory) {
         this.UPHTheory = UPHTheory;
     }
 
@@ -106,11 +106,11 @@ public class TestProgramTemplateDTO implements Serializable {
         this.isYellow = isYellow;
     }
 
-    public Integer getUPHReality() {
+    public Float getUPHReality() {
         return this.UPHReality;
     }
 
-    public void setUPHReality(Integer UPHReality) {
+    public void setUPHReality(Float UPHReality) {
         this.UPHReality = UPHReality;
     }
 

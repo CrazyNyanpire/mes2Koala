@@ -203,6 +203,11 @@ public class ReworkFacadeImpl implements ReworkFacade {
 			conditionVals.add(MessageFormat.format("%{0}%",
 					queryVo.getApproveRemark()));
 		}
+		if (queryVo.getLotNo() != null && !"".equals(queryVo.getLotNo())) {
+			jpql.append(" and _rework.lotNo like ?");
+			conditionVals
+					.add(MessageFormat.format("%{0}%", queryVo.getLotNo()));
+		}
 		Page<Rework> pages = getQueryChannelService()
 				.createJpqlQuery(jpql.toString()).setParameters(conditionVals)
 				.setPage(currentPage, pageSize).pagedList();
@@ -239,7 +244,7 @@ public class ReworkFacadeImpl implements ReworkFacade {
 			}
 			newArray.add(jsonObject);
 		}
-		if(!isApproveUser){
+		if (!isApproveUser) {
 			throw new RuntimeException("当前登录用户不能审核！");
 		}
 		if (approveAll) {

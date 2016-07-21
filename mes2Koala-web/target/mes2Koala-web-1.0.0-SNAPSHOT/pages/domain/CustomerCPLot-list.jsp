@@ -172,10 +172,30 @@
                                     default:
                                         param = '未知状态';
                                 }
-                                return param;
-                            }
+                                	return param;
+                            	}
+                            },{
+                                title: '客户编号',
+                                name: 'customerNumber',
+                                width: width,
+                                render: function (rowdata, name, index) {
+                                    var param = '';
+                                    param += rowdata['customerNumber'];
+                                    param += '';
+                                    return param;
+                                }
                             },
+                            {title: '来料型号', name: 'customerProductNumber', width: width},
                             {
+                                title: '出货型号',
+                                name: 'shipmentProductNumber',
+                                width: width,
+                                sortable: true, sortName: 'customerProductNumber'
+                            },{
+                                title: '艾科内部产品型号',
+                                name: 'internalProductNumber',
+                                width: width
+                            },{
                                 title: '客户批号',
                                 name: 'customerLotNumber',
                                 width: width,
@@ -185,14 +205,15 @@
                                     param += '';
                                     return param;
                                 }
-                            },
+                            },{title: '数量', name: 'incomingQuantity', width: 70},
                             {
-                                title: '客户编号',
-                                name: 'customerNumber',
-                                width: width,
+                            	title: '艾科批号',
+                            	name: 'internalLotNumber',
+                            	width: width,
                                 render: function (rowdata, name, index) {
                                     var param = '';
-                                    param += rowdata['customerNumber'];
+                                    if(rowdata['internalLotNumber']!=null)
+                                    param += rowdata['internalLotNumber'];
                                     param += '';
                                     return param;
                                 }
@@ -211,14 +232,14 @@
                             {
                                 title: '封装批号',
                                 name: 'packingLot',
-                                width: width,
+                                width: width
 //                                sortable: true,
 //                                sortName: 'packageNumber'
                             },
                             {
                                 title: '晶圆批号',
                                 name: 'waferLot',
-                                width: width,
+                                width: width
                             },
                             {title: '版本型号', name: 'productVersion', width: width},
                             {title: '来料型号', name: 'customerProductNumber', width: width},
@@ -235,11 +256,10 @@
                                 }
                             },
                             {title: '规格', name: 'size', width: 70},
-                            {title: '数量', name: 'incomingQuantity', width: 70},
                             {title: 'MASK_NAME', name: 'maskName', width: width},
                             {title: '来料日期', name: 'incomingDate', width: width},
-                            {title: '下单人员', name: 'createEmployNo', width: width},
-                            {title: '下单时间', name: 'createTimestamp', width: width},
+                            {title: '下单人员', name: 'orderUser', width: width},
+                            {title: '下单时间', name: 'orderDate', width: width,sortable: true, sortName: 'orderDate'},
                             {title: '物料类型', name: 'materialType', width: width},
                             {title: '来料类型', name: '', width: width},
                         ]
@@ -846,7 +866,8 @@
                                     }
                                 }
                             }
-                            var shipmentProductNumber = dialog.find('#customerProductNumberID').val();
+                            
+                            //var shipmentProductNumber = dialog.find('#customerProductNumberID').val();
 //                            var customerCPLot = {"customerLotDTO": json};
 //                            for (var index in customerCPLot) {
 //
@@ -870,7 +891,15 @@
 //                            } else {
 //                                dialog.find('#incomingStyleID_').attr('checked', true);
 //                            }
-                            dialog.find('#shipmentProductNumberID').val(shipmentProductNumber);
+							if(!!json['shipmentProductNumber']==0)
+							{
+								dialog.find('#shipmentProductNumberID').val(json['customerProductNumber']);
+							}
+							else{
+								dialog.find('#shipmentProductNumberID').val(json['shipmentProductNumber']);
+							}
+							
+                            
 
                         });
                         //查看Runcard
@@ -1004,29 +1033,75 @@
                         }
                     });
                 },
-                orderInBatches: function (ids, grid) {
+				orderInBatches: function (ids, grid) {
+					var self = this;
                     var data = [{name: 'ids', value: ids.join(',')}];
-                    $.post('${pageContext.request.contextPath}/CustomerCPLot/orderInBatches.koala', data).done(function (result) {
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog">'
+            	        	+'<div class="modal-content"><div class="modal-header"><button type="button" class="close" '
+            	        	+'data-dismiss="modal" aria-hidden="true">&times;</button>'
+            	        	+'<h4 class="modal-title">批量下单</h4></div><div class="modal-body"><form class="form-horizontal">'
+            	        	+'<div class="form-group"> <label class="col-lg-3 control-label">PID:</label>'
+            	            +'<div class="col-lg-9"><div class="btn-group select" id="internalProductNumberID"></div>'
+            	            +'<input type="hidden" id="internalProductNumberID_" name="cpInfoId" dataType="Require"/><span class="required">*</span>'
+            	            +'</div><form></div></div><div class="modal-footer">'
+            	        	+'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
+            	        	+'<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
+            	        	+'</div></div>');
+            	            dialog.modal({
+            	                keyboard:false
+            	            }).on({
+            	                'hidden.bs.modal': function(){
+            	                    $(this).remove();
+            	                }
+            	            })
+            	            $.get('${pageContext.request.contextPath}/CustomerCPLot/findPIDByCustomerCPLotId/'+ids[0]+'.koala').done(function (json) {
+	                          if (json.success) {
+	                              	json = json.data;
+	                              	var contents = [ {title : '请选择',value : ''} ];
+	                              	$.each(json,function(a){
+	                              		contents.push({title : json[a]['internalProductNumber'],value : json[a]['id']});
+	                              	})
+		                  	      	dialog.find('#internalProductNumberID').select({
+		                                  title: '请选择',
+		                                  contents: contents
+	                             	}).on('change',function(){
+	                             		dialog.find('#internalProductNumberID_').val($(this).getValue());
+	                             	});
+	                          } else {
+	                              dialog.find('.modal-content').message({
+	                                  type: 'error',
+	                                  content: result.errorMessage
+	                              });
+	                          }
+	                      	});
+            	            //self.initPage(dialog.find('form'));
+            	        dialog.find('#save').on('click',{grid: grid}, function(e){
+            	              if(!Validator.Validate(dialog.find('form')[0],3))return;
+            	              data.push({name:'cpInfoId',value:$("#internalProductNumberID_").val()});
+            	              $.post('${pageContext.request.contextPath}/CustomerCPLot/orderInBatches.koala', data).done(function (result) {
 
-                        if (result.success) {
-                            grid.data('koala.grid').refresh();
-                            grid.message({
-                                type: 'success',
-                                content: '批量下单成功' + result.data
-                            });
+                                  if (result.success) {
+                                	  dialog.modal('hide');
+                                      grid.data('koala.grid').refresh();
+                                      grid.message({
+                                          type: 'success',
+                                          content: '批量下单成功' + result.data
+                                      });
 
-                            var ftLotIds = result.data.ids;
-                            //注释行为调取显示Runcard的方法，待开发
-                            for (var n = 0; n < ftLotIds.length; n++) {
-                                showRuncardInfo(ftLotIds[n], 'AfterOrdered');
-                            }
-                        } else {
-                            grid.message({
-                                type: 'error',
-                                content: result.errorMessage
-                            });
-                        }
-                    });
+                                      var ftLotIds = result.data.ids;
+                                      //注释行为调取显示Runcard的方法，待开发
+                                      for (var n = 0; n < ftLotIds.length; n++) {
+                                          showRuncardInfo(ftLotIds[n], 'AfterOrdered');
+                                      }
+                                  } else {
+                                      grid.message({
+                                          type: 'error',
+                                          content: result.errorMessage
+                                      });
+                                  }
+                              });
+            	        });
+                    
                 }
             }
             PageLoader.initSearchPanel();
@@ -1077,128 +1152,34 @@
 <div style="width:98%;margin-right:auto; margin-left:auto; padding-top: 15px;">
     <!-- search form -->
     <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal">
-        <input type="hidden" name="page" value="0">
-        <input type="hidden" name="pagesize" value="10">
         <table border="0" cellspacing="0" cellpadding="0">
-            <!--   <tr>
-                <td>
-                      <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">createEmployNo:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="createEmployNo" class="form-control" type="text" style="width:180px;" id="createEmployNoID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">lastModifyEmployNo:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="lastModifyEmployNo" class="form-control" type="text" style="width:180px;" id="lastModifyEmployNoID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">createTimestamp:&nbsp;</label>
-                       <div style="margin-left:15px;float:left;">
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="createTimestamp" id="createTimestampID_start" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                        <div style="float:left; width:10px; margin-left:auto; margin-right:auto;">&nbsp;-&nbsp;</div>
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="createTimestampEnd" id="createTimestampID_end" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                   </div>
-                                  <label class="control-label" style="width:100px;float:left;">封装批号:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="packageNumber" class="form-control" type="text" style="width:180px;" id="packageNumberID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">版本型号:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="productVersion" class="form-control" type="text" style="width:180px;" id="productVersionID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">lastModifyTimestamp:&nbsp;</label>
-                       <div style="margin-left:15px;float:left;">
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="lastModifyTimestamp" id="lastModifyTimestampID_start" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                        <div style="float:left; width:10px; margin-left:auto; margin-right:auto;">&nbsp;-&nbsp;</div>
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="lastModifyTimestampEnd" id="lastModifyTimestampID_end" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                   </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">数量:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="incomingQuantity" class="form-control" type="text" style="width:180px;" id="incomingQuantityID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">MFG PN:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="MFGPN" class="form-control" type="text" style="width:180px;" id="MFGPNID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">进料日期:&nbsp;</label>
-                       <div style="margin-left:15px;float:left;">
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="time" id="timeID_start" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                        <div style="float:left; width:10px; margin-left:auto; margin-right:auto;">&nbsp;-&nbsp;</div>
-                        <div class="input-group date form_datetime" style="width:160px;float:left;" >
-                            <input type="text" class="form-control" style="width:160px;" name="timeEnd" id="timeID_end" >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                        </div>
-                   </div>
-                                  <label class="control-label" style="width:100px;float:left;">物料类型:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="materialType" class="form-control" type="text" style="width:180px;" id="materialTypeID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">来料型号:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="customerProductNumber" class="form-control" type="text" style="width:180px;" id="revisionID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">WIre Bond:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="wireBond" class="form-control" type="text" style="width:180px;" id="wireBondID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">Wafer Lot:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="waferLot" class="form-control" type="text" style="width:180px;" id="waferLotID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">到料形式:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="incomingStyle" class="form-control" type="text" style="width:180px;" id="incomingStyleID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">晶圆厂商:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="waferManufacturer" class="form-control" type="text" style="width:180px;" id="waferManufacturerID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">logic:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="logic" class="form-control" type="text" style="width:180px;" id="logicID"  />
-                    </div>
-                        </div>
-                              <div class="form-group">
-                      <label class="control-label" style="width:100px;float:left;">保税类型:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="taxType" class="form-control" type="text" style="width:180px;" id="taxTypeID"  />
-                    </div>
-                                  <label class="control-label" style="width:100px;float:left;">Date Code:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                        <input name="dateCode" class="form-control" type="text" style="width:180px;" id="dateCodeID"  />
-                    </div>
-                        </div>
-                        </td>
-                   <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>
-              </tr> -->
+        	<tr>
+        		<td>
+        			<div class="form-group">
+        				<label class="control-label" style="width:100px;float:left;">客户编号:&nbsp;</label>
+        				<div style="margin-left:15px;float:left;">
+        					<input name="customerNumber" class="form-control" type="text" style="width:180px;" id="customerNumberID"  />
+        				</div>
+        				<label class="control-label" style="width:100px;float:left;">客户批号:&nbsp;</label>
+        				<div style="margin-left:15px;float:left;">
+        					<input name="customerLotNumber" class="form-control" type="text" style="width:180px;" id="customerLotNumberID"  />
+        				</div>
+        				<label class="control-label" style="width:100px;float:left;">封装批号:&nbsp;</label>
+        				<div style="margin-left:15px;float:left;">
+        					<input name="packageNumber" class="form-control" type="text" style="width:180px;" id="packageNumberID"  />
+        				</div>
+        				<label class="control-label" style="width:100px;float:left;">产品型号:&nbsp;</label>
+        				<div style="margin-left:15px;float:left;">
+        					<input name="customerProductNumber" class="form-control" type="text" style="width:180px;" id="customerProductNumberID"  />
+        				</div>
+<!--         				<label class="control-label" style="width:100px;float:left;">数量:&nbsp;</label>
+        				<div style="margin-left:15px;float:left;">
+        					<input name="incomingQuantity" class="form-control" type="text" style="width:180px;" id="incomingQuantityID"  />
+        				</div> -->
+        			</div>
+        		</td>
+        		<td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>
+        	</tr> 
         </table>
     </form>
     <!-- grid -->

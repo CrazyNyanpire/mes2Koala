@@ -150,7 +150,7 @@ public class CustomerFTLotController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/orderInBatches")
 	@Transactional
-	public InvokeResult orderInBatches(@RequestParam String ids) {
+	public InvokeResult orderInBatches(@RequestParam String ids,FTLotDTO ftLotDTO) {
 		// 由于传入的参数最终可能作为字段存储在实体中，故在此不做处理直接传入Facade
 		Map<String, Integer> messages = new HashMap<String, Integer>();
 		// 解析ids，取出所有实体
@@ -173,12 +173,13 @@ public class CustomerFTLotController extends BaseController {
 		}
 
 		if (!orderState) {
+			CustomerFTLotDTO cftl = (CustomerFTLotDTO)customerFTLotFacade.getCustomerFTLot(Long.valueOf(sb.toString().split(",")[0])).getData();
 			return InvokeResult.failure("以下编号的产品runcard没有签核完成，不能下单："
-					+ sb.toString());
+					+ cftl.getCustomerProductNumber());
 		}
 
 		return customerFTLotFacade.orderInBatches(idArrs,
-				CurrentUser.getRoleName());
+				CurrentUser.getRoleName(),ftLotDTO);
 	}
 
 	@ResponseBody

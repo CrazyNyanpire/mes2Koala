@@ -37,7 +37,12 @@
             'fullscreen', 'source', '|', 'undo', 'redo', '|',
             'bold'
         ]]*/
-        , toolbars: [["source","undo","redo","insertunorderedlist","insertorderedlist","link","unlink","blockquote","bold","italic","fontborder","underline","strikethrough","forecolor","backcolor","superscript","subscript","justifyleft","justifycenter","justifyright","justifyjustify","removeformat","formatmatch","paragraph","rowspacingbottom","lineheight","rowspacingtop","fontfamily","fontsize","inserttable","mergeright","mergedown","splittorows","splittocols","splittocells","mergecells","insertcol","insertrow","deleterow","deletecol","insertparagraphbeforetable","insertimage"]]
+        , toolbars: [["source","undo","redo","insertunorderedlist","insertorderedlist","link","unlink","blockquote",
+                      "bold","italic","fontborder","underline","strikethrough","forecolor","backcolor","superscript",
+                      "subscript","justifyleft","justifycenter","justifyright","justifyjustify","removeformat","formatmatch",
+                      "paragraph","rowspacingbottom","lineheight","rowspacingtop","fontfamily","fontsize","inserttable","mergeright",
+                      "mergedown","splittorows","splittocols","splittocells","mergecells","insertcol","insertrow","deleterow",
+                      "deletecol","insertparagraphbeforetable",'print',"insertimage"]]
     };
 
     function getUEBasePath(docUrl, confUrl) {

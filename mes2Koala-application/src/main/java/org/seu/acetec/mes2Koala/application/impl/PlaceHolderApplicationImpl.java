@@ -1,24 +1,20 @@
 package org.seu.acetec.mes2Koala.application.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.poi.hssf.util.HSSFColor.PALE_BLUE;
+import org.seu.acetec.mes2Koala.application.CPLotApplication;
 import org.seu.acetec.mes2Koala.application.FTLotApplication;
 import org.seu.acetec.mes2Koala.application.FTQDNApplication;
 import org.seu.acetec.mes2Koala.application.PlaceHolderApplication;
-import org.seu.acetec.mes2Koala.core.domain.FTBakingNode;
-import org.seu.acetec.mes2Koala.core.domain.FTComposedTestNode;
-import org.seu.acetec.mes2Koala.core.domain.FTIQCNode;
-import org.seu.acetec.mes2Koala.core.domain.FTLot;
-import org.seu.acetec.mes2Koala.core.domain.FTNode;
-import org.seu.acetec.mes2Koala.core.domain.FTPassNode;
-import org.seu.acetec.mes2Koala.core.domain.FTProcess;
-import org.seu.acetec.mes2Koala.core.domain.FTQDN;
-import org.seu.acetec.mes2Koala.core.domain.FTTest;
-import org.seu.acetec.mes2Koala.core.domain.PlaceHolder;
+import org.seu.acetec.mes2Koala.core.domain.*;
+import org.seu.acetec.mes2Koala.infra.MyDateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -28,9 +24,13 @@ public class PlaceHolderApplicationImpl extends GenericMES2ApplicationImpl<Place
 
     @Inject
     FTLotApplication ftLotApplication;
+    
     @Inject
     FTQDNApplication ftQDNApplication;
 
+    @Inject
+    CPLotApplication cpLotApplication;
+    
     @Override
     public PlaceHolder findByFTLot(Long ftLotId) {
         FTLot ftLot = ftLotApplication.get(ftLotId);
@@ -119,6 +119,10 @@ public class PlaceHolderApplicationImpl extends GenericMES2ApplicationImpl<Place
     	placeHolder.setTaxType(ftLot.getCustomerFTLot().getTaxType());
     	placeHolder.setPackingType(ftLot.getCustomerFTLot().getIncomingStyle());
     	placeHolder.setShippingType(ftLot.getShipmentProductNumber());
+    	placeHolder.setWaferManufacturer(ftLot.getCustomerFTLot().getFtInfo().getWaferFactory());
+    	placeHolder.setKeyProductionManagerName(ftLot.getCustomerFTLot().getFtInfo().getKeyProductionManager().getName());
+    	placeHolder.setKeyQuantityManagerName(ftLot.getCustomerFTLot().getFtInfo().getKeyQuantityManager().getName());
+    	placeHolder.setKeyTDEManagerName(ftLot.getCustomerFTLot().getFtInfo().getKeyTDEManager().getName());
     	
         return convertPlaceHolder(placeHolder);
     }
@@ -178,6 +182,87 @@ public class PlaceHolderApplicationImpl extends GenericMES2ApplicationImpl<Place
 		if(placeHolder.getTaxType()==null) placeHolder.setTaxType("");
 		if(placeHolder.getPackingType()==null) placeHolder.setPackingType("");
 		if(placeHolder.getShippingType()==null) placeHolder.setShippingType("");
+		if(placeHolder.getWaferManufacturer()==null) placeHolder.setWaferManufacturer("");
+		if(placeHolder.getKeyProductionManagerName()==null) placeHolder.setKeyProductionManagerName("");
+		if(placeHolder.getKeyTDEManagerName()==null) placeHolder.setKeyTDEManagerName("");
+		if(placeHolder.getKeyQuantityManagerName()==null) placeHolder.setKeyQuantityManagerName("");
     	return placeHolder;
     }
+
+	@Override
+	public PlaceHolderCP findByCPLot(Long cpLotId) {
+        CPLot cpLot = cpLotApplication.get(cpLotId);
+        PlaceHolderCP placeHolder = new PlaceHolderCP();
+        
+        placeHolder.setCustomerCode(cpLot.getCustomerCPLot().getCpInfo().getCustomerDirect().getNumber());
+    	placeHolder.setProductName(cpLot.getCustomerCPLot().getCpInfo().getCustomerProductNumber());
+    	
+    	placeHolder.setCustomerLot(cpLot.getCustomerCPLot().getCustomerLotNumber());
+    	placeHolder.setAcetecLot(cpLot.getInternalLotNumber());
+    	
+    	placeHolder.setCustomerPPO(cpLot.getCustomerCPLot().getCustomerPPO());
+    	placeHolder.setReceiveQty(cpLot.getCustomerCPLot().getIncomingQuantity()==null?"0":cpLot.getCustomerCPLot().getIncomingQuantity().toString());
+    	placeHolder.setReceiveData(cpLot.getCustomerCPLot().getIncomingDate()==null?"":MyDateUtils.formaterDate(cpLot.getCustomerCPLot().getIncomingDate(), MyDateUtils.formater));
+    	
+    	placeHolder.setPackageSize(cpLot.getCustomerCPLot().getSize());//not found
+    	placeHolder.setPackingType(cpLot.getCustomerCPLot().getIncomingStyle());
+    	placeHolder.setShippingType(cpLot.getShipmentProductNumber());
+    	
+    	placeHolder.setKeyQuantityAuthorization(cpLot.getCustomerCPLot().getCpInfo().getKeyQuantityManager().getName());
+    	placeHolder.setKeyProductionAuthorization(cpLot.getCustomerCPLot().getCpInfo().getKeyProductionManager().getName());
+    	placeHolder.setKeyTDEAuthorization(cpLot.getCustomerCPLot().getCpInfo().getKeyTDEManager().getName());
+
+    	placeHolder.setPrintDate((new Date()).toString());
+    	placeHolder.setPrintDate(MyDateUtils.formaterDate(new Date(), MyDateUtils.formater));
+    	placeHolder.setWaferSize(cpLot.getCustomerCPLot().getCpInfo().getWaferSize());
+    	placeHolder.setMaskName(cpLot.getCustomerCPLot().getMaskName());
+    	placeHolder.setGrossDie(Integer.toString(cpLot.getCustomerCPLot().getCpInfo().getGrossDie()));
+    	placeHolder.setInternalProductNumber(cpLot.getCustomerCPLot().getCpInfo().getInternalProductNumber());
+//    	placeHolder.setWafers(cpLot.getCustomerCPLot().getCpCustomerWafers());
+		placeHolder.setWafers(cpLot.getCpWafers());
+    	//fill testProgramsMap
+    	Map<String, String> testPrograms = new HashMap<>();
+    	for ( CPNode cpNode : cpLot.getCpProcess().getCpNodes()){
+    		if ( cpNode instanceof CPTestingNode ) {
+    			String temp = "";
+    			try {
+    				temp = ((CPTestingNode) cpNode).getTestProgram().getName();
+				} catch (NullPointerException e) {
+					//未绑定测试程序
+				}
+				testPrograms.put(cpNode.getName(), temp);
+    		}
+    	}
+    	placeHolder.setTestPrograms(testPrograms);
+    	placeHolder.setProcessContent(cpLot.getCpProcess().getContent());
+		
+    	return convertPlaceHolderCP(placeHolder);
+	}
+	
+	public static PlaceHolderCP convertPlaceHolderCP(PlaceHolderCP placeHolder){
+		if(placeHolder.getCustomerCode()==null) placeHolder.setCustomerCode("");
+		if(placeHolder.getProductName()==null) placeHolder.setProductName("");
+		
+		if(placeHolder.getCustomerLot()==null) placeHolder.setCustomerLot("");
+		if(placeHolder.getAcetecLot()==null) placeHolder.setAcetecLot("");
+		
+		if(placeHolder.getCustomerPPO()==null) placeHolder.setCustomerPPO("");
+		if(placeHolder.getReceiveQty()==null) placeHolder.setReceiveQty("");
+		if(placeHolder.getReceiveData()==null) placeHolder.setReceiveData("");
+			
+		if(placeHolder.getPackageSize()==null) placeHolder.setPackageSize("");
+		if(placeHolder.getPackingType()==null) placeHolder.setPackingType("");
+		if(placeHolder.getShippingType()==null) placeHolder.setShippingType("");
+
+		if(placeHolder.getKeyQuantityAuthorization()==null) placeHolder.setKeyQuantityAuthorization("");
+		if(placeHolder.getKeyProductionAuthorization()==null) placeHolder.setKeyProductionAuthorization("");
+		if(placeHolder.getKeyTDEAuthorization()==null) placeHolder.setKeyTDEAuthorization("");
+		
+		if(placeHolder.getPrintDate()==null) placeHolder.setPrintDate("");
+		if(placeHolder.getWaferSize()==null) placeHolder.setWaferSize("");
+		if(placeHolder.getMaskName()==null) placeHolder.setMaskName("");
+		if(placeHolder.getGrossDie()==null) placeHolder.setGrossDie("");
+
+		return placeHolder;	
+	}
 }

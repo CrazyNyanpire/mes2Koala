@@ -2,6 +2,9 @@ package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,9 @@ public class FTComposedTestNode extends FTNode {
 
     private List<FTProductionSchedule> ftProductionSchedules = new ArrayList<>();
 
-	@OneToMany(mappedBy = "ftComposedTestNode", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "ftComposedTestNode", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+    //@OneToMany(mappedBy = "ftComposedTestNode", fetch = FetchType.LAZY)
 	public List<FTProductionSchedule> getFtProductionSchedules() {
 		return ftProductionSchedules;
 	}

@@ -38,6 +38,7 @@ public class ProductionSchedule extends MES2AbstractEntity {
 	protected String customerProductNumber;// 客户（产品）型号
 	protected String packageNumber;// 封装型号
 	protected String customerLotNumber;// 客户批号
+	protected String packingLot;// 封装批号
 	
 	public String getSubState() {
 		return subState;
@@ -103,7 +104,7 @@ public class ProductionSchedule extends MES2AbstractEntity {
 		return plannedTimeTakes;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "test_sys_id", referencedColumnName = "id", nullable = true )
 	public TestSys getTestSys() {
 		return testSys;
@@ -198,6 +199,14 @@ public class ProductionSchedule extends MES2AbstractEntity {
 		return "无法获取";
 	}
 	
+
+	public String getPackingLot() {
+		return packingLot;
+	}
+
+	public void setPackingLot(String packingLot) {
+		this.packingLot = packingLot;
+	}
 
 	@Override
 	public int hashCode() {

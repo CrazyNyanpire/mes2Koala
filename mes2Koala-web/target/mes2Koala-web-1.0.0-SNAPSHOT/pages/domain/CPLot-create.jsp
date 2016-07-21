@@ -55,22 +55,13 @@
     </div>
     <div class="form-group">
 
-        <label class="col-lg-2 control-label">产品编号:</label>
+        <label class="col-lg-2 control-label">Customer No:</label>
         <div class="col-lg-3">
-            <input style="display:inline; width:150px;" class="form-control" type="text"
-                   id="customerProductNumberID"/>
-        </div>
-        <label class="col-lg-3 control-label">Customer No:</label>
-        <div class="col-lg-4">
             <input style="display:inline; width:150px;" class="form-control" type="text"
                    id="customerNumberID"/>
         </div>
-    </div>
-    <div class="form-group">
-
-
-        <label class="col-lg-2 control-label">数量:</label>
-        <div class="col-lg-3">
+        <label class="col-lg-3 control-label">数量:</label>
+        <div class="col-lg-4">
             <input style="display:inline; width:150px;" class="form-control" type="text"
                    id="incomingQuantityID"/>
         </div>
@@ -103,7 +94,7 @@
         </div>
         <label class="col-lg-2 control-label">Lot Number:</label>
         <div class="col-lg-2">
-            <input name="internalLotNumber" style="display:inline; width:120px;" class="form-control" type="text"
+            <input name="internalLotNumber" style="display:inline; width:200px;" class="form-control" type="text"
                    id="InternalLotNumberID"/>
         </div>
         <label class="col-lg-2 control-label">出货型号:</label>
@@ -128,7 +119,8 @@
         <label class="col-lg-2 control-label">PID:</label>
         <div class="col-lg-3">
             <div class="btn-group select" id="internalProductNumberID"></div>
-            <input type="hidden" id="internalProductNumberID_" name="ftInfoId"/>
+            <input type="hidden" id="internalProductNumberID_" name="cpInfoId" dataType="Require"/>
+             <span class="required">*</span>
         </div>
     </div>
 </form>

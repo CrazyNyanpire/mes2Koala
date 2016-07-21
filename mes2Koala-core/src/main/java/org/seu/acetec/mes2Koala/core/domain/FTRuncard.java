@@ -1,6 +1,7 @@
 package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by LCN on 2016/5/16.
@@ -41,7 +42,9 @@ public class FTRuncard extends MES2AbstractEntity{
     private AcetecAuthorization keyTDEAuthorization;
     private AcetecAuthorization assistTDEAuthorization;
 
-
+    @Column(name = "SIGNEDTIME")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date signedTime;
 
 
     @Column(columnDefinition = "text")
@@ -200,6 +203,14 @@ public class FTRuncard extends MES2AbstractEntity{
 
     public void setFtLot(FTLot ftLot) {
         this.ftLot = ftLot;
+    }
+
+    public Date getSignedTime() {
+        return signedTime;
+    }
+
+    public void setSignedTime(Date signedTime) {
+        this.signedTime = signedTime;
     }
 
     @Override

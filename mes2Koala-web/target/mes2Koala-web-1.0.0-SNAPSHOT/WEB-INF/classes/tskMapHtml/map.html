@@ -2,28 +2,97 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title>TSK文件Wafer信息</title>
+<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
 <style>
 	body{height:100%; }
 	html,body{height:100%;}
-	td,tr{ padding:0px; margin:0px; font-size:0px; text-align:center;}
-	td:hover{ background-color:#000000}
+	td,tr{ padding:0px; margin:0px;text-align:center;}
+	td{height:3px}
+	td div {width: 4px;height: 4px;}
+	td:hover{ background-color:yellow}
 	
+	button{cursor: pointer;}
 	.b{ background-color:#00FF00; color:#00FF00}
 	.r{ background-color:#FF0000; color:#FF0000}
 	.s{ background-color:#0000FF}
+	.right{
+            width:900px;
+            white-space:nowrap;
+            text-align:left; 
+        }
+    .left{
+            width:400px;
+            text-align:left; 
+            float:left;
+        }
+    .userGrantAuthority {
+            display: block;
+            text-align: center;
+        }
+    .left,.right{
+            display:inline-block;
+            vertical-align:middle;
+        }
 </style>
 
-
-
 </head>
-
 <body>
-
-<table  width='90%' height='90%' border='1' cellspacing='0' cellpadding='0' style='border-collapse:collapse;border:none; border: solid 1px #ff0000;'>
+<div class="userGrantAuthority">
+<div class="left">
+<table  width='100%' border='1' cellspacing='1' cellpadding='1' style='font-size:12px; border-collapse:collapse;border:none; border: solid 1px #ff0000;'>
+	<tr height='15px' style='background-color: #CFF;' bordercolor='#0FFCFF'><td>Description</td><td>Data</td></tr>
+	<tr height='15px'><td>Device Name</td><td>{%deviceName%}</td></tr>
+	<tr height='15px'><td>Index X</td><td>{%indexX%}</td></tr>
+	<tr height='15px'><td>Index Y</td><td>{%indexY%}</td></tr>
+	<tr height='15px'><td>Operator Name</td><td>{%operatorName%}</td></tr>
+	<tr height='15px'><td>Wafer ID</td><td>{%waferID%}</td></tr>
+	<tr height='15px'><td>Lot No</td><td>{%lotNO%}</td></tr>
+	<tr height='15px'><td>Wafer Test Start Time</td><td>{%waferTestStartTime%}</td></tr>
+	<tr height='15px'><td>Wafer Test End Time</td><td>{%waferTestEndTime%}</td></tr>
+	<tr height='15px'><td>Wafer Load Time</td><td>{%waferLoadTime%}</td></tr>
+	<tr height='15px'><td>Wafer Unload Time</td><td>{%waferUnloadTime%}</td></tr>
+	<tr height='15px'><td>Total Dice</td><td>{%totalDice%}</td></tr>
+	<tr height='15px'><td>Total Pass Dice</td><td>{%totalPassDice%}</td></tr>
+	<tr height='15px'><td>Total Fail Dice</td><td>{%totalFailDice%}</td></tr>
+	<tr height='15px'><td>Total Yield</td><td>{%totalYield%}</td></tr>
+</table>
+<table  width='100%' border='1' cellspacing='1' cellpadding='1' style='font-size:12px; border-collapse:collapse;border:none; border: solid 1px #ff0000;'>
+	<tr height='15px' style='background-color: #CFF;' bordercolor='#0FFCFF'><td>Bin NO.</td><td>Count</td><td>Percent</td></tr>
+	{%binData%}
+</table>
+</div>
+<div class="right">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' style='font-size:0px;border-collapse:collapse;border:none; border: solid 1px #ccc;'>
 	{%body%}
 </table>
-
+<div style="position:absolute;top:0">
+	<button class="showDetail">查看标准</button>
+	<input disabled="disabled" class="view viewinput" style="20px" Placeholder="输入1~10的数字调整尺寸" type="text"></input>
+	<button disabled="disabled" class="view change">调整</button>
+	<button disabled="disabled" class="view widthchange">宽度调整</button>
+</div>
+</div>
+</div>
+<script>
+$(function() {
+	$(".showDetail").bind('click',function(){
+		$(".right td").each(function(a){var appendDiv="<div>"+$(this).text()+"</div>";$(this).empty();$(this).append(appendDiv)})
+		$(".right table").css("width","auto");
+		$(".view").removeAttr('disabled');
+	});
+	$(".change").bind('click',function(){
+		debugger;
+		var number=$(".viewinput").val();
+		!!number==0?number=4:number=number;
+		$(".right td div").css("width",number);
+		$(".right td div").css("height",number);
+	});
+	$(".widthchange").bind('click',function(){
+		$(".right table").css("width","100%");
+	});
+	widthchange
+});
+</script>
 </body>
-
 </html>

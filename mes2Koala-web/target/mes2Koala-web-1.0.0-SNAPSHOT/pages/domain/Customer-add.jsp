@@ -76,9 +76,9 @@
                     <label class="col-lg-3 control-label">客户&nbsp;logo:</label>
 	                    <div class="col-lg-6">
                          <input name="logoUpload"  class="form-control"  type="file"  id="logoUpload" />                        
-                         <div><img id="ImgPr"  style="border:1px solid transparent; width:100%; height:100%;margin-top:10px;"/></div>                       
-			           </div>
-			         </div>
+                         <div><img id="ImgPr" alt="客户logo" style="border:1px solid transparent; width:100%; height:100%;margin-top:10px;"/></div>
+						</div>
+			       </div>
 
 </form>
 <script type="text/javascript">

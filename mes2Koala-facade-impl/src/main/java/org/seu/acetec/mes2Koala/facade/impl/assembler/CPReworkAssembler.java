@@ -48,6 +48,7 @@ public class CPReworkAssembler {
 		result.setReworkPC(cpRework.getReworkPC());
 		result.setReworkWaferId(cpRework.getReworkWaferId());
 		result.setGist(cpRework.getGist());
+		result.setTesterNo(cpRework.getTesterNo());
 		return result;
 	}
 

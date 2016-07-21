@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+    <%@include file="/commons/taglibs.jsp"%>
     <script type="text/javascript" src="<%=contextPath %>/js/common.js"></script>
     <LINK rel="stylesheet" type="text/css"
           href="<%=contextPath %>/js/easyui/themes/default/easyui.css"/>
@@ -263,12 +264,31 @@
             var id = parseInt(ids[0]);
             $.get('${pageContext.request.contextPath}/FTInfo/getTestProgramByProduct/' + id + '.koala').done(function (data) {
                 var html = "";
-                var th = "<table class='table table-bordered'  style='background-color:#fff;margin-top:10px'><tr height='30px'><td width='20px'></td><td>Customer_No</td><td>version</td><td>测试程序</td><td>程序版本</td><td>可用机台</td><td>标注</td><td>授权时间</td><td>理论UPH</td><td>实际UPH</td><td>IS_YELLOW</td><td>授权人</td><td>站点</td></tr>";
+                data.sort(function sortby(a, b) {
+                    debugger
+                    if (a.site != b.site) {
+                        return a.site < b.site ? -1 : 1;
+                    }
+                    else {
+
+                        return (new Date(b["acetecAuthorizationDTOs"][0]["lastModifyTime"])).getTime() - (new Date(a["acetecAuthorizationDTOs"][0]["lastModifyTime"])).getTime();
+                    }
+
+                })
+                var th = "<table class='table table-bordered'  style='background-color:#fff;margin-top:10px'><thead><tr height='30px'><td width='20px'></td><td>Customer_No</td><td>version</td><td>测试程序</td><td>程序版本</td><td>可用机台</td><td>标注</td><td>授权时间</td><td>理论UPH</td><td>实际UPH</td><td>IS_YELLOW</td><td>授权人</td><td>站点</td></tr></thead>";
                 html += th;
+                var site = "";
                 if (data.length > 0) {
                     $.each(data, function (index) {
-                        var number = index + 1
-                        html += "<tr height='30px'><td>" + number + "</td><td>" +
+                        var number = index + 1;
+
+                        if (site != data[index]["site"]) {
+                            site = data[index]["site"];
+                            html += "<tr height='30px' bgcolor='#cde6c7'>";
+                        }
+                        else html += "<tr height='30px' >";
+
+                        html += "<td>" + number + "</td><td>" +
                                 data[index]["customerDirectNumber"] + "</td><td>" +
                                 data[index]["productVersion"] + "</td><td>" +
                                 data[index]["name"] + "</td><td>" +
@@ -826,7 +846,7 @@
                     "<input id='employeeID' type='hidden' name='id' value=" + employeeId + " />" +
                     "<select style='margin-left:30px;' name='opinion' id='opinionID'><option value=''>请选择</option><option  value ='同意' >同意</option><option value='不同意'>不同意</option></select><div style='margin-top:10px;margin-left:40px'><label class='col-lg-3 control-label'  class='style:display:inline；'>签核备注：</label><textarea name='note' id='noteID' cols='70' rows='5'></textarea></div></div>");
 
-            debugger
+
             body.find("#noteID").val(runcardSignInfo.note);
             body.find("#opinionID");
             if (runcardSignInfo.opinion === "同意") {
@@ -1301,23 +1321,23 @@
                     return grid.grid({
                         identity: "id",
                         buttons: [
-                            {
-                                content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
-                                action: 'add'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
-                                action: 'modify'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
-                                action: 'delete'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>导出到Excel</button>',
-                                action: 'exportExcel'
-                            }
-                        ],
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTInfoAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
+                                      action: 'add'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTInfoModify"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
+                                      action: 'modify'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTInfoDelete"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
+                                      action: 'delete'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTInfoExportExcel"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>导出到Excel</button></ks:hasSecurityResource>',
+                                      action: 'exportExcel'
+                                  }
+                              ],
                         url: "${pageContext.request.contextPath}/FTInfo/pageJson.koala",
                         columns: [
                             {
@@ -1335,7 +1355,7 @@
                                 sortName: 'customerProductRevision'
                             },
                             {
-                                title: 'PID',
+                                title: '艾科内部产品型号',
                                 name: 'internalProductNumber',
                                 width: width,
                                 sortable: true,
@@ -1394,7 +1414,7 @@
                                 width: width,
                                 sortable: true, sortName: 'keyQuantityManagerName'
                             },
-
+                            {title: 'Runcard签核', name: 'runcardApproval', width: width},
                             {
                                 title: '质量部协助负责人',
                                 name: 'assistQuantityManagerName',
@@ -1878,6 +1898,11 @@
                         <div style="margin-left:15px;float:left;">
                             <div class="btn-group select" id="packageTypeID"></div>
                             <input type="hidden" id="packageTypeID_" name="packageType"/>
+                        </div>
+                        <label class="control-label" style="width:110px;float:left;">产品型号:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input type="text" id="customerProductNumberID" name="customerProductNumber" class="form-control"
+                                   style="width:150px;"/>
                         </div>
                     </div>
                 </td>

@@ -67,6 +67,42 @@ public class FTRuncardTemplateApplicationImpl extends GenericMES2ApplicationImpl
             return false;
         return true;
     }
+    
+    public String isRuncardSignedMsg(Long id) {
+        boolean isFinished = true;
+        String msg = "";
+        FTRuncardTemplate FTRuncardTemplate = findByInternalProductId(id);
+        if (FTRuncardTemplate == null) {
+        	return "未绑定流程";
+        }
+        //对应三个部门
+        String keyMangerOpinion = "";
+        String assistManagerOpinion = "";
+        //质量部门
+        keyMangerOpinion = FTRuncardTemplate.getKeyQuantityAuthorization().getOpinion();
+        assistManagerOpinion = FTRuncardTemplate.getAssistQuantityAuthorization().getOpinion();
+        isFinished = checkRuncardFinished(keyMangerOpinion, assistManagerOpinion);
+        if (!isFinished)
+        	msg += "QRE未签核;";
+        //生产部门
+        keyMangerOpinion = FTRuncardTemplate.getKeyProductionAuthorization().getOpinion();
+        assistManagerOpinion = FTRuncardTemplate.getAssistProductionAuthorization().getOpinion();
+        isFinished = checkRuncardFinished(keyMangerOpinion, assistManagerOpinion);
+        if (!isFinished)
+        	msg += "PD未签核;";
+
+        //TDE部门
+        keyMangerOpinion = FTRuncardTemplate.getKeyTDEAuthorization().getOpinion();
+        assistManagerOpinion = FTRuncardTemplate.getAssistTDEAuthorization().getOpinion();
+
+        isFinished = checkRuncardFinished(keyMangerOpinion, assistManagerOpinion);
+        if (!isFinished)
+        	msg += "TDE未签核;";
+        if("".equals(msg)){
+        	msg = "已签核";
+        }
+        return msg;
+    }
 
 
     /**
@@ -77,31 +113,10 @@ public class FTRuncardTemplateApplicationImpl extends GenericMES2ApplicationImpl
      * @return
      */
     private boolean checkRuncardFinished(String keyMangerOpinion, String assistManagerOpinion) {
-        if (keyMangerOpinion == null && assistManagerOpinion == null) {
-            return false;
-        }
-
-        if (keyMangerOpinion == null) {
-            if (assistManagerOpinion.equals("不同意")) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        if (assistManagerOpinion == null) {
-            if (keyMangerOpinion.equals("不同意")) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        if (keyMangerOpinion.equals("不同意") || assistManagerOpinion.equals("不同意")) {
-            return false;
-        }
-
-        return true;
+        
+        return (keyMangerOpinion != null && keyMangerOpinion.equals("同意")) ||
+        		( ( keyMangerOpinion == null || "".equals(keyMangerOpinion) ) && 
+        				assistManagerOpinion != null && assistManagerOpinion.equals("同意") );
     }
 
 

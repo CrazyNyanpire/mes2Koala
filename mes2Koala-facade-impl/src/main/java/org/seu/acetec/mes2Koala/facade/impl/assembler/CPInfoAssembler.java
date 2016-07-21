@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class CPInfoAssembler {
 
-	public static CPInfoDTO toDTO(CPInfo cpInfo) {
+	public static CPInfoDTO toDTO(CPInfo cpInfo, boolean isManager) {
 		if (cpInfo == null) {
 			return null;
 		}
@@ -36,20 +36,21 @@ public class CPInfoAssembler {
 		result.setInternalProductRevision(cpInfo.getInternalProductRevision());
 		result.setShipmentProductNumber(cpInfo.getShipmentProductNumber());
 
-		// 6个产品负责人
-		result.setKeyProductionManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getKeyProductionManager()));
-		result.setAssistProductionManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getAssistProductionManager()));
-		result.setKeyQuantityManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getKeyQuantityManager()));
-		result.setAssistQuantityManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getAssistQuantityManager()));
-		result.setKeyTDEManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getKeyTDEManager()));
-		result.setAssistTDEManagerDTO(EmployeeAssembler.toDTO(cpInfo
-				.getAssistTDEManager()));
-
+		if (isManager) {
+			// 6个产品负责人
+			result.setKeyProductionManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getKeyProductionManager()));
+			result.setAssistProductionManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getAssistProductionManager()));
+			result.setKeyQuantityManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getKeyQuantityManager()));
+			result.setAssistQuantityManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getAssistQuantityManager()));
+			result.setKeyTDEManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getKeyTDEManager()));
+			result.setAssistTDEManagerDTO(EmployeeAssembler.toDTO(cpInfo
+					.getAssistTDEManager()));
+		}
 		result.setGrossDie(cpInfo.getGrossDie());
 		result.setWaferSize(cpInfo.getWaferSize());
 		result.setTestTime(cpInfo.getTestTime());
@@ -60,13 +61,17 @@ public class CPInfoAssembler {
 		return result;
 	}
 
-	public static List<CPInfoDTO> toDTOs(Collection<CPInfo> cpInfos) {
+	public static List<CPInfoDTO> toDTOs(Collection<CPInfo> cpInfos,
+			Boolean isManager) {
 		if (cpInfos == null) {
 			return null;
 		}
+		if (isManager == null) {
+			isManager = false;
+		}
 		List<CPInfoDTO> result = new ArrayList<>();
 		for (CPInfo cpInfo : cpInfos)
-			result.add(toDTO(cpInfo));
+			result.add(toDTO(cpInfo, isManager));
 		return result;
 	}
 
@@ -169,7 +174,8 @@ public class CPInfoAssembler {
 		Customer customerDirect = cpInfo.getCustomerDirect();
 		Customer customerIndirect = cpInfo.getCustomerIndirect();
 		cpInfoPageVo.setCustomerDirectName(customerDirect.getChineseName());
-		cpInfoPageVo.setCustomerIndirectName(customerIndirect.getChineseName());
+		if(customerIndirect != null)
+			cpInfoPageVo.setCustomerIndirectName(customerIndirect.getChineseName());
 		cpInfoPageVo
 				.setCustomerProductNumber(cpInfo.getCustomerProductNumber());
 		cpInfoPageVo.setCustomerProductRevision(cpInfo
@@ -183,7 +189,8 @@ public class CPInfoAssembler {
 		cpInfoPageVo.setTestTime(cpInfo.getTestTime());
 		cpInfoPageVo.setProductRequire(cpInfo.getProductRequire());
 		cpInfoPageVo.setTouchQty(cpInfo.getTouchQty());
-		cpInfoPageVo.setInternalProductNumber(cpInfo.getInternalProductNumber());
+		cpInfoPageVo
+				.setInternalProductNumber(cpInfo.getInternalProductNumber());
 		return cpInfoPageVo;
 	}
 }

@@ -16,8 +16,8 @@ public class TestProgram extends MES2AbstractEntity {
     private String testSys;
     private String site;
     private boolean isYellow;
-    private Integer uphReality;
-    private Integer uphTheory;
+    private Float uphReality;
+    private Float uphTheory;
     private String revision;
     private String note;
     private FTComposedTestNode ftComposedTestNode;
@@ -93,19 +93,19 @@ public class TestProgram extends MES2AbstractEntity {
         isYellow = yellow;
     }
 
-    public Integer getUphReality() {
+    public Float getUphReality() {
         return uphReality;
     }
 
-    public void setUphReality(int uphReality) {
+    public void setUphReality(Float uphReality) {
         this.uphReality = uphReality;
     }
 
-    public Integer getUphTheory() {
+    public Float getUphTheory() {
         return uphTheory;
     }
 
-    public void setUphTheory(int uphTheory) {
+    public void setUphTheory(Float uphTheory) {
         this.uphTheory = uphTheory;
     }
 

@@ -97,6 +97,18 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
             // 如果是建立子批的process，获取父批次当前的站点序号
             // 根据父批获取Process创建的起始点
             parentFTLot = ftLotApplication.get(parentFTLotId);
+            //2016/7/5 Hongyu add-start
+            for (FTNode ftNode : parentFTLot.getFtProcess().getFtNodes()) {
+				if (ftNode instanceof FTComposedTestNode) {
+					for (FTProductionSchedule ftProductionSchedule : ((FTComposedTestNode) ftNode)
+							.getFtProductionSchedules()) {
+						ftProductionSchedule.setLogic(1);
+						productionScheduleApplication
+								.update(ftProductionSchedule);
+					}
+				}
+			}
+            //2016/7/5 Hongyu add-end
             parentNowNode = findToStartNode(parentFTLot.getFtProcess().getFtNodes());
             startIndex = parentNowNode == null ? 0 : parentNowNode.getTurn();
         }
@@ -115,19 +127,33 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
         process.setFtLot(ftLot);
         String[] nodeNames = extractNodeNamesByProcessTemplateContent(process.getContent());// 测试站点
         Map<String, String[]> testingNodeNameTestNameMap = buildTestingNodeNameTestTemplateMap(testingTemplates);// 测试站点名称与其对应是测试映射
-        Map<String, List<SBLTemplate>> testingNodeNameSBLTemplateMap = buildTestingNameSBLTemplateMap(ftInfo.getSblTemplates());// 测试节点名称到测试SBL的映射
-        Map<String, List<EQCSetting>> testingNodeNameEQCTemplateMap = buildTestingNameEQCTemplateMap(ftInfo.getEqcSettings());// 测试节点名称到测试SBL的映射
-        List<FTNode> ftNodes = generateFTNodes(process, startIndex, nodeNames, testingNodeNameTestNameMap, testingNodeNameSBLTemplateMap, testingNodeNameEQCTemplateMap);
+        List<FTNode> ftNodes=null;
+        //update by alpha 2016/07/13
+        if(parentFTLot!=null)
+        {
+        	FTInfo parentFTinfo =ftInfoApplication.findByFTLotId(parentFTLotId);
+        	Map<String, List<SBLTemplate>> testingNodeNameSBLTemplateMap = buildTestingNameSBLTemplateMap(parentFTinfo.getSblTemplates());// 测试节点名称到测试SBL的映射
+            Map<String, List<EQCSetting>> testingNodeNameEQCTemplateMap = buildTestingNameEQCTemplateMap(parentFTinfo.getEqcSettings());// 测试节点名称到测试SBL的映射
+            ftNodes = generateFTNodes(process, startIndex, nodeNames, testingNodeNameTestNameMap, testingNodeNameSBLTemplateMap, testingNodeNameEQCTemplateMap);
+        }
+        else{
+        	Map<String, List<SBLTemplate>> testingNodeNameSBLTemplateMap = buildTestingNameSBLTemplateMap(ftInfo.getSblTemplates());// 测试节点名称到测试SBL的映射
+            Map<String, List<EQCSetting>> testingNodeNameEQCTemplateMap = buildTestingNameEQCTemplateMap(ftInfo.getEqcSettings());// 测试节点名称到测试SBL的映射
+            ftNodes = generateFTNodes(process, startIndex, nodeNames, testingNodeNameTestNameMap, testingNodeNameSBLTemplateMap, testingNodeNameEQCTemplateMap);
+        }
+        
         process.setFtNodes(ftNodes);
 
         // 修改第一个节点状态，驱动Process
         
         if(parentFTLot != null){
         	ftLot.setCurrentState(parentFTLot.getCurrentState());
-        	ftNodes.get(startIndex).setState(parentNowNode.getState());
+        	//ftNodes.get(startIndex).setState(parentNowNode.getState());
+        	ftNodes.get(0).setState(parentNowNode.getState());
         }else{
             ftLot.setCurrentState("待" + ftNodes.get(startIndex).getName());
-            ftNodes.get(startIndex).setState(FTNodeState.TO_START);
+            //ftNodes.get(startIndex).setState(FTNodeState.TO_START);
+            ftNodes.get(0).setState(FTNodeState.TO_START);
         }
         ftLotApplication.update(ftLot);
         create(process);
@@ -138,6 +164,7 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
         // 绑定ProductionSchedule
         bindProductionSchedule(ftNodes);
     }
+    
     
     private void bindProductionSchedule(Collection<FTNode> ftNodes) {
         // 绑定ProductionSchedule
@@ -169,7 +196,8 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
                 FTComposedTestNode temp = (FTComposedTestNode) ftNode;
                 String nodeName = temp.getName();
                 if (!nodeNameTestProgramTemplateMap.containsKey(nodeName)) {
-                    throw new RuntimeException("创建TestProgram失败," + nodeName + "节点未配置测试程式！");
+                	continue;
+                    //throw new RuntimeException("创建TestProgram失败," + nodeName + "节点未配置测试程式！");
                 }
                 TestProgramTemplate testProgramTemplate = nodeNameTestProgramTemplateMap.get(nodeName);
                 TestProgram testProgram = TestProgram.instanceTemplate(testProgramTemplate);
@@ -259,7 +287,7 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
      * @param ftNodes
      * @return
      */
-    private FTNode findToStartNode(List<FTNode> ftNodes) {
+    public FTNode findToStartNode(List<FTNode> ftNodes) {
         Collections.sort(ftNodes);  // 根据turn排序
         for (int index = 0; index < ftNodes.size(); ++index) {
             FTNode ftNode = ftNodes.get(index);
@@ -362,6 +390,9 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
 
                 int testTurn = 0;
                 String[] testTemplate = composedTestNameTestTemplateMap.get(nodeName);
+                if(testTemplate == null){
+                	throw new RuntimeException("站点" + nodeName +"没有配置测试节点！");
+                }
                 for (String testNodeName : testTemplate) {
                     if (testNodeName.startsWith("FT") || testNodeName.startsWith("RT") ||
                             testNodeName.startsWith("EQC") || testNodeName.startsWith("LAT")) {
@@ -394,6 +425,8 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
                         break;
                     }
                 }
+                //update 2016/07/13/Alpha
+                //ftFinishNode = (FTFinishNode) ftNode;
                 if (ftFinishNode != null) {
                     //  Finish站点继承所有测试站点的bin别设定
                     List<SBL> sbls = new ArrayList<>();
@@ -584,8 +617,6 @@ public class FTProcessApplicationImpl extends GenericMES2ApplicationImpl<FTProce
                             statistics.setSite15Num("0");
                         }
 
-                    
-                    	
                     	/*
 
                     	int site = Integer.parseInt(sbl.getSite());

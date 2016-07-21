@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openkoala.koala.commons.InvokeResult;
 import org.seu.acetec.mes2Koala.facade.dto.ReelDiskDTO;
+import org.seu.acetec.mes2Koala.facade.dto.ReworkDTO;
 
 /**
  * @author yuxiangque
@@ -28,4 +29,6 @@ public interface ExcelFacade {
 	InvokeResult exportFTInfo(Class<?> clazz, Long[] idArray );
 	
 	List<ReelDiskDTO> importReelCode( Long ftProcessId, String filename );
+	
+	public InvokeResult exportReworkLot(ReworkDTO reworkDTO);
 }

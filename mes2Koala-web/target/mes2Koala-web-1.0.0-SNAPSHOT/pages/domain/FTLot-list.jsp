@@ -5,6 +5,7 @@
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+    <%@include file="/commons/taglibs.jsp"%>
     <script type="text/javascript" src="<%=contextPath %>/js/common.js"></script>
     <LINK rel="stylesheet" type="text/css" href="<%=contextPath %>/js/easyui/themes/default/easyui.css"/>
     <script type="text/javascript" src="<%=contextPath %>/js/easyui/jquery.easyui.min.1.2.2.js"></script>
@@ -16,14 +17,16 @@
     <script type="text/javascript">
         if (typeof String.prototype.startsWith != 'function') {
             String.prototype.startsWith = function (prefix) {
-                return this.slice(0, prefix.length) === prefix;
+                return this.slice(0, prefix.length) === prefix; //return this.indexOf(prefix) != -1;
             };
         }
         var grid;
         var form;
+        // revision button,value = 1: allow revision; the info of testNode can be revised even on the passed node
+        //修改，值为1时表示可以修改已经过站的站点
         var isModify = 0;
         var _dialog;
-        var buttonName;
+        var buttonName;//表示当前点击的流程站点的名称
         $(function () {
             grid = $("#<%=gridId%>");
             form = $("#<%=formId%>");
@@ -92,73 +95,77 @@
                         identity: "id",
                         gridheight:900,
                         buttons: [
-                            {
-                                content: '<button class="btn btn-danger" type="button">开HOLD</button>',
-                                action: 'hold'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">解Hold</button>',
-                                action: 'unhold'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">流程卡</button>',
-                                action: 'runcard'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">导出Excel</button>',
-                                action: 'exportExcel'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">小样出货</button>',
-                                action: 'little'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" id="updateftList" type="button">修改</button>',
-                                action: 'updata'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" type="button">良率放行</button>',
-                                action: 'endFailTest'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">预Hold</button>',
-                                action: 'featuHold'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">Fail品标签打印</button>',
-                                action: 'failPrint'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">操作日志</button>',
-                                action: 'optdetal'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">设备嫁动</button>',
-                                action: 'ems'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">分批</button>',
-                                action: 'split'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">合批</button>',
-                                action: 'merge'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" type="button">删除</button>',
-                                action: 'delete'
-                            }
-                        ],
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotHold"><button class="btn btn-danger" type="button">开HOLD</button></ks:hasSecurityResource>',
+                                      action: 'hold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotUnHold"><button class="btn btn-success" type="button">解Hold</button></ks:hasSecurityResource>',
+                                      action: 'unhold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotRunCard"><button class="btn btn-primary" type="button">流程卡</button></ks:hasSecurityResource>',
+                                      action: 'runcard'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotExportExcel"><button class="btn btn-primary" type="button">导出Excel</button></ks:hasSecurityResource>',
+                                      action: 'exportExcel'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotLittle"><button class="btn btn-primary" type="button">小样出货</button></ks:hasSecurityResource>',
+                                      action: 'little'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotUpdata"><button class="btn btn-danger" id="updateftList" type="button">修改</button></ks:hasSecurityResource>',
+                                      action: 'updata'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotEndFailTest"><button class="btn btn-danger" type="button">良率放行</button></ks:hasSecurityResource>',
+                                      action: 'endFailTest'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotFeatuHold"><button class="btn btn-success" type="button">预Hold</button></ks:hasSecurityResource>',
+                                      action: 'featuHold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotFailPrint"><button class="btn btn-success" type="button">Fail品标签打印</button></ks:hasSecurityResource>',
+                                      action: 'failPrint'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotOptdetal"><button class="btn btn-primary" type="button">操作日志</button></ks:hasSecurityResource>',
+                                      action: 'optdetal'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotEms"><button class="btn btn-primary" type="button">设备嫁动</button></ks:hasSecurityResource>',
+                                      action: 'ems'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotSplit"><button class="btn btn-success" type="button">分批</button></ks:hasSecurityResource>',
+                                      action: 'split'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotMerge"><button class="btn btn-success" type="button">合批</button></ks:hasSecurityResource>',
+                                      action: 'merge'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotDelete"><button class="btn btn-danger" type="button">删除</button></ks:hasSecurityResource>',
+                                      action: 'delete'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="FTLotPIDchange"><button class="btn btn-success" type="button">变更PID</button></ks:hasSecurityResource>',
+                                      action: 'PIDchange'
+                                  }
+                              ],
                         url: "${pageContext.request.contextPath}/FTLot/ftPageJson.koala",
                         columns: [
                             {title: '状态', name: 'state', width: width},
-                            {title: 'Lot Number', name: 'lotNumber', width: width},
+                            {title: 'Lot Number', name: 'lotNumber', width: 150},
                             {title: 'Quantity', name: 'quantity', width: width},
                             {title: '出货型号', name: 'shipmentProductNumber', width: width},
                             {
-                                title: 'PID',
+                                title: '艾科内部产品型号',
                                 name: 'internalProductNumber',
-                                width: width,
+                                width: width
                             },
                             {title: '封装批号', name: 'packageNumber', width: width},
                             {title: '版本型号', name: 'productVersion', width: width},
@@ -168,7 +175,7 @@
                             {title: '内PPO', name: 'internalPPO', width: width},
                             {title: '外PPO', name: 'customerPPO', width: width},
                             
-                            {title: '来料型号', name: 'revision', width: width},
+                            {title: '来料型号', name: 'customerProductNumber', width: width},
                             {title: 'Wafer Lot Number', name: 'waferLotNumber', width: width},
                             {title: '进料日期', name: 'incomingDate', width: width}
                         ]
@@ -186,14 +193,14 @@
                                 $this.message({
                                     type: 'warning',
                                     content: '请选择一条记录进行修改'
-                                })
+                                });
                                 return;
                             }
                             if (indexs.length > 1) {
                                 $this.message({
                                     type: 'warning',
                                     content: '只能选择一条记录进行修改'
-                                })
+                                });
                                 return;
                             }
                             self.hold(indexs[0], $this);
@@ -454,8 +461,98 @@
                                 content: '确定要删除所选记录吗?',
                                 callBack: remove
                             });
+                        },
+                        'PIDchange': function (event, data) {
+                            var indexs = data.data;
+                            var $this = $(this);
+                            if (indexs.length == 0) {
+                                $this.message({
+                                    type: 'warning',
+                                    content: '请选择要变更的批次'
+                                });
+                                return;
+                            }
+                            if (indexs.length > 1) {
+                                $this.message({
+                                    type: 'warning',
+                                    content: '只能选择一条记录进行变更'
+                                })
+                                return;
+                            }
+                            debugger;
+                            var PIDchange = function () {
+                                //self.PIDchange(indexs, $this,data['item'][0]['customerFTLotDTO']['id']);
+                            	self.PIDchange(indexs, $this,data['item'][0]['customerFTLotDTOId']);
+                            };
+                            $this.confirm({
+                                content: '确定要变更选批次吗?',
+                                callBack: PIDchange
+                            });
                         }
                     });
+                },
+                PIDchange: function (ids, grid,customerLotId) {
+					var self = this;
+                    var data = [{name: 'ids', value: ids[0]}];
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog">'
+            	        	+'<div class="modal-content"><div class="modal-header"><button type="button" class="close" '
+            	        	+'data-dismiss="modal" aria-hidden="true">&times;</button>'
+            	        	+'<h4 class="modal-title">PID变更</h4></div><div class="modal-body"><form class="form-horizontal">'
+            	        	+'<div class="form-group"> <label class="col-lg-3 control-label">PID:</label>'
+            	            +'<div class="col-lg-9"><div class="btn-group select" id="internalProductNumberID"></div>'
+            	            +'<input type="hidden" id="internalProductNumberID_" name="cpInfoId" dataType="Require"/><span class="required">*</span>'
+            	            +'</div><form></div></div><div class="modal-footer">'
+            	        	+'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
+            	        	+'<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
+            	        	+'</div></div>');
+            	            dialog.modal({
+            	                keyboard:false
+            	            }).on({
+            	                'hidden.bs.modal': function(){
+            	                    $(this).remove();
+            	                }
+            	            })
+            	            $.get('${pageContext.request.contextPath}/CustomerFTLot/findPIDByCustomerFTLotId/'+customerLotId+'.koala').done(function (json) {
+	                          if (json.success) {
+	                              	json = json.data;
+	                              	var contents = [ {title : '请选择',value : ''} ];
+	                              	$.each(json,function(a){
+	                              		contents.push({title : json[a]['internalProductNumber'],value : json[a]['id']});
+	                              	})
+		                  	      	dialog.find('#internalProductNumberID').select({
+		                                  title: '请选择',
+		                                  contents: contents
+	                             	}).on('change',function(){
+	                             		dialog.find('#internalProductNumberID_').val($(this).getValue());
+	                             	});
+	                          } else {
+	                              dialog.find('.modal-content').message({
+	                                  type: 'error',
+	                                  content: result.errorMessage
+	                              });
+	                          }
+	                      	});
+            	            //self.initPage(dialog.find('form'));
+            	        dialog.find('#save').on('click',{grid: grid}, function(e){
+            	              if(!Validator.Validate(dialog.find('form')[0],3))return;
+            	              data.push({name:'cpInfoId',value:$("#internalProductNumberID_").val()});
+            	              $.post('${pageContext.request.contextPath}/FTLot/changePid.koala', data).done(function (result) {
+                                  if (result.success) {
+                                	  dialog.modal('hide');
+                                      e.data.grid.data('koala.grid').refresh();
+                                      e.data.grid.message({
+                                          type: 'success',
+                                          content: 'PID变更成功'
+                                      });
+                                  } else {
+                                      grid.message({
+                                          type: 'error',
+                                          content: result.errorMessage
+                                      });
+                                  }
+                              });
+            	        });
+                    
                 },
                 runcard: function (ftinfoId, grid) {
                     var self = this;
@@ -468,7 +565,6 @@
                             + '<button type="button" class="btn btn-success" id="save">查看Runcard</button></div></div>'
                             + '</div></div>');
 
-                    debugger
                     $.get('${pageContext.request.contextPath}/ueditor/getSpecialFormStatus.koala?ftinfoId=' + ftinfoId).done(function (data) {
                         data = data['data'];
                         var firstSheetStatus = data['firstSheetStatus'];
@@ -498,10 +594,9 @@
                             dialog.find("#reelcodeSheetStatus").attr("checked", reelcodeSheetStatus);
                             dialog.find("#machineMaterialRecordSheetStatus").attr("checked", machineMaterialRecordSheetStatus);
                             dialog.find("#checkSheetStatus").attr("checked", checkSheetStatus);
-
                         });
-
                     });
+
                     dialog.modal({
                         keyboard: false
                     }).on({
@@ -527,9 +622,8 @@
                             })
                             return;
                         }
-
-                        createmodalwindow("UEditor", 800, 500, '<%=contextPath %>/ueditor/getPageForRuncard.koala?ftLotId=' +
-                                ftinfoId + '&specialFormStr=' + specialFormStr + '&state=' + state);
+                        //window.open('<%=contextPath %>/ueditor/getPageForRuncard.koala?ftLotId=' + ftinfoId + '&specialFormStr=' + specialFormStr + '&state=' + state);
+                        createmodalwindow("UEditor", 800, 500, '<%=contextPath %>/ueditor/getPageForRuncard.koala?ftLotId=' + ftinfoId + '&specialFormStr=' + specialFormStr + '&state=' + state);
                     });
                 },
                 hold: function (id, grid) {
@@ -711,11 +805,11 @@
                 },
                 featuHold: function (id, grid) {
                     var self = this;
-                    var dialog = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">开Hold</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">保存</button></div></div></div></div>');
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">预Hold</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">保存</button></div></div></div></div>');
                     $.get('<%=path%>/FTfutureHold.jsp').done(function (html) {
                         dialog.find('.modal-body').html(html);
                         dialog.find("input[name='To']").bind("click", function () {
-                            if ($(this).attr("checked") == "checked") {
+                            if ($(this).attr("checked") == "checked"){
                                 $.ajax({
                                     async: false,
                                     url: '${pageContext.request.contextPath}/HoldMail/holdUsers.koala',
@@ -1491,12 +1585,12 @@
                         }
                     });
                 }
-            }
+            };
             PageLoader.initSearchPanel();
             PageLoader.initGridPanel();
-            var height=$(".mainContent")[0].offsetHeight-7
+            var height=$(".mainContent")[0].offsetHeight-7;
         	$(".sidebar").children().css("height",height);
-            form.find('#search').on('click', function () {
+            form.find('#search').on('click', function () {//搜索
                 if (!Validator.Validate(document.getElementById("<%=formId%>"), 3))return;
                 var params = {};
                 form.find('input').each(function () {
@@ -1513,7 +1607,8 @@
                 $("#DynamicButton").html(''); //每次点击都要将动态生成按钮内容清空，否则，多次点击会出现累加
                 $('#ftDetail').html('');
                 e.stopPropagation();//这个e就是事件对象
-                var checkedId = grid.getGrid().selectedRowsIndex();
+                var checkedId = grid.getGrid().selectedRowsIndex();//获取被选择的id
+                var packageType;
                 if (checkedId.length > 1) {
                     grid.message({
                         type: 'warning',
@@ -1521,8 +1616,13 @@
                     });
                     return;
                 }
-                refreshButtonList(checkedId[0]);
-//                debugger
+                $.get('${pageContext.request.contextPath}/FTLot/get/' + checkedId + '.koala').done(function(data){
+                    if(data.hasOwnProperty("data")){
+                        packageType = data.data.customerLotDTO.packageType;
+                    }
+                })
+
+                refreshButtonList(checkedId[0],packageType ==="QFN");///根据id获取对应的流程，并组装成按钮
             });
         });
 
@@ -1551,7 +1651,7 @@
                     }
                 });
             });
-        }
+        };
         <%--var getData = function (checkedId) {--%>
 
         <%--if (checkedId == undefined)--%>
@@ -1589,33 +1689,38 @@
         <%--};--%>
 
         // 当点击、进站、保存时刷新
-        var refreshDetail = function (checkedId, nodeName) {
-            if (arguments[2]) {//如果是test站点则传递三个参数，这时arguments[2]能取到值
-                var testDetailToClick = arguments[2];
+        var refreshDetail = function (checkedId, nodeName,IsQFN) {
+            debugger;
+            if (arguments[3]) {//如果是test站点则传递四个参数，这时arguments[3]能取到值
+                var testDetailToClick = arguments[3];
             }
+
             $.get('${pageContext.request.contextPath}/FTProcess/findFTProcessByFTLotId/' + checkedId + '.koala').done(function (data) {
-//                
+//                获取数据
                 if (!data.success) {
                     return;
                 }
                 data = data.data;
-                onClickedDispatcher(checkedId, data, nodeName, testDetailToClick);
+                onClickedDispatcher(checkedId, data, nodeName, IsQFN,testDetailToClick);//各点击对应操作
             });
         }
 
         // 当出站后需要刷新
-        var refreshButtonList = function (checkedId) {
-            $('#DynamicButton').html('');
+        var refreshButtonList = function (checkedId,IsQFN) {
+debugger;
+            $('#DynamicButton').html('');//渲染前先清空流程按钮区
+
             $.get('${pageContext.request.contextPath}/FTProcess/findFTProcessByFTLotId/' + checkedId + '.koala').done(function (data) {
-//                            
+//    根据获取的id,渲染页面左侧的流程按钮
                 if (!data.success) {
                     return;
                 }
-                data = data.data;
-                $.each(data.ftNodeDTOs, function (i) {
+                var data = data.data;
+                $.each(data.ftNodeDTOs, function (index) {//遍历各流程节点明细,index为索引
+
                     var html = "";
-                    var tml = $('<li style="margin-left:48%;font-size:200%;">&darr;</li>');
-                    switch (this.ftState) {
+                    var tml = $('<li style="margin-left:48%;font-size:200%;">&darr;</li>');//加载“箭头”
+                    switch (this.ftState) {//不同的ftstate对应按钮颜色
 	                    case 0:
 	                        html = $('<li><button type="button" style="margin:1% 25%;width:50%;" class="btn btn-default" disabled>' + this.name + '</button></li>');
 	                        break;
@@ -1628,15 +1733,15 @@
 	                        break;
                     }
                     $("#DynamicButton").append(html);
-                    if (i < data.ftNodeDTOs.length - 1) {
+                    if (index < data.ftNodeDTOs.length - 1) {
                         $("#DynamicButton").append(tml);
                     }
                 });
-                $("#DynamicButton").find('button').on('click', function () {
-                    $('#ftDetail').html('');
+                $("#DynamicButton").find('button').on('click', function () {//点击按钮对应操作，这里不同按钮对应操作不同，所以需要知道节点名
+                    $('#ftDetail').html('');//清空右下角站点明细
 
-                    var nodeName = this.innerHTML;
-                    refreshDetail(checkedId, nodeName);
+                    var nodeName = this.innerHTML;//获得站点名称
+                    refreshDetail(checkedId, nodeName,IsQFN);//渲染站点明细，传递参数：某条记录的id 和节点名
                 });
             });
         };
@@ -1712,9 +1817,11 @@
         var startNode = function (checkedId, FTProcessDTO, nodeName) {
             $.post('${pageContext.request.contextPath}/FTLotNodeOption/startFTNode/' + FTProcessDTO.id + '.koala').done(function (result) {
                 if (result.success) {
-
-                    refreshDetail(checkedId, nodeName);
+                    //refreshDetail(checkedId, nodeName);//刷新页面
+                    refreshDetailAndButtonList(checkedId);
                     grid.getGrid().refresh();
+                    //2016/07/14 Hongyu delete
+                    //$(".checkerbox[data-value='"+checkedId+"']").click();
                     grid.message({
                         type: 'success',
                         content: '进站成功'
@@ -1733,11 +1840,13 @@
                             $.param(json) + '&' + $('#ftDetail').find('form').serialize())
                     .done(function (result) {
                         if (result.success) {
-
-                            refreshDetail(checkedId, nodeName);
-                            isModify = 0;
-                            $('#updateftList').addClass('btn-danger').removeClass('btn-default');
+                            //refreshDetail(checkedId, nodeName);
+                            refreshDetailAndButtonList(checkedId);
+                            isModify = 0;//对应页面已过站站点的修改按钮的状态值
+                            $('#updateftList').addClass('btn-danger').removeClass('btn-default');//"修改"按钮颜色改变
                             grid.getGrid().refresh();
+                            //2016/07/14 Hongyu delete
+                            //$(".checkerbox[data-value='"+checkedId+"']").click();
                             grid.message({
                                 type: 'success',
                                 content: '保存成功'
@@ -1775,6 +1884,9 @@
                                 isModify = 0;
                                 $('#updateftList').addClass('btn-danger').removeClass('btn-default');
                                 grid.getGrid().refresh();
+                                debugger;
+                                //Hongyu 2016/07/13 delete
+                                //$(".checkerbox[data-value='"+checkedId+"']").click();
                                 refreshDetailAndButtonList(checkedId);
                                 grid.message({
                                     type: 'success',
@@ -1790,19 +1902,25 @@
                     });
 
         }
-        var registerOnFinalYieldChangedListener = function ($tableFinalYield) {
+        var registerOnFinalYieldChangedListener = function ($tableFinalYield) {//计算yiled和fail
 
             function updateFail() {
 
                 var failVal = 0;
-                $tableFinalYield.find('.binFail').each(function () {
+                var classEqualbinFail = $tableFinalYield.find('.binFail');
+                var lossQa = $tableFinalYield.find('.loss');
+                classEqualbinFail.each(function () {//获取bin为fail类型的值的和
                     if (this.value.match('-') != null) {
                         return true;
                     }
                     var binFailValue = this.value.trim() === "" ? 0 : this.value.trim();//如果为空则值为0
                     failVal += parseInt(binFailValue);
                 })
-                $tableFinalYield.find('.fail').val(failVal);
+                if(lossQa.length != 0){
+                    var lossVal = lossQa.val();
+                    failVal -= parseInt(lossVal?lossVal:0);
+                }
+                $tableFinalYield.find('.fail').val(failVal);//更新fail数据
             }
 
             function updateYield() {
@@ -1813,19 +1931,20 @@
                 }
                 var passVal = 0;
 
-                $tableFinalYield.find('.binPass').each(function () {
+                $tableFinalYield.find('.binPass').each(function () {//获取bin为pass类型的值的和
                     if (this.value.match('-') != null) {
                         return true;
                     }
                     var binPassValue = this.value.trim() === "" ? 0 : this.value.trim();//如果为空则值为0
                     passVal += parseInt(binPassValue);
                 })
-                var yieldVal = parseFloat(passVal / sumVal).toFixed(5);
+                var yieldVal = parseFloat(passVal / sumVal).toFixed(5);//固定小数位数为5位
                 $tableFinalYield.find('.yield').val((yieldVal * 100).toFixed(3) + '%');//百分号后保留3位小数
             }
 
-            $tableFinalYield.find('.binFail').on('change', updateFail);
-            $tableFinalYield.find('.binPass').on('change', updateYield);
+            $tableFinalYield.find('.binFail').on('change', updateFail);//监听所有bin为fail类型的数据的变化
+            $tableFinalYield.find('.loss').on('change', updateFail);//监听BGA-Loss的数据的变化
+            $tableFinalYield.find('.binPass').on('change', updateYield);//监听所有bin为pass类型的数据的变化
             $tableFinalYield.find('.sum').on('change', updateYield);//sum值变化
             if ($tableFinalYield.find('.sum').val() == 0) {//判断sum为空,则yield为空;
                 $tableFinalYield.find('.yield').val(" %");
@@ -1847,7 +1966,7 @@
                 } else {
                     if(propertyName == "sum"){
                         columns.push($('<th class="flag" style="width:60px;">sum</th>'));
-                        columns.push($('<th class="flag" style="width:60px;">bin1</th>'));
+                        columns.push($('<th  style="width:60px;">bin1</th>'));
                     }else{
                         columns.push($('<th class="flag" style="width:60px;">' + propertyName + '</th>'));
                     }
@@ -1858,7 +1977,7 @@
         }
 
         // Testing站点的FT, LAT, RT, EAT
-        var generateComposedTestFTResultColumns = function (ftResult, Bin1Quality, Bin1Value) {
+        var generateComposedTestFTResultColumns = function (ftResult, Bin1Quality, Bin1Value,_IsQFN) {
             var columns = [];
             var excludeColumns = ["lat"];
             for (var propertyName in ftResult) {//加载除了bin外的所有项
@@ -1867,49 +1986,79 @@
                 if (excludeColumns.indexOf(propertyName) != -1) {
 
                 } else {
-                    switch (propertyName) {
-                        case 'bin':
-                            var html2 = $('<td class="flag2" hidden><input type="text" class="flag"></td>');
-                            columns.push(html2);
-                            break;
-                        case 'version':
-                        case 'id':
-                            var html2 = $('<td hidden><input type="text" class="flag" value=' + propertyValue + '></td>');
-                            columns.push(html2);
-                            break;
-                        case 'yield':
-                            if (propertyValue == '') {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag yield" value=" %" ></td>');
-                            }
-                            else {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag yield" value="' + parseFloat(propertyValue) * 100 + '%"></td>');
-                            }
-                            columns.push(html2);
-                            break;
-                        case 'fail':
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" value="' + propertyValue + '"></td>');
-                            columns.push(html2);
-                            break;
-                        case 'sum':
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '"></td>');
-                            var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase()+ Bin1Quality.substr(1);
-                            if (Bin1Value == 0) {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="" ></td>');
-                            }
-                            else {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="' + Bin1Value + '"></td>');
-                            }
-                            columns.push(html2);
-                            columns.push($column);
-                            break;
-                        case 'pass':
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag pass" value="' + propertyValue + '"></td>');
-                            columns.push(html2);
-                            break;
-                        default:
+                    if(_IsQFN && (propertyName == "markF" || propertyName == "loss")){
+                        if(propertyName == "markF"){
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '"></td>');
+                        }
+                        if(propertyName == "loss"){
                             var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '"></td>');
-                            columns.push(html2);
-                            break;
+                        }
+                        columns.push(html2);
+
+                    }else if(!_IsQFN && (propertyName == "loss" || propertyName == "markF")){
+                        if(propertyName == "loss"){
+                           var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" value="' + propertyValue + '"></td>');
+                        }
+                        if(propertyName == "markF"){
+                           var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '"></td>');
+                        }
+                        columns.push(html2);
+                    }else {
+                        switch (propertyName) {
+                            case 'bin':
+                                var html2 = $('<td class="flag2" hidden><input type="text" class="flag"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'version':
+                            case 'id':
+                                var html2 = $('<td hidden><input type="text" class="flag" value=' + propertyValue + '></td>');
+                                columns.push(html2);
+                                break;
+                            case 'yield':
+                                if (propertyValue == '') {
+                                    var html2 = $('<td><input type="text" style="width:52px;" class="flag yield" value=" %" ></td>');
+                                }
+                                else {
+                                    //2016/07/13 Hongyu update
+                                    //var html2 = $('<td><input type="text" style="width:50px;" class="flag yield" value="' + parseFloat(propertyValue) * 100 + '%"></td>');
+                                    debugger;
+                                    if (parseFloat(propertyValue) != 1) {
+                                        var html2 = $('<td><input type="text" style="width:52px;" class="flag yield" value="' + (parseFloat(propertyValue) * 100).toFixed(3) + '%"></td>');
+                                    } else {
+                                        var html2 = $('<td><input type="text" style="width:52px;" class="flag yield" value="' + parseFloat(propertyValue) * 100 + '%"></td>');
+                                    }
+                                }
+                                columns.push(html2);
+                                break;
+                            case 'fail':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" value="' + propertyValue + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'sum':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '"></td>');
+                                var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase() + Bin1Quality.substr(1);
+                                if (Bin1Value == 0) {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 ' + bin1QualityClass + '" value="" ></td>');
+                                }
+                                else {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 ' + bin1QualityClass + '" value="' + Bin1Value + '"></td>');
+                                }
+                                columns.push(html2);
+                                columns.push($column);
+                                break;
+                            case 'pass':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag pass" value="' + propertyValue + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'other':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '"></td>');
+                                columns.push(html2);
+                                break;
+                            default:
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '"></td>');
+                                columns.push(html2);
+                                break;
+                        }
                     }
                 }
             }
@@ -1931,7 +2080,7 @@
                 } else {
                     if(propertyName == "sum"){
                         columns.push($('<th class="flag" style="width:60px;">sum</th>'));
-                        columns.push($('<th class="flag" style="width:60px;">bin1</th>'));
+                        columns.push($('<th style="width:60px;">bin1</th>'));
                     }else{
                         columns.push($('<th class="flag" style="width:60px;">' + propertyName + '</th>'));
                     }
@@ -1941,7 +2090,7 @@
         }
 
         // Testing站点的FinalYield
-        var generateComposedTestFinalYieldColumns = function (finalYield, Bin1Quality, Bin1Value) {
+        var generateComposedTestFinalYieldColumns = function (finalYield, Bin1Quality, Bin1Value,_IsQFN ) {
             var columns = []; //
             var excludeColumns = [];
             for (var propertyName in finalYield) {
@@ -1950,44 +2099,83 @@
                 if (excludeColumns.indexOf(propertyName) != -1) {
 
                 } else {
-                    switch (propertyName) {
-                        case 'bin':
-                            var html2 = $('<td class="flag2" hidden><input type="text" class="flag" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
-                            columns.push(html2);
-                            break;
-                        case 'version':
-                        case 'id':
-                            var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name=ftTestDTO.finalYield.' + propertyName + '></td>');
-                            columns.push(html2);
-                            break;
-                        case 'yield':
-                            if (propertyValue == "&ensp;") {
-                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" ></td>');
+                    if(_IsQFN && (propertyName == "markF" || propertyName == "loss")){
+                        if(propertyName == "markF"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
                             } else {
-                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + (parseFloat(propertyValue) * 100).toFixed(3) + '%" name=ftTestDTO.finalYield.' + propertyName + '></td>');
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
                             }
-                            columns.push(html2);
-                            break;
-                        case 'fail':
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" value="' + propertyValue + '" name=ftTestDTO.finalYield.' + propertyName + '></td>');
-                            columns.push(html2);
-                            break;
-                        case 'sum':
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '" name=ftTestDTO.finalYield.' + propertyName + '></td>');
-                            var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase()+ Bin1Quality.substr(1);
-                            if (Bin1Value == 0) {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="" ></td>');
+                        }
+                        if(propertyName == "loss"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
                             }
-                            else {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="' + Bin1Value + '"></td>');
+                        }
+                        columns.push(html2);
+
+                    }else if(!_IsQFN && (propertyName == "loss" || propertyName == "markF")){
+                        if(propertyName == "loss"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
                             }
-                            columns.push(html2);
-                            columns.push($column);
-                            break;
-                        default:
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name=ftTestDTO.finalYield.' + propertyName + '></td>');
-                            columns.push(html2);
-                            break;
+                        }
+                        if(propertyName == "markF"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                            }
+                        }
+                        columns.push(html2);
+                    }else {
+                        switch (propertyName) {
+                            case 'bin':
+                                var html2 = $('<td class="flag2" hidden><input type="text" class="flag" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'version':
+                            case 'id':
+                                var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'yield':
+                                if (propertyValue == "&ensp;") {
+                                    var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" ></td>');
+                                } else {
+                                    var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + (parseFloat(propertyValue) * 100).toFixed(3) + '%" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                }
+                                columns.push(html2);
+                                break;
+                            case 'fail':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'other':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'sum':
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase() + Bin1Quality.substr(1);
+                                if (Bin1Value == 0) {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 ' + bin1QualityClass + '" value="" ></td>');
+                                }
+                                else {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 ' + bin1QualityClass + '" value="' + Bin1Value + '"></td>');
+                                }
+                                columns.push(html2);
+                                columns.push($column);
+                                break;
+                            default:
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="ftTestDTO.finalYield.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                        }
                     }
                 }
             }
@@ -2023,10 +2211,41 @@
                               // debugger
             }
             return columns;
+        };
+
+        var generateFTFinishStatictisColumnHeaders = function (ftStringName, ftResult) {
+            var columns = [];
+            var hiddenColumns = ["bin", "id", "version"];
+            var excludeColumns;
+            if (ftStringName != 'ftFinishDTO') {
+                excludeColumns = ["lat"];
+            }
+            for (var propertyName in ftResult) {
+                if (propertyName.startsWith('site')) {///finish站点
+                    continue;
+                }
+
+                var propertyValue = ftResult[propertyName];
+                if (hiddenColumns.indexOf(propertyName) != -1) {
+                    var html1 = $('<th hidden>' + propertyName + '</th>');
+                    columns.push(html1);
+                } else if (excludeColumns && excludeColumns.indexOf(propertyName) != -1) {
+
+                } else {
+                    if (propertyName == 'resultSum' || propertyName == 'sum') {
+                        columns.push($('<th  style="width: 60px;">sum</th>'));
+                        // columns.push($('<th  style="width: 60px;">bin1</th>'));
+                    } else {
+                        columns.push($('<th  style="width: 60px;">' + propertyName + '</th>'));
+                    }
+                }
+                // debugger
+            }
+            return columns;
         }
 
 
-        var generateFTResultColumns = function (ftStringName, ftResult, Bin1Quality, Bin1Value) {
+        var generateFTResultColumns = function (ftStringName, ftResult, Bin1Quality, Bin1Value, _IsQFN) {
             var columns = [];
             var excludeColumns;
             if (ftStringName != 'ftFinishDTO') {
@@ -2037,138 +2256,220 @@
                 if (excludeColumns && excludeColumns.indexOf(propertyName) != -1) {
 
                 } else {
-                    switch (propertyName) {
-                        case 'bin':
-                            var html2 = $('<td class="flag2" hidden><input type="text" class="flag"  name="' + ftStringName + '.ftResultDTO.' + propertyName + '" ></td>');
-                            columns.push(html2);
-                            break;
-                        case 'version':
-                        case 'id':
-                            var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
-                            columns.push(html2);
-                            break;
-                        case 'yield':
 
+                    if(_IsQFN && (propertyName == "markF" || propertyName == "loss")){
+                        if(propertyName == "markF"){
                             if (propertyValue === '0' || propertyValue === '') {
-                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" name="' + ftStringName + '.ftResultDTO.yield"></td>');
-                            }
-                            else {
-                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + parseFloat(propertyValue) * 100 + '%" name="' + ftStringName + '.ftResultDTO.yield"></td>');
-                            }
-                            columns.push(html2);
-                            break;
-                        case 'fail':
-                            if (propertyValue === '0' || propertyValue === '') {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" disabled name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
                             } else {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" disabled value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
                             }
-                            columns.push(html2);
-                            break;
-                        case 'sum':
-                            if (propertyValue === '0' || propertyValue === '') {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag sum"  name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
-                            } else {
-                                var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
-                            }
-                            var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase()+ Bin1Quality.substr(1);
-                            if (Bin1Value == 0) {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="" ></td>');
-                            }
-                            else {
-                                var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="' + Bin1Value + '"></td>');
-                            }
-                            columns.push(html2);
-                            columns.push($column);
-                            break;
-                        default:
+                        }
+                        if(propertyName == "loss"){
                             if (propertyValue === '0' || propertyValue === '') {
                                 var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
                             } else {
                                 var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
                             }
-                            columns.push(html2);
-                            break;
+                        }
+                        columns.push(html2);
+
+                    }else if(!_IsQFN && (propertyName == "loss" || propertyName == "markF")){
+                        if(propertyName == "loss"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                            }
+                        }
+                        if(propertyName == "markF"){
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                            }
+                        }
+                        columns.push(html2);
+                    }else{
+                        switch (propertyName) {
+                            case 'bin':
+                                var html2 = $('<td class="flag2" hidden><input type="text" class="flag"  name="' + ftStringName + '.ftResultDTO.' + propertyName + '" ></td>');
+                                columns.push(html2);
+                                break;
+                            case 'version':
+                            case 'id':
+                                var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                columns.push(html2);
+                                break;
+                            case 'yield':
+
+                                if (propertyValue === '0' || propertyValue === '') {
+                                    var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" name="' + ftStringName + '.ftResultDTO.yield"></td>');
+                                }
+                                else {
+                                    var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + parseFloat(propertyValue) * 100 + '%" name="' + ftStringName + '.ftResultDTO.yield"></td>');
+                                }
+                                columns.push(html2);
+                                break;
+                            case 'fail':
+                                if (propertyValue === '0' || propertyValue === '') {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" disabled name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                } else {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" disabled value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                }
+                                columns.push(html2);
+                                break;
+                            case 'sum':
+                                if (propertyValue === '0' || propertyValue === '') {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag sum"  name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                } else {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                }
+                                var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase()+ Bin1Quality.substr(1);
+                                if (Bin1Value == 0) {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="" ></td>');
+                                }
+                                else {
+                                    var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="' + Bin1Value + '"></td>');
+                                }
+                                columns.push(html2);
+                                columns.push($column);
+                                break;
+                            case 'other':
+                                if(propertyName == "other"){
+                                    if (propertyValue === '0' || propertyValue === '') {
+                                        var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                    } else {
+                                        var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                    }
+                                }
+                                columns.push(html2);
+                                break;
+                            default:
+                                if (propertyValue === '0' || propertyValue === '') {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                } else {
+                                    var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="' + ftStringName + '.ftResultDTO.' + propertyName + '"></td>');
+                                }
+                                columns.push(html2);
+                                break;
+                        }
                     }
+
                 }
             }
             return columns;
         }
-        var generateFTFinishStatictisColumns = function (ftStringName, ftResult, Bin1Quality, Bin1Value) {
+        var generateFTFinishStatictisColumns = function (ftStringName, ftResult, Bin1Quality, Bin1Value,_IsQFN) {
             var columns = [];
 
             for (var propertyName in ftResult) {//加载除了bin外的所有项
-                debugger;
+
                 var propertyValue = ftResult[propertyName];
-                switch (propertyName) {
-                    case 'site1Name':
-                    case 'site1Name':
-                    case 'site1Quality':
-                    case 'site2Name':
-                    case 'site2Quality':
-                    case 'site3Name':
-                    case 'site3Quality':
-                    case 'site4Name':
-                    case 'site4Quality':
-                    case 'site5Name':
-                    case 'site5Quality':
-                    case 'site6Name':
-                    case 'site6Quality':
-                    case 'site7Name':
-                    case 'site7Quality':
-                    case 'site8Name':
-                    case 'site8Quality':
-                    case 'site9Name':
-                    case 'site9Quality':
-                    case 'site10Name':
-                    case 'site10Quality':
-                    case 'site11Name':
-                    case 'site11Quality':
-                    case 'site12Name':
-                    case 'site12Quality':
-                    case 'site13Name':
-                    case 'site13Quality':
-                    case 'site14Name':
-                    case 'site14Quality':
-                    case 'site15Name':
-                    case 'site15Quality':
-                    case 'version':
-                    case 'id':
-                        var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
-                        columns.push(html2);
-                        break;
-                    case 'yield':
+                if(_IsQFN && (propertyName == "markF" || propertyName == "loss")){
+                    if(propertyName == "markF"){
                         if (propertyValue === '0' || propertyValue === '') {
-                            var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" name="ftFinishDTO.ftStatisticsDTO.yield"></td>');
-                        }
-                        else {
-                            var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + (parseFloat(propertyValue) * 100).toFixed(3) + '%" name="ftFinishDTO.ftStatisticsDTO.yield"></td>');
-                        }
-                        columns.push(html2);
-                        break;
-                    case 'fail':
-                        if (propertyValue === '0' || propertyValue === '') {
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" readonly="readonly" name="ftFinishDTO.ftStatisticsDTO.fail"></td>');
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
                         } else {
-                            var html2 = $('<td><input type="text" style="width:50px;"  name="ftFinishDTO.ftStatisticsDTO.fail" class="flag fail" readonly="readonly" value="' + propertyValue + '"></td>');
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
                         }
-                        columns.push(html2);
-                        break;
-                    case 'resultSum':
+                    }
+                    if(propertyName == "loss"){
                         if (propertyValue === '0' || propertyValue === '') {
-                            var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" name="ftFinishDTO.ftStatisticsDTO.resultSum"></td>');
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
                         } else {
-                            var html2 = $('<td><input type="text" style="width:50px;"  name="ftFinishDTO.ftStatisticsDTO.resultSum" class="flag sum" value="' + propertyValue + '"></td>');
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
                         }
-                        var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase()+ Bin1Quality.substr(1);
-                        if (Bin1Value == 0) {
+                    }
+                    columns.push(html2);
+
+                }else if(!_IsQFN && (propertyName == "loss" || propertyName == "markF")){
+                    if(propertyName == "loss"){
+                        if (propertyValue === '0' || propertyValue === '') {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        } else {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag loss" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        }
+                    }
+                    if(propertyName == "markF"){
+                        if (propertyValue === '0' || propertyValue === '') {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        } else {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        }
+                    }
+                    columns.push(html2);
+                }else {
+                    switch (propertyName) {
+                        case 'site1Name':
+                        case 'site1Name':
+                        case 'site1Quality':
+                        case 'site2Name':
+                        case 'site2Quality':
+                        case 'site3Name':
+                        case 'site3Quality':
+                        case 'site4Name':
+                        case 'site4Quality':
+                        case 'site5Name':
+                        case 'site5Quality':
+                        case 'site6Name':
+                        case 'site6Quality':
+                        case 'site7Name':
+                        case 'site7Quality':
+                        case 'site8Name':
+                        case 'site8Quality':
+                        case 'site9Name':
+                        case 'site9Quality':
+                        case 'site10Name':
+                        case 'site10Quality':
+                        case 'site11Name':
+                        case 'site11Quality':
+                        case 'site12Name':
+                        case 'site12Quality':
+                        case 'site13Name':
+                        case 'site13Quality':
+                        case 'site14Name':
+                        case 'site14Quality':
+                        case 'site15Name':
+                        case 'site15Quality':
+                        case 'version':
+                        case 'id':
+                            var html2 = $('<td hidden><input type="text" class="flag" value="' + propertyValue + '" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                            columns.push(html2);
+                            break;
+                        case 'yield':
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value=" %" name="ftFinishDTO.ftStatisticsDTO.yield"></td>');
+                            }
+                            else {
+                                var html2 = $('<td><input type="text" style="width:60px;" class="flag yield" value="' + (parseFloat(propertyValue) * 100).toFixed(3) + '%" name="ftFinishDTO.ftStatisticsDTO.yield"></td>');
+                            }
+                            columns.push(html2);
+                            break;
+                        case 'fail':
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag fail" readonly="readonly" name="ftFinishDTO.ftStatisticsDTO.fail"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;"  name="ftFinishDTO.ftStatisticsDTO.fail" class="flag fail" readonly="readonly" value="' + propertyValue + '"></td>');
+                            }
+                            columns.push(html2);
+                            break;
+                        case 'resultSum':
+                            if (propertyValue === '0' || propertyValue === '') {
+                                var html2 = $('<td><input type="text" style="width:50px;" class="flag sum" name="ftFinishDTO.ftStatisticsDTO.resultSum"></td>');
+                            } else {
+                                var html2 = $('<td><input type="text" style="width:50px;"  name="ftFinishDTO.ftStatisticsDTO.resultSum" class="flag sum" value="' + propertyValue + '"></td>');
+                            }
+                            var bin1QualityClass = "bin" + Bin1Quality[0].toUpperCase() + Bin1Quality.substr(1);
+                            /*   if (Bin1Value == 0) {
                             var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="" ></td>');
                         }
                         else {
                             var $column = $('<td><input type="text" style="width:50px;" class="flag1 '+ bin1QualityClass +'" value="' + Bin1Value + '"></td>');
-                        }
-                        columns.push(html2);
-                        columns.push($column);
+                        }*/
+                        columns.
+                        push(html2);
+                       // columns.push($column);
                         break;
                     case 'site1Num':
                     case 'site2Num':
@@ -2186,6 +2487,14 @@
                     case 'site14Num':
                     case 'site15Num':
                         break;
+                    case 'other':
+                        if (propertyValue === '0' || propertyValue === '') {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        } else {
+                            var html2 = $('<td><input type="text" style="width:50px;" class="flag binFail" value="' + propertyValue + '" name= "ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
+                        }
+                        columns.push(html2);
+                        break;
                     default:
                         if (propertyValue === '0' || propertyValue === '') {
                             var html2 = $('<td><input type="text" style="width:50px;" class="flag" value="" name="ftFinishDTO.ftStatisticsDTO.' + propertyName + '"></td>');
@@ -2195,6 +2504,7 @@
                         columns.push(html2);
                         break;
                 }
+              }
             }
             return columns;
         }
@@ -2252,7 +2562,7 @@
                     });
         }
 
-        var onComposedTestNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO, testDetailToClick) {
+        var onComposedTestNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO, testDetailToClick,IsQFN) {
 
             var $ftDetail = $('#ftDetail');
             var nodeName = ftNodeDTO.name;
@@ -2303,7 +2613,7 @@
                         for (var j = 0; j < tests.length; j++) {//ft1
 //                        debugger
                             $testTable.append($('<tr><td>' + testName + (parseInt(j) + 1) + '</td></tr>')); //加载表格名FT1
-                            $testTable.find('tr:last').append(generateComposedTestFTResultColumns(tests[j],sblDTOs[0].quality,tests[j]['bin'][0]));
+                            $testTable.find('tr:last').append(generateComposedTestFTResultColumns(tests[j],sblDTOs[0].quality,tests[j]['bin'][0],IsQFN));
                             $testTable.find('tr:last').append(generateBinColumns(tests[j]['bin'], sblDTOs));
                             registerOnFinalYieldChangedListener($testTable.find('tr:last'));
                         }
@@ -2315,7 +2625,7 @@
                         for (var j = 0; j < tests.length; j++) {//ft1
 //                        debugger
                             $testTable.append($('<tr><td> RT' + (parseInt(j) + 1) + '</td></tr>')); //加载表格名FT1
-                            $testTable.find('tr:last').append(generateComposedTestFTResultColumns(tests[j],sblDTOs[0].quality,tests[j]['bin'][0]));
+                            $testTable.find('tr:last').append(generateComposedTestFTResultColumns(tests[j],sblDTOs[0].quality,tests[j]['bin'][0],IsQFN));
                             $testTable.find('tr:last').append(generateBinColumns(tests[j]['bin'], sblDTOs));
                             registerOnFinalYieldChangedListener($testTable.find('tr:last'));
                         }
@@ -2332,7 +2642,7 @@
 
 
                 $tableFinalYield.find('tr:first').append(generateComposedTestFinalYieldColumnHeaders(finalYield));
-                $tableFinalYield.find('tr:last').append(generateComposedTestFinalYieldColumns(finalYield,sblDTOs[0].quality,finalYield['bin'][0]));
+                $tableFinalYield.find('tr:last').append(generateComposedTestFinalYieldColumns(finalYield,sblDTOs[0].quality,finalYield['bin'][0],IsQFN));
 
                 $tableFinalYield.find('tr:first').append(generateBinColumnHeaders(sblDTOs));
                 $tableFinalYield.find('tr:last').append(generateBinColumns(finalYield['bin'], sblDTOs));
@@ -2553,6 +2863,7 @@
 
                                 $.post('${pageContext.request.contextPath}/FTLotNodeOption/endFTNode.koala', listValue + $.param(json) + '&' + $ftDetail.find('form').serialize()).done(function (result) {
                                     if (result.success) {
+                                    	debugger;
                                         refreshDetailAndButtonList(checkedId);
                                         grid.getGrid().refresh();
                                         grid.message({
@@ -2572,17 +2883,19 @@
             });
         };
 
-        var onIQCNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO) {
-            var nodeName = ftNodeDTO.name;
+        var onIQCNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO, IsQFN) {//IQC详情
+            var _IsQFN = IsQFN;
+            var nodeName = ftNodeDTO.name;//节点名称
+            var $ftDetail = $('#ftDetail');
             buttonName = ftNodeDTO.name;
             var sblDTOs = ftNodeDTO.sblDTOs;
-            buttonName = buttonName.startsWith("Test-") ? "Test" : buttonName;
+            buttonName = buttonName.startsWith("Test-") ? "Test" : buttonName;//根据按钮名称获取页面
             $.get('<%=path%>/FT_' + buttonName + '.jsp').done(function (html) {
-                $('#ftDetail').html(html);
+                $ftDetail.html(html);//加载静态页面信息
                 var elm;
-                for (var index in ftNodeDTO) {
+                for (var index in ftNodeDTO) {//加载后台数据刷新页面
                     if (ftNodeDTO[index] != null) {
-                        elm = $('#ftDetail').find('#' + index + 'ID');
+                        elm = $ftDetail.find('#' + index + 'ID');
                         elm.val(ftNodeDTO[index]);
                     }
                 }
@@ -2592,49 +2905,51 @@
                     for (var index in ftNodeDTO[ftStringName]) {
                         var input = ftNodeDTO[ftStringName];
                         if (input[index] != null) {
-                            $('#ftDetail').find('#' + ftStringName + '_' + index + 'ID').val(input[index]);
+                            $ftDetail.find('#' + ftStringName + '_' + index + 'ID').val(input[index]);
                         }
                     }
                 }
 
                 // 组合测试流程结点
-                if (ftNodeDTO.hasOwnProperty(ftStringName) && ftNodeDTO[ftStringName] && ftNodeDTO[ftStringName].ftResultDTO) {
+                if (ftNodeDTO.hasOwnProperty(ftStringName) && ftNodeDTO[ftStringName] && ftNodeDTO[ftStringName].ftResultDTO) {//渲染页面动态元素，即数量统计
                     var ftResult = ftNodeDTO[ftStringName]['ftResultDTO'];
-                    $('#ftDetail').find('table:first tr:first').append(generateFTResultColumnHeaders(ftStringName, ftResult));
+                    $ftDetail.find('table:first tr:first').append(generateFTResultColumnHeaders(ftStringName, ftResult));//加载除bin别外的ftResult的表head
+                    //加载除bin别外的ftResult的表body,第一个参数表示具体节点对应DTO，主要和数据接口处ftIQCDTO相对应，以获取其数据，第二个参数是ftResultDTO，第三个参数是bin1的quality,第四个参数是Bin1的值
+                    $ftDetail.find('table:first tr:last').append(generateFTResultColumns(ftStringName, ftResult, sblDTOs[0].quality, ftResult['bin'][0], _IsQFN));
 
-                    $('#ftDetail').find('table:first tr:last').append(generateFTResultColumns(ftStringName, ftResult, sblDTOs[0].quality, ftResult['bin'][0]));
+                    $ftDetail.find('table:first tr:first').append(generateBinColumnHeaders(sblDTOs));//加载bin别明细的表头
+                    // 第一个参数是20个bin的数值，第二个是非-1的bin的具体信息
+                    $ftDetail.find('table:first tr:last').append(generateBinColumns(ftResult['bin'], sblDTOs));//加载bin别明细的表body
 
-                    $('#ftDetail').find('table:first tr:first').append(generateBinColumnHeaders(sblDTOs));
-
-                    $('#ftDetail').find('table:first tr:last').append(generateBinColumns(ftResult['bin'], sblDTOs));
-
-                    registerOnFinalYieldChangedListener($('#ftDetail').find('table:first'));
+                    registerOnFinalYieldChangedListener($ftDetail.find('table:first'));//计算yield 和  sum
                 }
 
+                //不同ftState状态对应不同页面的按钮使能
+
                 if (ftNodeDTO.ftState == 3) {
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(3)").css('display', 'none');
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(2)").removeClass('hidden');
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(3)").css('display', 'none');
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(2)").removeClass('hidden');
                     $('#recordAdd').attr('disabled', true);
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(1)").removeClass('hidden');
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(1)").attr('disabled', true);
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(2)").attr('disabled', true);
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(1)").removeClass('hidden');
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(1)").attr('disabled', true);
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(2)").attr('disabled', true);
 
                 }
                 if (ftNodeDTO.ftState == 2) {
-                    $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(3)").css('display', 'none');
-                    $('#ftDetail').find('#save' + buttonName + '').find("button~.hidden").removeClass('hidden');
-                    $('#ftDetail').find('input').attr('disabled', false);
-                    $('#ftDetail').find('.yield').attr('disabled', true);
-                    $('#ftDetail').find('.fail').attr('disabled', true);
+                    $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(3)").css('display', 'none');
+                    $ftDetail.find('#save' + buttonName + '').find("button~.hidden").removeClass('hidden');
+                    $ftDetail.find('input').attr('disabled', false);
+                    $ftDetail.find('.yield').attr('disabled', true);
+                    $ftDetail.find('.fail').attr('disabled', true);
                 }
                 if (ftNodeDTO.ftState == 1 || (ftNodeDTO.ftState == 3 )) {
-                    $('#ftDetail').find('input').attr('disabled', true);
-                    $('#ftDetail').find('textarea').attr('disabled', true);
-                    $('#ftDetail').find('select').attr('disabled', true);
+                    $ftDetail.find('input').attr('disabled', true);
+                    $ftDetail.find('textarea').attr('disabled', true);
+                    $ftDetail.find('select').attr('disabled', true);
                 }
 
 
-                $('#ftDetail').find('#reelCodeUpload').change(function (e) {
+                $ftDetail.find('#reelCodeUpload').change(function (e) {
                     e.preventDefault();
                     var fd = new FormData();
                     fd.append('excel', $('#reelCodeUpload')[0].files[0]);
@@ -2671,17 +2986,20 @@
                     });
                 });
 
-                $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(3)").on('click', function () {
+                //进站
+                $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(3)").on('click', function () {
                     //
-                    if (!Validator.Validate($('#ftDetail').find('form')[0], 3))return;
-                    startNode(checkedId, FTProcessDTO, nodeName);
+                    if (!Validator.Validate($ftDetail.find('form')[0], 3))return;//验证
+                    startNode(checkedId, FTProcessDTO, nodeName);//进站后操作
                 });
                 function collectData() {
+                   // var $ftDetail = $('#ftDetail');
+                    var $ftDetailTable = $ftDetail.find('table');
                     if ((ftNodeDTO.hasOwnProperty(ftStringName)) && (ftNodeDTO[ftStringName].hasOwnProperty('ftResultDTO'))) {
                         var n = 0;
                         var binValuetoSend = ftNodeDTO[ftStringName]['ftResultDTO']['bin'];
                         var binValueGet = [];
-                        $.each($('#ftDetail').find('table td .flag1'), function () {
+                        $.each($ftDetailTable.find('td .flag1'), function () {
                             var binValueDeal = this.value == false ? '0' : this.value;
                             binValueGet.push(binValueDeal);
                         });
@@ -2691,13 +3009,14 @@
                             }
                         }
 
-                        $('#ftDetail').find('table .flag2 input').val(binValuetoSend);
-                        $.each($('#ftDetail').find('table .flag'), function () {
+                        $ftDetailTable.find('.flag2 input').val(binValuetoSend);
+                        $.each($ftDetailTable.find('.flag'), function () {
                             this.value = this.value == false ? '0' : this.value;
                         });
-                        var yieldPostVal = $('#ftDetail').find('table .yield').val();
+                        var yieldPostVal = $ftDetailTable.find('.yield').val();
                         yieldPostVal = yieldPostVal === " %" ? '0' : yieldPostVal;
-                        var failPostVal = $('#ftDetail').find('table .fail').val();
+                        var failPostVal = $ftDetailTable.find('.fail').val();
+                        var otherPostVal = $ftDetailTable.find('.other').val();
                         // failPostVal = failPostVal == false ? '0' : failPostVal;
                         //$('#ftDetail').find('table .yield').val(parseInt(yieldPostVal)/100);
                         if (buttonName == 'IQC') {
@@ -2705,7 +3024,7 @@
                                 'processId': FTProcessDTO.id,
                                 'isModify': 0,
                                 'ftIQCDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
-                                'ftIQCDTO.ftResultDTO.fail': parseInt(failPostVal) / 100
+                                'ftIQCDTO.ftResultDTO.fail': parseInt(failPostVal) / 100,
                             };
                         } else if (buttonName == 'Baking') {
 
@@ -2718,21 +3037,22 @@
                     return json;
                 }
 
-                $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(2)").on('click', function () {
-                    if (!Validator.Validate($('#ftDetail').find('form')[0], 3))return;
+                $ftDetail.find('#save' + buttonName + '').find("button:nth-last-child(2)").on('click', function () {
+                    if (!Validator.Validate($ftDetail.find('form')[0], 3))return;
                     var json = collectData();
                     saveNode(checkedId, json, nodeName);
                 });
-                $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-of-type(1)").on('click', function () {
+                $ftDetail.find('#save' + buttonName + '').find("button:nth-last-of-type(1)").on('click', function () {
                     //	$('#ftDetail').find("button:nth-last-child(1),button:nth-last-child(2)").css('display','inline-block');
-                    if (!Validator.Validate($('#ftDetail').find('form')[0], 3))return;
+                    if (!Validator.Validate($ftDetail.find('form')[0], 3))return;
                     var json = collectData();
                     saveNodeThenEndNode(checkedId, json, nodeName);
                 });
             });
         };
 
-        var onBakingNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO) {
+        var onBakingNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO,IsQFN) {
+            var _IsQFN = IsQFN;
             var nodeName = ftNodeDTO.name;
             buttonName = ftNodeDTO.name;
             var sblDTOs = ftNodeDTO.sblDTOs;
@@ -2760,7 +3080,7 @@
                     });
                 });
                 var elm;
-                debugger
+
                 for (var index in ftNodeDTO) {
                     if (ftNodeDTO[index] != null) {
                         elm = $('#ftDetail').find('#' + index + 'ID');
@@ -2792,7 +3112,7 @@
                     var $tableFirst = $('#ftDetail').find('table:first');
                     var finalYield = ftNodeDTO[ftStringName]['ftResultDTO'];
                     $tableFirst.find('tr:first').append(generateFTResultColumnHeaders(ftStringName, finalYield));
-                    $tableFirst.find('tr:last').append(generateFTResultColumns(ftStringName, finalYield, sblDTOs[0].quality, finalYield['bin'][0]));
+                    $tableFirst.find('tr:last').append(generateFTResultColumns(ftStringName, finalYield, sblDTOs[0].quality, finalYield['bin'][0],_IsQFN));
                     $tableFirst.find('tr:first').append(generateBinColumnHeaders(sblDTOs));
                     $tableFirst.find('tr:last').append(generateBinColumns(finalYield['bin'], sblDTOs));
                     registerOnFinalYieldChangedListener($tableFirst);
@@ -2841,7 +3161,6 @@
                 var $startButton = $('#ftDetail').find('#save' + buttonName + '').find("button:nth-last-child(3)");
 
                 function checkBackingLimit(timeIn, timeLimit) {
-                    debugger
                     var now = new Date();
                     var timeElapsed = now.getTime() - timeIn.getTime();//两次时间差
                     var timeRemain = timeLimit * 3600 * 1000 - timeElapsed;//时间差
@@ -3071,7 +3390,7 @@
             });
         };
 
-        var onFinishNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO) {
+        var onFinishNodeClicked = function (checkedId, FTProcessDTO, ftNodeDTO,IsQFN) {
 
             var $ftDetail = $('#ftDetail');
             var nodeName = ftNodeDTO.name;
@@ -3117,7 +3436,7 @@
                     debugger;
                     $tableFinalYield.find('tr:first').append(generateFTResultColumnHeaders(ftStringName, finalYield));
 
-                    $tableFinalYield.find('tr:last').append(generateFTResultColumns(ftStringName, finalYield, sblDTOs[0].quality, finalYield['bin'][0]));
+                    $tableFinalYield.find('tr:last').append(generateFTResultColumns(ftStringName, finalYield, sblDTOs[0].quality, finalYield['bin'][0],IsQFN));
 
                     $tableFinalYield.find('tr:first').append(generateBinColumnHeaders(sblDTOs));
                     $tableFinalYield.find('tr:last').append(generateBinColumns(finalYield['bin'], sblDTOs));
@@ -3130,8 +3449,8 @@
                     //     $.get('${pageContext.request.contextPath}/FTLotNodeOption/quantityStatistics/' + FTProcessDTO.id + '.koala').done(function (statistics) {
 
                     var ftResult = ftNodeDTO[ftStringName]['ftStatisticsDTO'];
-                    $tableSecond.find('tr:first').append(generateFTResultColumnHeaders(ftStringName, ftResult));
-                    $tableSecond.find('tr:last').append(generateFTFinishStatictisColumns(ftStringName, ftResult, sblDTOs[0].quality, finalYield['bin'][0]));
+                    $tableSecond.find('tr:first').append(generateFTFinishStatictisColumnHeaders(ftStringName, ftResult));
+                    $tableSecond.find('tr:last').append(generateFTFinishStatictisColumns(ftStringName, ftResult, sblDTOs[0].quality, finalYield['bin'][0],IsQFN));
                     $tableSecond.find('.yield').attr('disabled', true);
                     //创建两个大小为15的数组
                     var site = 15;
@@ -3661,15 +3980,15 @@
                                     for (var index in item[i]) {
                                         if (["reelCode", "quality", "combinedLotNumber", "quantity", "partNumber", "packagingTimeStr", "dateCode", "fromReelCode"].indexOf(index) != -1) {
                                             if ((item[i][index] == null) || (item[i][index] == 'null')) {
-                                                var html3 = $('<td><input type="text" style="width:150px;" name="' + index + '" value=""></td>');
+                                                var html3 = $('<td><input type="text" style="width:150px;" name="' + index + '" value="" readonly="true"></td>');
                                             } else {
-                                                var html3 = $('<td><input type="text" style="width:150px;" name="' + index + '" value="' + item[i][index] + '" ></td>');
+                                                var html3 = $('<td><input type="text" style="width:150px;" name="' + index + '" value="' + item[i][index] + '" readonly="true"></td>');
                                             }
                                         } else {
                                             if ((index.search('DTO') > 0) && (item[i][index] != null)) {
-                                                var html3 = $('<td hidden><input type="text" name="' + index + '.id" value=' + item[i][index].id + '></td>');
+                                                var html3 = $('<td hidden><input type="text" name="' + index + '.id" value=' + item[i][index].id + ' readonly="true"></td>');
                                             } else {
-                                                var html3 = $('<td hidden><input type="text" name="' + index + '" value=' + item[i][index] + '></td>');
+                                                var html3 = $('<td hidden><input type="text" name="' + index + '" value=' + item[i][index] + ' readonly="true"></td>');
                                             }
                                         }
                                         $tableReelDisk.find('tr:last').append(html3);
@@ -3709,7 +4028,10 @@
                                 var includeProperties = {
                                     "quality": "fail",
                                     "other": "0",
-                                    "loss": "0"
+                                    //2016/07/13 Hongyu update
+                                    //"loss": "0"
+                                    "loss": "0",
+                                    "markF": "0"
                                 };
                                 var $table = dialog.find('#tableFailReelDisk');
                                 // 更新界面
@@ -3718,7 +4040,7 @@
                                     if (["reelCode", "quality"].indexOf(propertyName) != -1) {
                                         $table.find('thead tr:eq(0)').append($('<th style="width:120px">' + propertyName + '</th>'));
                                         $table.find('tbody tr:eq(0)').append($('<td style="width:120px">' + propertyValue + '</td>'));
-                                    } else if (["loss", "other"].indexOf(propertyName) != -1) {
+                                    } else if (["loss", "other","markF"].indexOf(propertyName) != -1) {
                                         $table.find('thead tr:eq(0)').append($('<th>' + propertyName + '</th>'));
                                         $table.find('tbody tr:eq(0)').append($('<td><input type="text" name="' + propertyName + '" style="width:50px;" value="' + propertyValue + '"></td>'));
                                     }
@@ -3755,6 +4077,8 @@
                                     var $tableSeparatedFailReelDisksBody = $table.find("tbody");
                                     var losses = $tableSeparatedFailReelDisksBody.find("[name=loss]");
                                     var others = $tableSeparatedFailReelDisksBody.find("[name=other]");
+                                    //2016/07/13 Hongyu add
+                                    var markFs = $tableSeparatedFailReelDisksBody.find("[name=markF]");
                                     var bins = [];
                                     for (var binIndex = 0; binIndex < 20; ++binIndex) {
                                         bins[binIndex] = $tableSeparatedFailReelDisksBody.find("[name=bin" + (binIndex + 1) + "]");
@@ -3764,7 +4088,10 @@
                                     for (var index = 0; index < numOfRows; ++index) {
                                         var separateBin = {
                                             "loss": losses[index].value,
-                                            "other": others[index].value
+                                            //2016/07/13 Hongyu update
+                                            //"other": others[index].value
+                                            "other": others[index].value,
+                                            "markF": markFs[index].value
                                         };
                                         var bin = [];
                                         for (var binIndex = 0; binIndex < 20; ++binIndex) {
@@ -5091,22 +5418,22 @@
                             var json = {
                                 'processId': FTProcessDTO.id,
                                 'isModify': 0,
-                                /*   'ftIQCDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
-                                 'ftIQCDTO.ftResultDTO.fail': parseInt(failPostVal)*/
+                              /*  'ftIQCDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
+                                'ftIQCDTO.ftResultDTO.fail': parseInt(failPostVal)*/
                             };
                         } else if (buttonName == 'Baking') {
                             var json = {
                                 'processId': FTProcessDTO.id,
                                 'isModify': 0,
-                                /*  'ftBakingDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
-                                 'ftBakingDTO.ftResultDTO.fail': parseInt(failPostVal)*/
+                              /*  'ftBakingDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
+                                'ftBakingDTO.ftResultDTO.fail': parseInt(failPostVal)*/
                             };
                         } else {
                             var json = {
                                 'processId': FTProcessDTO.id,
                                 'isModify': 0,
-                                /*   'ftFinishDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
-                                 'ftFinishDTO.ftResultDTO.fail': parseInt(failPostVal)*/
+                         /*       'ftFinishDTO.ftResultDTO.yield': parseInt(yieldPostVal) / 100,
+                                'ftFinishDTO.ftResultDTO.fail': parseInt(failPostVal)*/
                             };
                         }
                     } else {
@@ -5223,8 +5550,9 @@
             });
         };
         //here
-        var onClickedDispatcher = function (checkedId, FTProcessDTO, nodeName) {
-            var callbackMap = {
+        var onClickedDispatcher = function (checkedId, FTProcessDTO, nodeName,IsQFN) {
+            debugger;
+            var callbackMap = {//不同节点对应不同操作
                 "IQC": onIQCNodeClicked,
                 "Baking": onBakingNodeClicked,
                 "GuTest": onGuTestNodeClicked,
@@ -5235,16 +5563,16 @@
                 "OQC": onOQCNodeClicked,
                 "FQC": onFQCNodeClicked
             };
-            var ftNodeDTO = FTProcessDTO.ftNodeDTOs.filter(function (value) {
-                return value.name == nodeName
+            var ftNodeDTO = FTProcessDTO.ftNodeDTOs.filter(function (value) {//获取除了test站点之外的站点
+                return value.name == nodeName;
             })[0];
-            var callback = callbackMap[ftNodeDTO.name.startsWith("Test-") ? "Test" : ftNodeDTO.name];
+            var callback = callbackMap[ftNodeDTO.name.startsWith("Test-") ? "Test" : ftNodeDTO.name];//获取各站点操作函数
 
-            if (arguments[3]) {
-                var testDetailToClick = arguments[3];
-                callback(checkedId, FTProcessDTO, ftNodeDTO, testDetailToClick);
+            if (arguments[4]) {//如果有5个参数
+                var testDetailToClick = arguments[4];
+                callback(checkedId, FTProcessDTO, ftNodeDTO,testDetailToClick, IsQFN);
             } else {
-                callback(checkedId, FTProcessDTO, ftNodeDTO);
+                callback(checkedId, FTProcessDTO, ftNodeDTO,IsQFN);
             }
         };
 
@@ -5278,15 +5606,15 @@
                         var props = ['quality', 'reelCode', 'combinedLotNumber', 'quantity', 'partNumber', 'packagingTimeStr', 'dateCode', 'fromReelCode']
                         if (props.indexOf(prop) != -1) {
                             if (reelDisk[prop] == null) {
-                                var html3 = $('<td><input type="text" style="width:150px;"  value=" "></td>');
+                                var html3 = $('<td><input type="text" style="width:150px;"  value=" " readonly="true"></td>');
                             } else {
-                                var html3 = $('<td><input type="text" style="width:150px;"  value="' + reelDisk[prop] + '"></td>');
+                                var html3 = $('<td><input type="text" style="width:150px;"  value="' + reelDisk[prop] + '" readonly="true"></td>');
                             }
                         } else {
                             if ((prop.search('DTO') > 0) && (reelDisk[prop] != null)) {
-                                var html3 = $('<td hidden><input type="text" value=' + reelDisk[prop].id + '></td>');
+                                var html3 = $('<td hidden><input type="text" value=' + reelDisk[prop].id + ' readonly="true"></td>');
                             } else {
-                                var html3 = $('<td hidden><input type="text" value=' + reelDisk[prop] + '></td>');
+                                var html3 = $('<td hidden><input type="text" value=' + reelDisk[prop] + ' readonly="true"></td>');
                             }
                         }
                         row.append(html3);
@@ -5395,7 +5723,17 @@
                                     </div>
                                     <label class="control-label" style="width:50px;float:left;">状态:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
-                                        <input name="state" class="form-control" type="text" style="width:80px;" id="stateID"/>
+                                        <input name="currentState" class="form-control" type="text" style="width:100px;" list="currentStateList" id="currentStateID"/>
+                                        <datalist id="currentStateList">
+										  <option value="完结批次">
+										  <option value="进行批次">
+										  <option value="IQC">
+										  <option value="BAKING">
+										  <option value="TESTING">
+										  <option value="FQC">
+										  <option value="OQC">
+										  <option value="HOLD">
+										</datalist>
                                     </div>
 <!--                                     <label class="control-label" style="width:50px;float:left;">站点:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
@@ -5404,7 +5742,7 @@
                                     </div> -->
                                     <label class="control-label" style="width:50px;float:left;">Lot:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
-                                        <input name="lotNumber" class="form-control" type="text" style="width:80px;" id="lotNumberID"/>
+                                        <input name="lotNumber" class="form-control" type="text" style="width:180px;" id="internalLotNumberID"/>
                                     </div>
                                     <label class="control-label" style="width:50px;float:left;">时段:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">

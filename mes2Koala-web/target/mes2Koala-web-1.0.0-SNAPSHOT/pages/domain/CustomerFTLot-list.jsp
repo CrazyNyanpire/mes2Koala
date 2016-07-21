@@ -268,6 +268,12 @@
                                 sortable: true, sortName: 'shipmentProductNumber'
                             },
                             {
+                                title: '艾科内部产品型号',
+                                name: 'internalProductNumber',
+                                width: width,
+                                sortable: true, sortName: 'internalProductNumber'
+                            },
+                            {
                                 title: '客户批号',
                                 name: 'customerLotNumber',
                                 width: width,
@@ -327,7 +333,7 @@
                                 }
                             },
                             {title: 'Date Code', name: 'dateCode', width: width,sortable: true, sortName: 'dateCode'},
-                            {title: '进料日期', name: 'incomingDate', width: width,sortable: true, sortName: 'incomingDate'},
+                            {title: '来料日期', name: 'incomingDate', width: width,sortable: true, sortName: 'incomingDate'},
                             {
                                 title: '物料类型',
                                 name: 'materialType',
@@ -338,6 +344,8 @@
                                 }
                             },
                             {title: '保税类型', name: 'taxType', width: width,sortable: true, sortName: 'taxType'},
+                            {title: '下单人员', name: 'orderDate', width: width},
+                            {title: '下单时间', name: 'orderUser', width: width},
                             {title: 'WIre Bond', name: 'wireBond', width: width,sortable: true, sortName: 'wireBond'},
                             {title: 'Wafer Lot', name: 'waferLot', width: width,sortable: true, sortName: 'waferLot'},
                             {title: 'MFG PN', name: 'MFGPN', width: width,sortable: true, sortName: 'MFGPN'},
@@ -1173,30 +1181,75 @@
                         }
                     });
                 },
-                orderInBatches: function (ids, grid) {
-
+				orderInBatches: function (ids, grid) {
+					var self = this;
                     var data = [{name: 'ids', value: ids.join(',')}];
-                    $.post('${pageContext.request.contextPath}/CustomerFTLot/orderInBatches.koala', data).done(function (result) {
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog">'
+            	        	+'<div class="modal-content"><div class="modal-header"><button type="button" class="close" '
+            	        	+'data-dismiss="modal" aria-hidden="true">&times;</button>'
+            	        	+'<h4 class="modal-title">批量下单</h4></div><div class="modal-body"><form class="form-horizontal">'
+            	        	+'<div class="form-group"> <label class="col-lg-3 control-label">PID:</label>'
+            	            +'<div class="col-lg-9"><div class="btn-group select" id="internalProductNumberID"></div>'
+            	            +'<input type="hidden" id="internalProductNumberID_" name="ftInfoId" dataType="Require"/><span class="required">*</span>'
+            	            +'</div><form></div></div><div class="modal-footer">'
+            	        	+'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
+            	        	+'<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
+            	        	+'</div></div>');
+            	            dialog.modal({
+            	                keyboard:false
+            	            }).on({
+            	                'hidden.bs.modal': function(){
+            	                    $(this).remove();
+            	                }
+            	            })
+            	            $.get('${pageContext.request.contextPath}/CustomerFTLot/findPIDByCustomerFTLotId/'+ids[0]+'.koala').done(function (json) {
+	                          if (json.success) {
+	                              	json = json.data;
+	                              	var contents = [ {title : '请选择',value : ''} ];
+	                              	$.each(json,function(a){
+	                              		contents.push({title : json[a]['internalProductNumber'],value : json[a]['id']});
+	                              	})
+		                  	      	dialog.find('#internalProductNumberID').select({
+		                                  title: '请选择',
+		                                  contents: contents
+	                             	}).on('change',function(){
+	                             		dialog.find('#internalProductNumberID_').val($(this).getValue());
+	                             	});
+	                          } else {
+	                              dialog.find('.modal-content').message({
+	                                  type: 'error',
+	                                  content: result.errorMessage
+	                              });
+	                          }
+	                      	});
+            	            //self.initPage(dialog.find('form'));
+            	        dialog.find('#save').on('click',{grid: grid}, function(e){
+            	              if(!Validator.Validate(dialog.find('form')[0],3))return;
+            	              data.push({name:'ftInfoId',value:$("#internalProductNumberID_").val()});
+            	              $.post('${pageContext.request.contextPath}/CustomerFTLot/orderInBatches.koala', data).done(function (result) {
 
-                        if (result.success) {
-                            grid.data('koala.grid').refresh();
-                            grid.message({
-                                type: 'success',
-                                content: '批量下单成功' + result.data.message
-                            });
-                            var ftLotIds = result.data.ids;
-                            //注释行为调取显示Runcard的方法，待开发
-                            for(var n = 0; n < ftLotIds.length; n++){
-                                showRuncardInfoAfterReplaced(ftLotIds[n]);
-                            }
+                                  if (result.success) {
+                                	  dialog.modal('hide');
+                                      grid.data('koala.grid').refresh();
+                                      grid.message({
+                                          type: 'success',
+                                          content: '批量下单成功' + result.data
+                                      });
 
-                        } else {
-                            grid.message({
-                                type: 'error',
-                                content: result.errorMessage
-                            });
-                        }
-                    });
+                                      var ftLotIds = result.data.ids;
+                                      //注释行为调取显示Runcard的方法，待开发
+                                      for (var n = 0; n < ftLotIds.length; n++) {
+                                          showRuncardInfo(ftLotIds[n], 'AfterOrdered');
+                                      }
+                                  } else {
+                                      grid.message({
+                                          type: 'error',
+                                          content: result.errorMessage
+                                      });
+                                  }
+                              });
+            	        });
+                    
                 }
             }
             PageLoader.initSearchPanel();

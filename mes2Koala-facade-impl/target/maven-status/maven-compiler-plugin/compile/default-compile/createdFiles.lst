@@ -1,5 +1,6 @@
 org\seu\acetec\mes2Koala\facade\impl\DataCompensationFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\SpecialFormFacadeImpl.class
+org\seu\acetec\mes2Koala\facade\impl\sbl\SBLClientImpl.class
 org\openkoala\security\facade\impl\SecurityAccessFacadeImpl.class
 org\openkoala\security\org\facade\impl\assembler\OAUserPrivAssembler.class
 org\seu\acetec\mes2Koala\facade\impl\assembler\ProductionScheduleAssembler.class
@@ -16,6 +17,7 @@ org\seu\acetec\mes2Koala\facade\impl\assembler\FTReworkItemAssembler.class
 org\openkoala\organisation\facade\impl\assembler\OrganizationAssembler.class
 org\seu\acetec\mes2Koala\facade\impl\assembler\FT_StatisticsAssembler.class
 org\seu\acetec\mes2Koala\facade\impl\CPTransferStorageFacadeImpl.class
+org\seu\acetec\mes2Koala\facade\impl\assembler\CustomerCPLotAssembler$1.class
 org\seu\acetec\mes2Koala\facade\impl\ProductionScheduleFacadeImpl.class
 org\openkoala\organisation\facade\impl\assembler\EmployeeAssembler.class
 org\openkoala\security\org\facade\impl\assembler\MesStaffsAssembler.class
@@ -128,6 +130,7 @@ org\seu\acetec\mes2Koala\facade\impl\FTReworkFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\ExcelFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\IncrementNumberFacadeImpl.class
 org\openkoala\security\org\facade\impl\assembler\MesPositionAssembler.class
+org\seu\acetec\mes2Koala\facade\impl\TestDataReportOperationFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\SBLTemplateFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\FTLotOptionLogFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\assembler\FTNodeAssembler.class
@@ -148,6 +151,7 @@ org\seu\acetec\mes2Koala\facade\impl\assembler\TestProgramTemplateAssembler.clas
 org\seu\acetec\mes2Koala\facade\impl\assembler\CPInfoAssembler.class
 org\seu\acetec\mes2Koala\facade\impl\TestingTemplateFacadeImpl.class
 org\openkoala\security\facade\impl\assembler\UrlAccessResourceAssembler.class
+org\seu\acetec\mes2Koala\facade\impl\MESInfoFacadeImpl.class
 org\seu\acetec\mes2Koala\facade\impl\assembler\ReworkAssembler.class
 org\seu\acetec\mes2Koala\facade\impl\assembler\FTIQCNodeAssembler.class
 org\openkoala\security\org\facade\impl\MesPositionFacadeImpl.class

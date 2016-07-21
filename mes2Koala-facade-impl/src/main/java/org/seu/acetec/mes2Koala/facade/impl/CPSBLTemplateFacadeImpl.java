@@ -21,13 +21,16 @@ import org.openkoala.koala.commons.InvokeResult;
 import org.seu.acetec.mes2Koala.facade.dto.*;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.CPSBLTemplateAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.SBLTemplateAssembler;
+import org.seu.acetec.mes2Koala.facade.sbl.SBLClient;
 import org.seu.acetec.mes2Koala.facade.CPSBLTemplateFacade;
 import org.seu.acetec.mes2Koala.application.CPLotApplication;
 import org.seu.acetec.mes2Koala.application.CPSBLTemplateApplication;
 import org.seu.acetec.mes2Koala.application.InternalProductApplication;
 import org.seu.acetec.mes2Koala.core.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Named
+@Transactional
 public class CPSBLTemplateFacadeImpl implements CPSBLTemplateFacade {
 
 	@Inject
@@ -35,6 +38,9 @@ public class CPSBLTemplateFacadeImpl implements CPSBLTemplateFacade {
 
 	@Inject
 	private CPLotApplication cpLotApplication;
+
+	@Inject
+	private SBLClient sblClient;
 
 	private QueryChannelService queryChannel;
 
@@ -174,6 +180,7 @@ public class CPSBLTemplateFacadeImpl implements CPSBLTemplateFacade {
 			List<CPSBLTemplateDTO> cpSBLTemplateDTOs) {
 		InternalProduct internalProduct = internalProductApplication
 				.get(internalProductId);
+
 		// 先移除所有已经绑定的模板
 		List<CPSBLTemplate> oldSBLTemplates = application
 				.findByInternalProductId(internalProductId);
@@ -191,6 +198,7 @@ public class CPSBLTemplateFacadeImpl implements CPSBLTemplateFacade {
 			newSBLTemplate.setInternalProduct(internalProduct);
 		}
 		application.createAll(newSBLTemplates);
+		this.getCPSBLTemplatesJSON(internalProduct, cpSBLTemplateDTOs);
 		return InvokeResult.success();
 	}
 
@@ -217,26 +225,47 @@ public class CPSBLTemplateFacadeImpl implements CPSBLTemplateFacade {
 
 	@Override
 	public JSONArray getCPSBLTemplatesByLotId(Long id) {
-		CPLot cpLot = cpLotApplication.get(id);
-		List<CPSBLTemplate> list = application.findByInternalProductId(cpLot
-				.getCustomerCPLot().getCpInfo().getId());
+		InternalProduct internalProduct = this.internalProductApplication
+				.get(id);
+		List<CPSBLTemplate> list = application.findByInternalProductId(id);
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject;
 		for (CPSBLTemplate cpSBLTemplate : list) {
 			jsonObject = new JSONObject();
-			jsonObject
-					.put("TOID", cpLot.getCustomerCPLot().getCpInfo().getId());
+			jsonObject.put("TOID", internalProduct.getId());
 			jsonObject.put("BIN", cpSBLTemplate.getSite());
 			jsonObject.put("QUALITY", cpSBLTemplate.getQuality());
 			jsonObject.put("DOWN_LIMIT", cpSBLTemplate.getLowerLimit());
 			jsonObject.put("TOP_LIMIT", cpSBLTemplate.getUpperLimit());
 			jsonObject.put("BinType", cpSBLTemplate.getControlType());
 			jsonObject.put("StationName", cpSBLTemplate.getNode());
-			jsonObject.put("HorS", hOrS.get(cpSBLTemplate.getType()));
+			jsonObject.put("HorS", hOrS.get(cpSBLTemplate.getType().name()));
 			jsonObject.put("Scope", cpSBLTemplate.getTestRange());
 			jsonArray.add(jsonObject);
 		}
 		return jsonArray;
+	}
+
+	public String getCPSBLTemplatesJSON(InternalProduct internalProduct,
+			List<CPSBLTemplateDTO> list) {
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject;
+		for (CPSBLTemplateDTO cpSBLTemplate : list) {
+			jsonObject = new JSONObject();
+			jsonObject.put("TOID", internalProduct.getId());
+			jsonObject.put("BIN", cpSBLTemplate.getSite());
+			jsonObject.put("QUALITY", cpSBLTemplate.getQuality());
+			jsonObject.put("DOWN_LIMIT", cpSBLTemplate.getLowerLimit());
+			jsonObject.put("TOP_LIMIT", cpSBLTemplate.getUpperLimit());
+			jsonObject.put("BinType", cpSBLTemplate.getControlType());
+			jsonObject.put("StationName", cpSBLTemplate.getNode());
+			jsonObject.put("HorS", hOrS.get(cpSBLTemplate.getType().name()));
+			jsonObject.put("Scope", cpSBLTemplate.getTestRange());
+			jsonArray.add(jsonObject);
+		}
+		JSONObject res = new JSONObject();
+		res.put("date", jsonArray);
+		return sblClient.insertCPSBL(res.toString());
 	}
 
 	@SuppressWarnings("serial")

@@ -29,8 +29,7 @@ public class UEditorController {
 
     /**
      * 保存runcard信息
-     *
-     * @param json
+     * @param json 从前端传来的json数据 其中包含ftinfoId  currentSite totalSites
      * @return
      */
     @ResponseBody
@@ -81,10 +80,10 @@ public class UEditorController {
 
 
     /**
-     * 得到ue编辑器的页面
+     * 得到ue编辑器的页面,在页面中请求数据
      *
      * @param model
-     * @param ftinfoId
+     * @param ftinfoId    选中产品的id
      * @param currentSite 当前的站点类型
      * @param totalSites  所有的站点类型
      * @return
@@ -102,8 +101,8 @@ public class UEditorController {
     /**
      * 获取runcard对应站点的信息
      *
-     * @param ftinfoId
-     * @param currentSite
+     * @param ftinfoId       产品id
+     * @param currentSite    当前站点
      * @return
      */
     @ResponseBody
@@ -154,6 +153,12 @@ public class UEditorController {
     }
 
 
+    /**
+     * 获得所有站点各自是否保存的状态
+     * @param ftinfoId     产品id
+     * @param totalSites   所有的站点
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getRuncardFinishedStatus", method = RequestMethod.GET)
     public InvokeResult getRuncardFinishedStatus(@RequestParam String ftinfoId, @RequestParam String totalSites){
@@ -176,15 +181,14 @@ public class UEditorController {
 
         return FTRuncardfacade.getRuncardFinishedStatus(id,totalSitesArr);
 
-
     }
 
 
     /**
-     * 下单页面判断
+     * 在ft的下单页面请求该接口，此时传入的id是customerLotId
      *
      * @param customerLotId
-     * @param totalSites
+     * @param totalSites     所有的站点数据，用“，”进行风格
      * @return
      */
     @ResponseBody
@@ -253,7 +257,7 @@ public class UEditorController {
 
 
     /**
-     * 判断runcardinfo 是否已经签核
+     * 判断runcardinfo 是否已经签核  此时传入的ftinfoId 实际为 FTLotId
      *
      * @return
      */
@@ -267,6 +271,7 @@ public class UEditorController {
         }
         return InvokeResult.failure("还没有签核");
     }
+
 
     /**
      * 根据人员id返回部门信息    如果已经签核  返回上次签核的内容
@@ -305,16 +310,17 @@ public class UEditorController {
      */
     @ResponseBody
     @RequestMapping(value = "/saveSpecialForm", method = RequestMethod.POST)
-    public InvokeResult saveSpecialForm(@RequestParam String json) {
+    public InvokeResult saveSpecialForm(@RequestBody String json) {
         JSONObject jsonObject = JSONObject.fromObject(json);
         Long id = Long.valueOf(jsonObject.optString("ftinfoId"));
         String formType = jsonObject.optString("formType");
-        //TODO
-        return InvokeResult.success();
+        String data = jsonObject.optString("data");
+        return FTRuncardfacade.saveSpecialForm(id, formType, data);
     }
 
 
     /**
+     * 获得特殊表单的页面  数据的请求在页面中完成
      * @param model
      * @param ftinfoId
      * @return
@@ -326,6 +332,13 @@ public class UEditorController {
     }
 
 
+    /**
+     * 获得特殊表单的编辑页面
+     * @param model
+     * @param ftinfoId
+     * @param formType
+     * @return
+     */
     @RequestMapping(value = "/getSpecialFormEditorPage", method = RequestMethod.GET)
     public String getSpecialFormEditorPage(Model model, @RequestParam String ftinfoId, @RequestParam String formType) {
         model.addAttribute("ftinfoId", ftinfoId);
@@ -333,6 +346,12 @@ public class UEditorController {
         return "/ueditor/SpecialForm";
     }
 
+
+    /**
+     * 保存特殊表单的打印的状态
+     * @param json 前端传入的json数据
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/saveSpecialFormStaus", method = RequestMethod.POST)
     public InvokeResult saveSpecialFormStaus(@RequestBody String json) {
@@ -353,6 +372,12 @@ public class UEditorController {
         return FTRuncardfacade.saveSpecialFormStatus(ftinfoId, specialFormStatusVo);
     }
 
+
+    /**
+     * 获得特殊表单的打印的状态
+     * @param ftinfoId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getSpecialFormStatus", method = RequestMethod.GET)
     public InvokeResult getSpecialFormStatus(@RequestParam String ftinfoId) {
@@ -360,6 +385,11 @@ public class UEditorController {
         return FTRuncardfacade.getSpecialFormStatus(id);
     }
 
+    /**
+     * 获得占位符已经被替换以后的runcard的数据
+     * @param ftLotId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getRuncardInfoAfterReplaced", method = RequestMethod.GET)
     public InvokeResult getRuncardInfoAfterReplaced(@RequestParam String ftLotId) {
@@ -367,6 +397,14 @@ public class UEditorController {
         return InvokeResult.success(FTRuncardfacade.getRuncardInfoAfterReplaced(id));
     }
 
+
+    /**
+     * 根据state数据展现不同的runcard数据
+     * @param ftLotId
+     * @param specialFormStr
+     * @param state
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getRuncardInfoByState", method = RequestMethod.GET)
     public InvokeResult getRuncardInfoByState( @RequestParam String ftLotId, @RequestParam String specialFormStr, @RequestParam String state) {
@@ -377,6 +415,14 @@ public class UEditorController {
     }
 
 
+    /**
+     * 获得ue编辑器的页面  实际数据的请求在页面中完成
+     * @param model
+     * @param ftLotId
+     * @param specialFormStr
+     * @param state
+     * @return
+     */
     @RequestMapping(value = "/getPageForRuncard", method = RequestMethod.GET)
     public String getPageForRuncard(Model model, @RequestParam String ftLotId, @RequestParam String specialFormStr, @RequestParam String state) {
         model.addAttribute("ftLotId", ftLotId);

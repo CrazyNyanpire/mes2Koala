@@ -49,14 +49,14 @@ public class ReelDiskTransferStorageAssembler {
 		result.setApprove(reelDisk.getApprove());
 
 		result.setCustomerProductNumber(reelDisk.getFtLot().getCustomerFTLot()
-				.getFtInfo().getCustomerProductNumber());
+				.getCustomerProductNumber());
 		result.setShipmentProductNumber(reelDisk.getFtLot().getCustomerFTLot()
 				.getFtInfo().getShipmentProductNumber());
 		result.setCustomerPPO(reelDisk.getFtLot().getCustomerFTLot()
 				.getCustomerPPO());
 		result.setCustomerLotNumber(reelDisk.getFtLot().getCustomerFTLot()
 				.getCustomerLotNumber());
-		result.setCustomerProductNumber(reelDisk.getFtLot().getCustomerFTLot()
+		result.setCustomerProductRevision(reelDisk.getFtLot().getCustomerFTLot()
 				.getFtInfo().getCustomerProductRevision());
 
 		result.setCombinedLotDTO(FTLotAssembler.toDTO(reelDisk.getCombinedLot()));
@@ -65,7 +65,7 @@ public class ReelDiskTransferStorageAssembler {
 		// result.setParentsIntegrationDTOs(ReelDiskAssembler.toPageVos(reelDisk.getParentIntegrationIds()));
 		// result.setParentIntegrationIds(reelDisk.getParentIntegrationIds());
 		result.setFromReelCode(reelDisk.getFromReelCode());
-
+result.setLatPackageNo(reelDisk.getLatPackageNo());
 		if (reelDisk.getCombinedLot() != null)
 			result.setCombinedLotNumber(reelDisk.getCombinedLot()
 					.getInternalLotNumber());

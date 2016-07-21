@@ -461,6 +461,10 @@ var openCustomerDetailsPage = function(id){
             <div style="margin-left:15px;float:left;">
             <input name="englishName" class="form-control" type="text" style="width:180px;" id="englishNameID"  />
         </div>
+        <label class="control-label" style="width:100px;float:left;">客户编号:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="number" class="form-control" type="text" style="width:180px;" id="numberID"  />
+        </div>
             </div>
                   <div class="form-group">
           <label class="control-label" style="width:100px;float:left;">添加时间:&nbsp;</label>

@@ -128,7 +128,7 @@ public class ReelDiskTransferStorageController extends BaseController {
 	public InvokeResult latPrint(HttpServletResponse response,
 			@RequestParam String latPackageNo) {
 		// "20160322001"
-		if (latPackageNo == null || "".equals(latPackageNo)) {
+		if (latPackageNo == null || "".equals(latPackageNo)||"null".equals(latPackageNo)) {
 			return InvokeResult.failure("请选择打包过后的Lat！");
 		}
 		response.setContentType("application/binary;charset=ISO8859_1");

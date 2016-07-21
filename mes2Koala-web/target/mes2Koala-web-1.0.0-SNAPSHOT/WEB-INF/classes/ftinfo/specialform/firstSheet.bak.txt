@@ -1,0 +1,367 @@
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" colspan="2" rowspan="1" valign="top">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FT Traveler Sheet<br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" rowspan="1" style="word-break: break-all;" valign="top">
+                ■生产Production&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; □工程Engineering&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 核准日期(Release Date):
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="402">
+                客户代码(Customer Code):$customerCode$
+            </td>
+            <td style="word-break: break-all;" valign="top" width="402">
+                内部PO:
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="402">
+                客户产品型号：
+                <div class="barcodeArea" value="$productRevision$" />
+            </td>
+            <td style="word-break: break-all;" valign="top" width="402">
+                订单编号(P.O No.):
+                <div class="barcodeArea" value="$customerPPO$" />
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="402">
+                <p>
+                    艾科产品名称(ACETEC Product Name):
+                <div class="barcodeArea" value="$productName$" />
+                </p>
+                <p>
+                    <br/>
+                </p>
+            </td>
+            <td style="word-break: break-all;" valign="top" width="402">
+                进货日期(Receive Date): $receiveData$ <br/>
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="402"></td>
+            <td style="word-break: break-all;" valign="top" width="402">
+                进货数量(Receive Qty):
+                <div class="barcodeArea" value="$receiveQty$" />
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="402">
+                封装厂名称(Assy Company Name）:$assyCompanyName$
+            </td>
+            <td style="word-break: break-all;" valign="top" width="402">
+                封装批号(Assy Lot#):
+                <div class="barcodeArea" value="$assyLot$" />
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                <p>
+                    封装批号(Assy Lot#):
+                </p>
+                <p>
+                    <br/>
+                </p>
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                出货型号(Shipping Type):$shippingType$
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                客户批号(Assy Product Lot#): 
+                <div class="barcodeArea" value="$customerLot$" />
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                保税(Bond)/非保税(No-Bond）: $taxType$
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                <p>
+                    艾科批号(ACETEC Lot#):
+                <div class="barcodeArea" value="$acetecLot$" />
+                </p>
+                <p>
+                    <br/>
+                </p>
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                包裝型式(Packing Type): $packingType$
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                日期码(Date Code): $dataCode$ <br/>
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                计划签字(Signature of user):
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                芯片尺寸(Package Size): $packageSize$ <br/>
+            </td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                工程师签字(Signature of user):
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                品管签字(Signature of user):
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                生管签字(Signature of user):
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="2" valign="top">
+                预设制程<br/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table data-sort="sortDisabled">
+    <tbody>
+        <tr class="firstRow">
+            <td style="word-break: break-all;" valign="top" width="48">
+                艾科制程名称(ACETEC Process)
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                &nbsp;页码(Page#)
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                客户站别(Customer Process)
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                Input Qty
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                良品<br/>Pass Qty
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                不良品<br/>Fail Qty
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                重量<br/>Weight（g）
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                Loss
+            </td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top" width="48">
+                合批数
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                分批数<br/>
+            </td>
+            <td style="word-break: break-all;" valign="top" width="48">
+                经办人 Signature
+            </td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                Incoming
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                IQC
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                BAKE
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                EQC
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                FT
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                LAT
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                FVI
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                Packing
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" valign="top" width="48">
+                FQC
+            </td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+            <td valign="top" width="48" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                OQC
+            </td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                Shipping
+            </td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+            <td rowspan="1" colspan="1" valign="top" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                合批批号：
+            </td>
+            <td rowspan="1" colspan="11" valign="top"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="1" valign="top">
+                分批批号：
+            </td>
+            <td rowspan="1" colspan="11" valign="top" style="word-break: break-all;"></td>
+        </tr>
+        <tr>
+            <td style="word-break: break-all;" rowspan="1" colspan="12" valign="top">
+                Notes:
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br/>
+</p>

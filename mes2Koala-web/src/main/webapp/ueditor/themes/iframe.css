@@ -1,1 +1,17 @@
-/*可以在这里添加你自己的css*/
+@media print {
+ .nextpage {page-break-after:always;}
+}
+td{
+	border:1px solid #333!important;
+}
+table{
+	width:960px!important;
+	border-collapse: collapse;
+	page-break-after: auto;
+	
+}
+*{
+	margin:0;
+	padding:0;
+	font-size:12px;
+}

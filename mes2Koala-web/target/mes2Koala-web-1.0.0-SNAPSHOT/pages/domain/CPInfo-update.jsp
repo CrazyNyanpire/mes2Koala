@@ -128,8 +128,7 @@ function inputfile() {
         <label class="col-lg-3 control-label">所属间接客户:</label>
         <div class="col-lg-9">
             <div class="btn-group select" id="customerIndirectDTOID"></div>
-            <input type="hidden" id="customerIndirectDTOID_" name="customerIndirectDTO.id" dataType="Require"/>
-            <span class="required">*</span>
+            <input type="hidden" id="customerIndirectDTOID_" name="customerIndirectDTO.id"/>
         </div>
     </div>
 

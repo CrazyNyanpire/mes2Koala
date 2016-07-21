@@ -73,7 +73,7 @@ public class TestSys extends MES2AbstractEntity {
 		this.testType = testType;
 	}
 
-	@OneToMany( mappedBy = "testSys", fetch = FetchType.EAGER )
+	@OneToMany( mappedBy = "testSys", fetch = FetchType.LAZY )
 	@OrderBy("planedStartTimestamp ASC")
 	public List<ProductionSchedule> getProductions() {
 		return productions;

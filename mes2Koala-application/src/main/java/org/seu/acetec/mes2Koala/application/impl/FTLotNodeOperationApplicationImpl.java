@@ -174,6 +174,21 @@ public class FTLotNodeOperationApplicationImpl implements
 		ftRuncard.setFtLot(child);
 		ftRuncard.save();
 		ftProcessApplication.createFTProcess(child.getId(), ftLotIds[0]); // 根据第一个FTLot创建FTProcess
+		//2016/7/5 Hongyu add-start 批量排产合批子批排产信息删除
+		for (int index = 1; index < ftLotIds.length; index++) {
+			FTLot ftLot = ftLotApplication.get(ftLotIds[index]);
+	        for (FTNode ftNode : ftLot.getFtProcess().getFtNodes()) {
+				if (ftNode instanceof FTComposedTestNode) {
+					for (FTProductionSchedule ftProductionSchedule : ((FTComposedTestNode) ftNode)
+							.getFtProductionSchedules()) {
+						ftProductionSchedule.setLogic(1);
+						productionScheduleApplication
+								.update(ftProductionSchedule);
+					}
+				}
+			}
+		}
+        //2016/7/5 Hongyu add-end
 	}
 
 	@Override
@@ -189,7 +204,10 @@ public class FTLotNodeOperationApplicationImpl implements
 		List<FTNode> ftNodes = process.getFtNodes();
 		Collections.sort(ftNodes);
 		// 获取future Hold 节点名称
-		String futureHoldNodes = this.futureHoldNodes(ftLot.getId());
+		String futureHoldNodes = "";
+		if(ftLot.getIsFuture() != null && ftLot.getIsFuture()){
+			futureHoldNodes =  ftLot.getFutureFlow();
+		}
 		for (int index = 0; index < ftNodes.size(); index++) {
 			FTNode ftNode = ftNodes.get(index);
 			switch (ftNode.getState()) {

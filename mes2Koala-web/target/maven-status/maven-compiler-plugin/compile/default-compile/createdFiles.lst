@@ -41,6 +41,7 @@ org\seu\acetec\mes2Koala\web\controller\businesslog\LogFilter.class
 org\seu\acetec\mes2Koala\web\controller\LabelPlanController.class
 org\openkoala\security\shiro\filter\AnyRoleAuthorizationFilter.class
 org\openkoala\organisation\web\controller\JobController.class
+org\seu\acetec\mes2Koala\web\filter\RightFilter.class
 org\seu\acetec\mes2Koala\web\controller\BaseController.class
 org\openkoala\security\shiro\realm\CustomAuthoringRealm.class
 org\openkoala\security\shiro\extend\CustomPathMatchingFilterChainResolver.class
@@ -70,6 +71,7 @@ org\seu\acetec\mes2Koala\web\controller\CPReworkController.class
 org\openkoala\security\shiro\CurrentUser.class
 org\seu\acetec\mes2Koala\web\controller\TestingTemplateController.class
 org\seu\acetec\mes2Koala\web\controller\CustomerCPLotController.class
+org\seu\acetec\mes2Koala\web\controller\MESInfoController.class
 org\seu\acetec\mes2Koala\web\controller\FTTestController.class
 org\seu\acetec\mes2Koala\web\controller\businesslog\DefaultBusinessLogController.class
 org\openkoala\security\controller\PageElementController.class
@@ -80,6 +82,7 @@ org\seu\acetec\mes2Koala\web\controller\FTInfoController.class
 org\seu\acetec\mes2Koala\web\controller\BomUseController.class
 org\openkoala\security\shiro\realm\ShiroUser.class
 org\openkoala\security\listener\SecurityDBInitListener.class
+org\seu\acetec\mes2Koala\web\controller\TestDataReportController.class
 org\seu\acetec\mes2Koala\web\controller\TestProgramTemplateController.class
 org\openkoala\security\controller\PermissionController.class
 org\seu\acetec\mes2Koala\web\controller\FTReworkItemController.class

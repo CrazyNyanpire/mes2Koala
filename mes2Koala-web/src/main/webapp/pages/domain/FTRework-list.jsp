@@ -55,11 +55,11 @@ $(function (){
 	        var contents = [ {title : '请选择',value : ''} ];	 
 	        contents.push( {title : 'FT' ,value : 'FT'} );
 	        contents.push( {title : 'CP' ,value : 'CP'} );
-	        form.find('#typeID').select({
+	        form.find('#categoryID').select({
                 title: '请选择',
                 contents: contents
            	}).on('change',function(){
-               form.find('#typeID_').val($(this).getValue());
+               form.find('#categoryID_').val($(this).getValue());
            	});
 	        var contents = [ {title : '请选择',value : ''} ];	 
 	        form.find('#reworkCustomerID').select({
@@ -89,7 +89,9 @@ $(function (){
            	}).on('change',function(){
                form.find('#reworkEquipmentID_').val($(this).getValue());
            	});
-	        var contents = [ {title : '请选择',value : ''} ];	 
+	        var contents = [ {title : '请选择',value : ''} ];	
+	        contents.push( {title : '完成' ,value : '完成'} );
+	        contents.push( {title : '未完成' ,value : '未完成'} );
 	        form.find('#statusID').select({
                 title: '请选择',
                 contents: contents
@@ -99,12 +101,12 @@ $(function (){
 		},
 	    initGridPanel: function(){
 	         var self = this;
-	         var width = 150;
+	         var width = 120;
 	         return grid.grid({
 	                identity:"id",
 	                buttons: [
 	                        {content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>审批</button>', action: 'add'},
-	                        {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-plus"><span>导出Excel</button>', action: 'export'},
+	                        {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-plus"><span>导出Excel</button>', action: 'exportExcel'},
 /* 	                        {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>', action: 'modify'},
 	                        {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>', action: 'delete'} */
 	                    ],
@@ -119,6 +121,9 @@ $(function (){
 	                                     return h;
                                  	 }
 								 },
+								 { title: '客户编号', name: 'reworkCustomer', width: width},
+								 { title: '产品型号', name: 'product', width: width},
+								 { title: '机台编号', name: 'reworkEquipment', width: width},
        	                         { title: '提交日期', name: 'reworkDate', width: width},
        	                         { title: '艾科批号', name: 'lotNo', width: width},
        	                         { title: '完成状态', name: 'approve', width: width ,render: function (rowdata, name, index)
@@ -167,7 +172,9 @@ $(function (){
 	                        }
 	                       self.modify(indexs[0], $this);
 	                    },
-	                   'export': function(event, data){
+	                   'exportExcel': function(event, data){
+	                	   var indexs = data.data;
+	                       var $this = $(this);
 	                	   self.exportExcel(indexs[0], $this);
 	                   },
 	                   'delete': function(event, data){
@@ -312,13 +319,18 @@ $(function (){
 	    	});
 	    },
 	    exportExcel: function(ids, grid){
-	    	$.post('${pageContext.request.contextPath}/FTRework/delete.koala', data).done(function(result){
+	    	if(!Validator.Validate(document.getElementById("<%=formId%>"),3))return;
+            var params = {};
+            form.find('input').each(function(){
+                var $this = $(this);
+                var name = $this.attr('name');
+                if(name){
+                    params[name] = $this.val();
+                }
+            });
+	    	$.post('${pageContext.request.contextPath}/Rework/exportExcel.koala', params).done(function(result){
 	                        if(result.success){
-	                            grid.data('koala.grid').refresh();
-	                            grid.message({
-	                                type: 'success',
-	                                content: '删除成功'
-	                            });
+	                        	window.open(result['data']);
 	                        }else{
 	                            grid.message({
 	                                type: 'error',
@@ -437,22 +449,24 @@ var openDetailsPage = function(id,type){
          <div class="form-group">
           	<label class="control-label" style="width:100px;float:left;">重工单类型:&nbsp;</label>
 	            <div style="margin-left:15px;float:left;">
-	            <div class="btn-group select" id="typeID"></div>
-	            <input name="type" type="hidden" id="typeID_"  />
+	            <div class="btn-group select" id="categoryID"></div>
+	            <input name="category" type="hidden" id="categoryID_"  />
 	        </div>
 	        <label class="control-label" style="width:100px;float:left;">客户编号:&nbsp;</label>
-	            <div style="margin-left:15px;float:left;">
-	            <div class="btn-group select" id="reworkCustomerID"></div>
-	            <input name="reworkCustomer" type="hidden" id="reworkCustomerID_"  />
+ 	            <div style="margin-left:15px;float:left;">
+<!--	            <div class="btn-group select" id="reworkCustomerID"></div>
+	            <input name="reworkCustomer" type="hidden" id="reworkCustomerID_"  /> -->
+	            <input name="reworkCustomer" type="text" class="form-control" style="width:180px;" id="reworkCustomerID_"  />
 	        </div>
 	        <label class="control-label" style="width:100px;float:left;">产品型号:&nbsp;</label>
-	            <div style="margin-left:15px;float:left;">
-	            <div class="btn-group select" id="reworkProductID"></div>
-	            <input name="reworkProduct" type="hidden" id="reworkProductID_"  />
+ 	            <div style="margin-left:15px;float:left;">
+<!--	            <div class="btn-group select" id="reworkProductID"></div>
+	            <input name="reworkProduct" type="hidden" id="reworkProductID_"  /> -->
+	            <input name="reworkProduct" type="text" class="form-control" style="width:180px;" id="reworkProductID_"  />
 	        </div>
             <label class="control-label" style="width:100px;float:left;">艾科批号:&nbsp;</label>
             	<div style="margin-left:15px;float:left;">
-            	<input name="reworkLot" class="form-control" type="text" style="width:180px;" id="reworkLotID"  />
+            	<input name="lotNo" class="form-control" type="text" style="width:180px;" id="lotNoID"  />
         	</div>
          </div>
          <div class="form-group">

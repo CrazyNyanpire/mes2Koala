@@ -1,5 +1,10 @@
 package org.seu.acetec.mes2Koala.facade.impl;
 
+import net.sf.ezmorph.bean.MorphDynaBean;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
@@ -11,14 +16,24 @@ import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 import org.openkoala.koala.commons.InvokeResult;
 import org.seu.acetec.mes2Koala.application.CPLotApplication;
+import org.seu.acetec.mes2Koala.application.CPLotOptionLogApplication;
 import org.seu.acetec.mes2Koala.application.CPNodeApplication;
+import org.seu.acetec.mes2Koala.application.CPRuncardTemplateApplication;
 import org.seu.acetec.mes2Koala.application.CustomerCPLotApplication;
+import org.seu.acetec.mes2Koala.application.ProductionScheduleApplication;
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import org.seu.acetec.mes2Koala.application.impl.CPProcessApplicationImpl;
 import org.seu.acetec.mes2Koala.core.common.BeanUtils;
 import org.seu.acetec.mes2Koala.core.domain.CPLot;
+import org.seu.acetec.mes2Koala.core.domain.CPLotOptionLog;
 import org.seu.acetec.mes2Koala.core.domain.CPNode;
 import org.seu.acetec.mes2Koala.core.domain.CPProcess;
+import org.seu.acetec.mes2Koala.core.domain.CPProductionSchedule;
+import org.seu.acetec.mes2Koala.core.domain.CPRuncard;
+import org.seu.acetec.mes2Koala.core.domain.CPRuncardTemplate;
+import org.seu.acetec.mes2Koala.core.domain.CPTestingNode;
 import org.seu.acetec.mes2Koala.core.domain.CPWafer;
+import org.seu.acetec.mes2Koala.core.domain.TestProgram;
 import org.seu.acetec.mes2Koala.core.enums.CPNodeState;
 import org.seu.acetec.mes2Koala.core.enums.TestTypeForWms;
 import org.seu.acetec.mes2Koala.facade.CPLotFacade;
@@ -26,6 +41,7 @@ import org.seu.acetec.mes2Koala.facade.CPTransferStorageFacade;
 import org.seu.acetec.mes2Koala.facade.CustomerCPLotFacade;
 import org.seu.acetec.mes2Koala.facade.IncrementNumberFacade;
 import org.seu.acetec.mes2Koala.facade.dto.CPLotDTO;
+import org.seu.acetec.mes2Koala.facade.dto.CPWaferDTO;
 import org.seu.acetec.mes2Koala.facade.dto.ReelDiskTransferStorageDTO;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.CPLotAssembler;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +78,16 @@ public class CPTransferStorageFacadeImpl implements CPTransferStorageFacade {
 
 	@Inject
 	private CPProcessApplicationImpl processApplication;
-	
+
+	@Inject
+	private CPRuncardTemplateApplication cpRuncardTemplateApplication;
+
+	@Inject
+	private ProductionScheduleApplication productionScheduleApplication;
+
+	@Inject
+	private CPLotOptionLogApplication cpLotOptionLogApplication;
+
 	private static String REWORKED = "已重工";
 
 	private QueryChannelService queryChannel;
@@ -76,35 +101,61 @@ public class CPTransferStorageFacadeImpl implements CPTransferStorageFacade {
 	}
 
 	@Override
+	@Transactional
 	public InvokeResult reworkLot(CPLotDTO cpLotDTO) {
 		CPLot parentCpLot = cpLotApplication.get(cpLotDTO.getId());
-		if(REWORKED.equals(parentCpLot.getCurrentState())){
-			throw new RuntimeException("此批次已重工建批");
+		if (REWORKED.equals(parentCpLot.getCurrentState())) {
+			 //throw new RuntimeException("此批次已重工建批");
 		}
+		SaveBaseBean sbb = new SaveBaseBean();
+		BeanUtils.copyProperties(cpLotDTO, sbb);
 		parentCpLot.setCurrentState(REWORKED);
 		CPLot cpLot = new CPLot();
-		BeanUtils.copyProperties(parentCpLot, cpLot);
-		
+		cpLot.setSourceParentSeparationId(parentCpLot.getId());
+		cpLot.setSourceParentSeparationNo(parentCpLot.getInternalLotNumber());
+		BeanUtils.copyProperties(parentCpLot, cpLot, "id");
 		List<CPWafer> waferList = new ArrayList<CPWafer>();
 		CPWafer newCpWafer;
-		for(CPWafer cpWafer : parentCpLot.getCpWafers()){
+		for (CPWafer cpWafer : parentCpLot.getCpWafers()) {
 			newCpWafer = new CPWafer();
-			BeanUtils.copyProperties(cpWafer, newCpWafer);
+			BeanUtils.copyProperties(cpWafer, newCpWafer, "id");
 			newCpWafer.setLastModifyTimestamp(new Date());
 			newCpWafer.setLastModifyEmployNo(cpLotDTO.getLastModifyEmployNo());
-			newCpWafer.setId(null);
+			newCpWafer.setCpLot(cpLot);
 			waferList.add(newCpWafer);
 		}
 		cpLot.setCpWafers(waferList);
-		cpLot.setId(null);
-		cpLot.setInternalLotNumber(this.createReworkLotNo(parentCpLot
-				.getInternalLotNumber()));
+		cpLot.setQuantity((long) waferList.size());
 		try {
-			//设置process为null，重新创建process
-			cpLot.setCpProcess(null);
+
+			CPLot cpLotNo = cpLotApplication.findOne("select o from CPLot o where o.internalLotNumber like '"+parentCpLot
+					.getInternalLotNumber()+"%' order by o.internalLotNumber desc");
+			cpLot.setInternalLotNumber(this.createReworkLotNo(cpLotNo.getInternalLotNumber()));
 			customerCPLotApplication.orderWithOutWMS(parentCpLot
 					.getCustomerCPLot().getId(), cpLot);
 			cpLotApplication.update(parentCpLot);
+			cpLotApplication.create(cpLot);// 创建CPLot
+
+			CPRuncardTemplate cpRuncardTemplate = cpRuncardTemplateApplication
+					.findByInternalProductId(cpLot.getCustomerCPLot()
+							.getCpInfo().getId());
+			CPRuncard cpRuncard = customerCPLotApplication
+					.createCPRuncard(cpRuncardTemplate);
+			cpRuncard.setCpLot(cpLot);
+			BeanUtils.copyProperties(sbb, cpRuncard);
+			cpRuncard.save();
+
+			for (CPNode cpNode : cpLot.getCpProcess().getCpNodes()) {
+				if (cpNode instanceof CPTestingNode) {
+					productionScheduleApplication.createNewCpSchedule(null,
+							(CPTestingNode) cpNode);
+				}
+			}
+			// 操作记录
+			cpLotOptionLogApplication.createCPNode(cpLot, cpLot.getCpProcess()
+					.getNowNode(), "重工建批", "重工建批");
+			cpLotOptionLogApplication.createCPNode(parentCpLot, parentCpLot
+					.getCpProcess().getNowNode(), "重工建批", "重工建批");
 			return InvokeResult.success();
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -320,6 +371,8 @@ public class CPTransferStorageFacadeImpl implements CPTransferStorageFacade {
 			conditionVals.add(MessageFormat.format("%{0}%",
 					cpLotDTO.getDiskContent()));
 		}
+		jpql.append(" and (_cpLot.showFlag = false or _cpLot.showFlag is null)");
+		jpql.append(" order by _cpLot.createTimestamp desc");
 		Page<CPLot> pages = getQueryChannelService()
 				.createJpqlQuery(jpql.toString()).setParameters(conditionVals)
 				.setPage(currentPage, pageSize).pagedList();

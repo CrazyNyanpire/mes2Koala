@@ -143,13 +143,13 @@ public class CPProcessApplicationImpl extends GenericMES2ApplicationImpl<CPProce
      * @param processContent
      * @return
      */
-    private String[] extractNodeNamesByProcessTemplateContent(String processContent) {
+    public String[] extractNodeNamesByProcessTemplateContent(String processContent) {
         if (Strings.isNullOrEmpty(processContent))
             return new String[0];
         return processContent.split("\\|");
     }
     
-    private List<CPNode> generateCPNodes(CPProcess process,
+    public List<CPNode> generateCPNodes(CPProcess process,
 								        int startIndex,
 								        String[] nodeNames) {
 		List<CPNode> cpNodes = new ArrayList<CPNode>();
@@ -166,11 +166,11 @@ public class CPProcessApplicationImpl extends GenericMES2ApplicationImpl<CPProce
 		return cpNodes;
 	}
     
-    private void bindProductionSchedule(Collection<CPNode> cpNodes) {
+    public void bindProductionSchedule(Collection<CPNode> cpNodes) {
         // 绑定ProductionSchedule
         for (CPNode cpNode : cpNodes) {
             if (cpNode instanceof CPTestingNode) {
-                productionScheduleApplication.createNewCpSchedule(null, cpNode.getId());
+                productionScheduleApplication.createNewCpSchedule(null, (CPTestingNode)cpNode);
 //                break;
             }
         }

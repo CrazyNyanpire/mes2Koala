@@ -2,6 +2,9 @@ package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.List;
 
 /**
@@ -49,8 +52,8 @@ public class CPLot extends InternalLot {
         this.cpProcess = cpProcess;
     }
 
-    @OneToMany(mappedBy = "cpLot", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    //@OneToMany(mappedBy = "cpLot", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cpLot", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     public List<CPWafer> getCpWafers() {
         return cpWafers;
     }

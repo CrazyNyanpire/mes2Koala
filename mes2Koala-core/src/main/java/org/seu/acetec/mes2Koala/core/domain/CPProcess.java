@@ -19,6 +19,7 @@ public class CPProcess extends Process {
     private CPLot cpLot;
     private List<CPNode> cpNodes;
     private Boolean isTransferStorage;
+    private CPNode nowNode;
 
     /**
      * 根据
@@ -60,5 +61,15 @@ public class CPProcess extends Process {
 
 	public void setIsTransferStorage(Boolean isTransferStorage) {
 		this.isTransferStorage = isTransferStorage;
+	}
+
+	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "NOW_NODE_ID")
+	public CPNode getNowNode() {
+		return nowNode;
+	}
+
+	public void setNowNode(CPNode nowNode) {
+		this.nowNode = nowNode;
 	}
 }

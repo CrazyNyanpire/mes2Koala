@@ -11,6 +11,7 @@ import org.seu.acetec.mes2Koala.application.CPLotApplication;
 import org.seu.acetec.mes2Koala.application.CPLotOptionLogApplication;
 import org.seu.acetec.mes2Koala.application.CustomerCPLotApplication;
 import org.seu.acetec.mes2Koala.application.InternalProductApplication;
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import org.seu.acetec.mes2Koala.core.domain.*;
 import org.seu.acetec.mes2Koala.core.enums.CustomerLotState;
 import org.seu.acetec.mes2Koala.core.enums.TestTypeForWms;
@@ -25,6 +26,7 @@ import org.seu.acetec.mes2Koala.facade.impl.assembler.CPLotAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.CustomerCPLotAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.FTInfoAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.InternalProductAssembler;
+import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -100,6 +102,7 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 	}
 
 	@Override
+	@Transactional
 	public Page<CPCustomerLotPageVo> pageQueryCustomerCPLot(
 			CustomerCPLotDTO queryVo, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();
@@ -133,6 +136,29 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 			conditionVals.add(MessageFormat.format("%{0}%",
 					queryVo.getCustomerLotNumber()));
 		}
+		if (queryVo.getCustomerNumber() != null
+				&& !"".equals(queryVo.getCustomerNumber())) {
+			jpql.append(" and _customerCPLot.customerNumber like ?");
+			conditionVals.add(MessageFormat.format("%{0}%",
+					queryVo.getCustomerNumber()));
+		}
+		if (queryVo.getPackageNumber() != null
+				&& !"".equals(queryVo.getPackageNumber())) {
+			jpql.append(" and _customerCPLot.packingLot like ?");
+			conditionVals.add(MessageFormat.format("%{0}%",
+					queryVo.getPackageNumber()));
+		}
+		if (queryVo.getCustomerProductNumber() != null
+				&& !"".equals(queryVo.getCustomerProductNumber())) {
+			jpql.append(" and _customerCPLot.customerProductNumber like ?");
+			conditionVals.add(MessageFormat.format("%{0}%",
+					queryVo.getCustomerProductNumber()));
+		}
+		if(queryVo.getSortname() != null
+				&& !"".equals(queryVo.getSortname())){
+			jpql.append(" order by " + queryVo.getSortname() + " " + queryVo.getSortorder());
+		}else
+			jpql.append(" order by _customerCPLot.state,_customerCPLot.incomingDate DESC ");
 		Page<CustomerCPLot> pages = getQueryChannelService()
 				.createJpqlQuery(jpql.toString()).setParameters(conditionVals)
 				.setPage(currentPage, pageSize).pagedList();
@@ -143,6 +169,7 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 	}
 
 	@Override
+	@Transactional
 	public InvokeResult getCPVo(Long id) {
 		CustomerCPLot customerCPLot = customerCPLotApplication.get(id);
 		return InvokeResult.success(CustomerCPLotAssembler
@@ -165,10 +192,13 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 	@Transactional
 	@Override
 	public InvokeResult order(Long customerCPLotId, CPLotDTO cpLotDTO) {
+		this.checkOrderLotNo(cpLotDTO.getInternalLotNumber());
+		SaveBaseBean sbb = new SaveBaseBean();
+		BeanUtils.copyProperties(cpLotDTO, sbb);
 		CPLot cpLot = CPLotAssembler.toEntity(cpLotDTO);
 		try {
 			customerCPLotApplication.order(customerCPLotId, cpLot,
-					cpLotDTO.getCpInfoId());
+					cpLotDTO.getCpInfoId(),sbb);
 			return InvokeResult.success(cpLot.getId());
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -176,9 +206,19 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 					.setRollbackOnly(); // 回滚所有操作
 			// 下单失败，删除领料信息
 			customerCPLotApplication.rollbackWMSTestInfo(
-					TestTypeForWms.getStringValue(TestTypeForWms.FT),
+					TestTypeForWms.getStringValue(TestTypeForWms.CP),
 					cpLot.getWmsTestId(), cpLot.getQuantity());
 			return InvokeResult.failure(ex.getMessage());
+		}
+	}
+	
+	private void checkOrderLotNo(String lotNo){
+		if(lotNo == null || "".equals(lotNo)){
+			throw new RuntimeException("批号不能为空!");
+		}
+		List<CPLot> list = cpLotApplication.find("select a from CPLot a where a.internalLotNumber = ? ",lotNo);
+		if(list!=null && list.size() > 0){
+			throw new RuntimeException("批次:" + lotNo + "已存在,请修改批号后再进行下单!");
 		}
 	}
 
@@ -189,16 +229,19 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 	 *            需要批量下单的批次ids
 	 * @return
 	 * @version 2016/3/27 YuxiangQue
+	 * @version 2015/6/14 harlow 增加批量下单选择PID
 	 */
 	@Transactional
 	@Override
-	public InvokeResult batchOrder(Long[] customerCPLotIds) {
+	public InvokeResult batchOrder(Long[] customerCPLotIds, CPLotDTO cpLotDTO) {
+		SaveBaseBean sbb = new SaveBaseBean();
+		BeanUtils.copyProperties(cpLotDTO, sbb);
 		CPLotOptionLog cpLotOptionLog = new CPLotOptionLog();
 
 		try {
 			Map<String, Integer> messages = new HashMap<String, Integer>();
 			List<Long> ftLotIds = customerCPLotApplication.batchOrder(
-					customerCPLotIds, messages);
+					customerCPLotIds, messages,cpLotDTO.getCpInfoId(),sbb);
 
 			// 添加日志信息
 			cpLotOptionLog.setRemark("批量下单："
@@ -298,6 +341,11 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 						.getProductVersion());
 				wmsCustomerCPLot.setMaskName(customerCPLot.getMaskName());
 				wmsCustomerCPLot.setSize(customerCPLot.getSize());
+				//2016/07/18 Hongyu add-start
+				for (CPCustomerWafer wmscpCustomerWafer : wmsCustomerCPLot.getCpCustomerWafers()) {
+					wmscpCustomerWafer.remove();
+				}
+				//2016/07/18 Hongyu add-end
 				wmsCustomerCPLot.setCpCustomerWafers(customerCPLot
 						.getCpCustomerWafers());
 				for (CPCustomerWafer cpCustomerWafer : customerCPLot
@@ -410,6 +458,8 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 	public InvokeResult deleteOrder(CPLotDTO cpLotDTO) {
 		CPLot cpLot = cpLotApplication.get(cpLotDTO.getId());
 		try {
+			cpLot.setLastModifyEmployNo(cpLotDTO.getLastModifyEmployNo());
+			cpLot.setLastModifyTimestamp(cpLotDTO.getLastModifyTimestamp());
 			customerCPLotApplication.deleteOrder(cpLot);
 			cpLotOptionLogApplication
 					.removeCPLotOptionLogByLotId(cpLot.getId());
@@ -442,7 +492,7 @@ public class CustomerCPLotFacadeImpl implements CustomerCPLotFacade {
 						customerCPLot.getCustomerProductNumber(),
 						customerCPLot.getCustomerNumber());
 		if (result != null && result.size() > 0) {
-			return InvokeResult.success(CPInfoAssembler.toDTOs(result));
+			return InvokeResult.success(CPInfoAssembler.toDTOs(result, false));
 		} else {
 			return InvokeResult.failure("获取PID失败！");
 		}

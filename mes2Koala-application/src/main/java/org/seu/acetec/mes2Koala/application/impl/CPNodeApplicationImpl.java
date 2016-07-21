@@ -78,4 +78,25 @@ public class CPNodeApplicationImpl extends GenericMES2ApplicationImpl<CPNode>
 		return null;
 		// cpNodeApplication.create(lastNode);
 	}
+
+	@Override
+	public List<CPNode> findEndedCPNodeByCPLotId(Long cpLotId) {
+		return find("select n from CPNode n where n.cpProcess.cpLot.id=?", cpLotId);
+	}
+
+	@Override
+	public List<CPNode> findUnreachedCPNodeByCPLotId(Long cpLotId) {
+		return find("select n from CPNode n where n.cpProcess.cpLot.id=? and n.state<3", cpLotId);
+
+	}
+
+	@Override
+	public List<CPNode> findToStartCPNodeByCPLotId(Long cpLotId) {
+		return find("select n from CPNode n where n.cpProcess.cpLot.id=? and n.state=1", cpLotId);
+	}
+
+	@Override
+	public List<CPNode> findStartedCPNodeByCPLotId(Long cpLotId) {
+		return find("select n from CPNode n where n.cpProcess.cpLot.id=? and n.state=2", cpLotId);
+	}
 }

@@ -41,7 +41,7 @@ public class ReworkAssembler {
 		result.setApproveRemark(rework.getApproveRemark());
 		result.setLotNo(rework.getLotNo());
 		result.setStatus(rework.getStatus());
-		
+		result.setTesterNo(rework.getTesterNo());
 		return result;
 	}
 

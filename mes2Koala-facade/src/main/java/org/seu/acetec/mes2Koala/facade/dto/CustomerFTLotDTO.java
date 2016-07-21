@@ -58,6 +58,9 @@ public class CustomerFTLotDTO implements Serializable {
     //用于和对方系统的id绑定
     private String wms_id;
 
+    //封装形式
+    private String packageType;
+    
     public String getShipmentProductionNumber() {
 		return shipmentProductionNumber;
 	}
@@ -268,7 +271,15 @@ public class CustomerFTLotDTO implements Serializable {
     }
 
 
-    @Override
+    public String getPackageType() {
+		return packageType;
+	}
+
+	public void setPackageType(String packageType) {
+		this.packageType = packageType;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

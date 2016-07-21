@@ -47,6 +47,7 @@ public class FTLotAssembler {
         ftPageDTO.setWaferLotNumber(customerLot.getWaferLot());
         ftPageDTO.setIncomingDate(customerLot.getIncomingDate().toString());
         ftPageDTO.setInternalProductNumber(customerLot.getFtInfo().getInternalProductNumber());
+        ftPageDTO.setCustomerFTLotDTOId(customerLot.getId());
         return ftPageDTO;
     }
 

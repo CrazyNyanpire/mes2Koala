@@ -229,6 +229,8 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
         ftLot.setLastModifyTimestamp(fTQDNDTO.getLastModifyTimestamp());
         ftLot.setLastModifyEmployNo(ftLot.getLastModifyEmployNo());
         ftLot.setHoldState(InternalLot.HOLD_STATE_FUTURE_HOLD);// future hold
+        ftLot.setIsFuture(true);
+        ftLot.setFutureFlow(fTQDN.getFlowNow());
         fTLotApplication.update(ftLot);
         // 4.给部门负责人发送邮件
         EmployeeDTO toPerson = employeeFacade.getEmployeeById(Long.parseLong(fTQDNDTO.getToPerson()));
@@ -260,38 +262,39 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
         this.createSampleShippingReelDisk(ftLot, sampleShippingDTO);
         return InvokeResult.success();
     }
-
+/*
+ * 2016-7-13 updated by Eva Datecode取值错误,入中转库之后无reelcode
+ */
     private InvokeResult createSampleShippingReelDisk(FTLot ftLot,
-                                                      SampleShippingDTO sampleShippingDTO) {
-        FTInfo fTInfo = ftInfoApplication.get(ftLot.getCustomerFTLot()
-                .getFtInfo().getId());
-        Date packagingTime = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyMMdd");
-        String dateCode = df.format(packagingTime);
-        String partNumber = ftLot.getCustomerFTLot().getFtInfo()
-                .getCustomerProductNumber();
-        ReelDisk reelDisk = new ReelDisk();
-        // reelDiskDTO.setReelCode(reelCode);
-        BeanUtils.copyProperties(sampleShippingDTO, reelDisk);
-        reelDisk.setId(null);
-        reelDisk.setPartNumber(partNumber);
-        reelDisk.setPackagingTime(packagingTime);
-        reelDisk.setDateCode(dateCode);
-        reelDisk.setQuality(sampleShippingDTO.getQuality());
-        reelDisk.setRemark(ReelDisk.REEL_REMARK_LITTLE_SAMPLE);
-        if (Integer.valueOf(fTInfo.getReelQty()) > reelDisk.getQuantity()) {
-            reelDisk.setIsFull(ReelDisk.REEL_DISK_NO);
-        } else {
-            reelDisk.setIsFull(ReelDisk.REEL_DISK_YES);
-        }
-        reelDisk.setLogic(0);
-        reelDisk.setFromReelCode("");
-        reelDisk.setQuantity(sampleShippingDTO.getQty());
-        reelDisk.setFtLot(ftLot);
-        reelDisk.setApprove(ReelDisk.REEL_DISK_UNAPPROVED);
-        reelDisk.setStatus(ReelDisk.REEL_DISK_STATUS_IN_HOUSE);
-        reelDiskApplication.create(reelDisk);
-        return InvokeResult.success();
+    		SampleShippingDTO sampleShippingDTO) {
+    	FTInfo fTInfo = ftInfoApplication.get(ftLot.getCustomerFTLot()
+    			.getFtInfo().getId());
+    	Date packagingTime = new Date();
+    	String partNumber = ftLot.getCustomerFTLot().getFtInfo()
+    			.getCustomerProductNumber();
+    	ReelDisk reelDisk = new ReelDisk();
+    	String reelCode = incrementNumberApplication.nextReelCode(fTInfo);
+    	reelDisk.setReelCode(reelCode);
+    	BeanUtils.copyProperties(sampleShippingDTO, reelDisk);
+    	reelDisk.setId(null);
+    	reelDisk.setPartNumber(partNumber);
+    	reelDisk.setPackagingTime(packagingTime);
+    	reelDisk.setDateCode(ftLot.getCustomerFTLot().getDateCode());
+    	reelDisk.setQuality(sampleShippingDTO.getQuality());
+    	reelDisk.setRemark(ReelDisk.REEL_REMARK_LITTLE_SAMPLE);
+    	if (Integer.valueOf(fTInfo.getReelQty()) > reelDisk.getQuantity()) {
+    		reelDisk.setIsFull(ReelDisk.REEL_DISK_NO);
+    	} else {
+    		reelDisk.setIsFull(ReelDisk.REEL_DISK_YES);
+    	}
+    	reelDisk.setLogic(0);
+    	reelDisk.setFromReelCode("");
+    	reelDisk.setQuantity(sampleShippingDTO.getQty());
+    	reelDisk.setFtLot(ftLot);
+    	reelDisk.setApprove(ReelDisk.REEL_DISK_UNAPPROVED);
+    	reelDisk.setStatus(ReelDisk.REEL_DISK_STATUS_IN_HOUSE);
+    	reelDiskApplication.create(reelDisk);
+    	return InvokeResult.success();
     }
 
     @Override
@@ -578,9 +581,9 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
             resultDTOs.addAll(dto.getRtList());
             List<FTResult> ftResults = FTResultAssembler.toEntities(resultDTOs);
             ftResults.add(FTResultAssembler.toEntity(dto.getFinalYield()));
-            for (FTResult ftResult : ftResults) {
-                recalculateFTResultYieldAndFail(ftResult, original.getSbls());
-            }
+//            for (FTResult ftResult : ftResults) {
+//                recalculateFTResultYieldAndFail(ftResult, original.getSbls());
+//            }
             // 操作记录
             ftResultApplication.updateAll(ftResults);
             updateExtraOnSaveFTNode(ftLot, original);
@@ -800,9 +803,9 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
             for (FTTest ftTest : ftTests) {
                 ftResults.add(ftTest.getResult());
             }
-            for (FTResult ftResult : ftResults) {
-                recalculateFTResultYieldAndFail(ftResult, sbls);
-            }
+//            for (FTResult ftResult : ftResults) {
+//                recalculateFTResultYieldAndFail(ftResult, sbls);
+//            }
         } else {
 
             // 对于非测试节点只需要更新finalYield
@@ -810,7 +813,7 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
             List<SBL> sbls = ftNode.getSbls();
             if (sbls.size() == 0)
                 return;
-            recalculateFTResultYieldAndFail(finalYield, sbls);
+//            recalculateFTResultYieldAndFail(finalYield, sbls);
         }
     }
 
@@ -829,12 +832,13 @@ public class FTLotNodeOptionFacadeImpl implements FTLotNodeOptionFacade {
         int pass = 0;
         int fail = 0;
         int[] binValues = FTResult.getBins(ftResult);
+        fail = fail + Integer.parseInt(ftResult.getMarkF()) + Integer.parseInt(ftResult.getOther());
         for (SBL sbl : sbls) {
             // bin下标
             String binType = sbl.getType();
             binType = binType.startsWith("Bin") ? binType.substring(3) : binType;
             int binIndex = Integer.parseInt(binType) - 1;
-
+            
             int binValue = binValues[binIndex];
             if (binValue == -1)
                 continue;

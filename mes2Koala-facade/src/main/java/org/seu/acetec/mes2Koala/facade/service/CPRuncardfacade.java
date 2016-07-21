@@ -54,10 +54,13 @@ public interface CPRuncardfacade {
     public String getCP4_After_Bake(Long id);
 
 
+    //根据站点名获得runcardinfo数据
     public String getRuncardInfoBySiteName(Long id, String siteName);
 
+    //判断runcard是否已经填写完成，此时的id为cpinfoId
     public boolean isRuncardFinished(Long id, String[] runcardinfo);
 
+    //判断runcard是否已经填写完成，此时的id是customerCPLotId
     public boolean isRuncardFinished2(Long id, String[] runcardinfo);
 
     //判断是否已经授权
@@ -72,6 +75,7 @@ public interface CPRuncardfacade {
     //根据人员id查找runcard签核信息
     public RuncardSignDTO getRuncardSignInfo(Long cpinfoId, Long userId);
 
+    //获得特殊表单的数据
     public String getSpecialFormByCPinfoId(Long cpinfoId, String sheetType);
 
     //保存特殊表单的打印状态
@@ -80,15 +84,19 @@ public interface CPRuncardfacade {
     //获得特殊表单的打印状态
     public InvokeResult getSpecialFormStatus(Long id);
 
-    //保存特殊表单
+    public InvokeResult getSpecialFormStatusByCPLotId(Long id);
+
+    //保存特殊表单c
     public InvokeResult saveSpecialForm(Long id, String formType, String data);
 
     //根据cpinfo的id返回runcard信息
     public String getRuncardInfo(Long id);
 
+
+    //保存runcardinfo的数据
     public void saveRuncardInfo(Long id, String currentSite, String data);
 
-
+    //保存runcard中的totalSite字段
     public void saveTotalSitesOfRuncard(Long id, String data);
 
 
@@ -98,14 +106,19 @@ public interface CPRuncardfacade {
     //发给多个邮箱
     public void sendEmailToPersons(List<String> emails, String subject, String content);
 
-
+    //发送邮件
     public void sendEmailToPersons(Long id);
 
+    //获得runcard中各自站点是否保存的状态
     public InvokeResult getRuncardFinishedStatus(Long cpinfoId, String[] totalSites);
 
+    //根据cpinfoId获得runcardinfo的数据
     public String getRuncardInfoByCPLotId(Long id);
 
     public String getRuncardInfoBeforeOrdered(Long id);
 
 
-    }
+    //根据state获得runcardinfo的数据
+    public InvokeResult getRuncardInfoByState(Long cpLotId,String[] specialFormArr,Long state);
+
+}

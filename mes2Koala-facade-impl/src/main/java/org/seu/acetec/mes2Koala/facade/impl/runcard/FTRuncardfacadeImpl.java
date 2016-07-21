@@ -70,6 +70,10 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
+    /**
+     * 创建ftruncard的模板
+     * @return
+     */
     private FTRuncardTemplate createFTRuncardTemplate() {
         FTRuncardTemplate ftRuncardTemplate = new FTRuncardTemplate();
         //特殊表单也在此时创建
@@ -154,6 +158,11 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
+    /**
+     * 根据customerLotId获得runcardinfo的数据
+     * @param customerLotId
+     * @return
+     */
     private String getRuncardInfoByCustomerLotId(Long customerLotId) {
         CustomerFTLot customerFTLot = customerFTLotApplication.get(customerLotId);
         return getRuncardInfo(customerFTLot.getFtInfo().getId());
@@ -245,6 +254,7 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         return FilenameHelper.readFileToString(in);
     }
 
+
     @Override
     public String getIQC(Long id) {
         String IQC = validateRuncardTemplate(id).getIQC();
@@ -310,6 +320,14 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         return siteTest;
     }
 
+
+    /**
+     * 根据站点名获得runcardinfo数据
+     *
+     * @param id
+     * @param siteName
+     * @return
+     */
     @Override
     public String getRuncardInfoBySiteName(Long id, String siteName) {
         String data = null;
@@ -400,6 +418,13 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         return true;
     }
 
+
+    /**
+     * 判断runcardinfo是否已经全部填写完成
+     * @param customerLotId
+     * @param runcardinfo
+     * @return
+     */
     public boolean isRuncardFinished2(Long customerLotId, String[] runcardinfo) {
         CustomerFTLot customerFTLot = customerFTLotApplication.get(customerLotId);
         return isRuncardFinished(customerFTLot.getFtInfo().getId(), runcardinfo);
@@ -442,6 +467,11 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         }
     }
 
+
+    /**
+     * 异步发送邮件
+     * @param id
+     */
     @Async
     @Override
     public void sendEmailToPersons(Long id) {
@@ -605,7 +635,11 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
             acetecAuthorization.setNote(note);
             FTRuncardTemplate.setAssistTDEAuthorization(acetecAuthorization);
         }
+
+
+        FTRuncardTemplate.setSignedTime(new Date());
         ftRuncardTemplateApplication.update(FTRuncardTemplate);
+
         return InvokeResult.success("签核成功");
     }
 
@@ -796,6 +830,13 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         return data;
     }
 
+
+    /**
+     * 保存特殊表单的打印状态
+     * @param id
+     * @param specialFormStatusVo
+     * @return
+     */
     @Override
     public InvokeResult saveSpecialFormStatus(Long id, SpecialFormStatusVo specialFormStatusVo) {
         FTRuncardTemplate ftRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(id);
@@ -818,6 +859,11 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
+    /**
+     * 获得特殊表单的打印状态
+     * @param id
+     * @return
+     */
     @Override
     public InvokeResult getSpecialFormStatus(Long id) {
         FTRuncardTemplate FTRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(id);
@@ -834,26 +880,14 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         return InvokeResult.success(specialFormStatusVo);
     }
 
-    @Override
-    public InvokeResult saveSpecialForm(Long id, String formType, String data) {
-        FTRuncardTemplate FTRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(id);
-        switch (formType) {
-            case "reelCodeSheet":
-                FTRuncardTemplate.getSpecialFormTemplate().setReelcodeSheet(data);
-                break;
-            case "recordSheet":
-                FTRuncardTemplate.getSpecialFormTemplate().setRecordSheet(data);
-                break;
-            case "summarySheet":
-                FTRuncardTemplate.getSpecialFormTemplate().setSummarySheet(data);
-                break;
-            default:
-                return InvokeResult.failure("保存失败");
-        }
-        FTRuncardTemplate.save();
-        return InvokeResult.success("保存成功");
-    }
 
+
+
+    /**
+     * 获得占位符被替换以后的特殊表单的数据
+     * @param ftLotId
+     * @return
+     */
     @Override
     public String getRuncardInfoAfterReplaced(Long ftLotId) {
 
@@ -878,7 +912,7 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         StringBuffer sb = new StringBuffer();
         SpecialFormTemplate specialFormTemplate = ftRuncard.getSpecialFormTemplate();
         //首页 首页替换
-        sb.append(replaceFirstSheetPlaceholder(specialFormTemplate.getFirstSheet(), placeHolder));
+        sb.append(replaceFirstSheetPlaceholder(ftLotId, specialFormTemplate.getFirstSheet(), placeHolder));
         sb.append("<br/><br/>");
         //flow
         sb.append(convertData(ftRuncard.getIQC()));
@@ -928,6 +962,8 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
 
         return sb.toString();
     }
+
+
 
 
     private void replaceIQCPlaceholder(FTRuncard ftRuncard, PlaceHolder placeHolder) {
@@ -1101,7 +1137,7 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
-    private String replaceFirstSheetPlaceholder(String data, PlaceHolder placeHolder) {
+    private String replaceFirstSheetPlaceholder(Long ftLotId, String data, PlaceHolder placeHolder) {
         String customerCode = ResourcesUtil.getValue("placeholder", "customerCode");
         String productName = ResourcesUtil.getValue("placeholder", "productName");
         String productRevision = ResourcesUtil.getValue("placeholder", "productRevision");
@@ -1117,6 +1153,10 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         String bondOrNot = ResourcesUtil.getValue("placeholder", "taxType");
         String packingType = ResourcesUtil.getValue("placeholder", "packingType");
         String shippingType = ResourcesUtil.getValue("placeholder", "shippingType");
+        String waferManufacturer = ResourcesUtil.getValue("placeholder", "waferManufacturer");
+        String keyQuantityManagerName = ResourcesUtil.getValue("placeholder", "keyQuantityManagerName");
+        String keyProductionManagerName = ResourcesUtil.getValue("placeholder", "keyProductionManagerName");
+        String keyTDEManagerName = ResourcesUtil.getValue("placeholder", "keyTDEManagerName");
 
 
         String customerCodeReplace = placeHolder.getCustomerCode();
@@ -1134,7 +1174,19 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         String bondOrNotReplace = placeHolder.getTaxType();
         String packingTypeReplace = placeHolder.getPackingType();
         String shippingTypeReplace = placeHolder.getShippingType();
+        String waferManufacturerReplace = placeHolder.getWaferManufacturer();
+        String keyQuantityManagerNameReplace = placeHolder.getKeyQuantityManagerName();
+        String keyProductionManagerNameReplace = placeHolder.getKeyProductionManagerName();
+        String keyTDEManagerNameReplace = placeHolder.getKeyTDEManagerName();
 
+
+        FTLot ftLot = ftLotApplication.get(ftLotId);
+        if (ftLot != null){
+            FTRuncard ftRuncard = ftLot.getFtRuncard();
+            String signedTimeReplace = ftRuncard.getSignedTime().toString();
+            String signedTime = ResourcesUtil.getValue("placeholder", "signedTime");
+            data = data.replace(signedTime, signedTimeReplace);
+        }
 
         if (customerCodeReplace != null)
             data = data.replace(customerCode, customerCodeReplace);
@@ -1166,11 +1218,26 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
             data = data.replace(packingType, packingTypeReplace);
         if (shippingTypeReplace != null)
             data = data.replace(shippingType, shippingTypeReplace);
+        if (waferManufacturerReplace != null )
+        	data = data.replace(shippingType, shippingTypeReplace);
+        if (keyProductionManagerNameReplace != null )
+        	data = data.replace(keyProductionManagerName, keyProductionManagerNameReplace);
+        if (keyQuantityManagerNameReplace != null )
+        	data = data.replace(keyQuantityManagerName, keyQuantityManagerNameReplace);
+        if (keyTDEManagerNameReplace != null )
+        	data = data.replace(keyTDEManagerName, keyTDEManagerNameReplace);
 
         return data;
     }
 
 
+    /**
+     * 根据state状态获得runcardinfo数据
+     * @param ftLotId
+     * @param specialFormArr
+     * @param state
+     * @return
+     */
     @Override
     public InvokeResult getRuncardInfoByState(Long ftLotId, String[] specialFormArr, Long state) {
         FTLot ftLot = ftLotApplication.get(ftLotId);
@@ -1192,7 +1259,7 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
                     sb.append(specialFormTemplate.getSummarySheet());
                     break;
                 case "firstSheet":
-                    sb.append(replaceFirstSheetPlaceholder(specialFormTemplate.getFirstSheet(), placeHolder));
+                    sb.append(replaceFirstSheetPlaceholder(ftLotId,specialFormTemplate.getFirstSheet(), placeHolder));
                     break;
                 case "checkSheet":
                     sb.append(specialFormTemplate.getCheckSheet());
@@ -1230,6 +1297,13 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
+    /**
+     * 根据站点名获得runcardinfo数据
+     * @param placeHolder
+     * @param ftRuncard
+     * @param siteName
+     * @return
+     */
     private String getRuncardInfoBySiteName(PlaceHolder placeHolder, FTRuncard ftRuncard, String siteName) {
         String data = null;
         switch (siteName) {
@@ -1269,12 +1343,23 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
     }
 
 
+    /**
+     * 根据ftinfoId获得其对应ftlotId
+     * @param id
+     * @return
+     */
     public Long convertFTLotIdtoFTinfoId(Long id) {
         FTLot ftLot = ftLotApplication.get(id);
         return ftLot.getFtInfo().getId();
     }
 
 
+    /**
+     * 获得runcard中各自站点是否填写完成的状态
+     * @param ftinfoId
+     * @param totalSites
+     * @return
+     */
     public InvokeResult getRuncardFinishedStatus(Long ftinfoId,String[] totalSites){
         Map<String,Boolean> resultMap = new HashMap<>();
         FTRuncardTemplate FTRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(ftinfoId);
@@ -1316,6 +1401,42 @@ public class FTRuncardfacadeImpl implements FTRuncardfacade {
         }
         return InvokeResult.success(resultMap);
     }
+
+
+    @Override
+    public InvokeResult saveSpecialForm(Long ftinfoId, String formType, String data) {
+
+        FTInfo ftInfo = ftInfoApplication.get(ftinfoId);
+        FTRuncardTemplate ftRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(ftinfoId);
+        if (ftRuncardTemplate == null) {
+            ftRuncardTemplate = createFTRuncardTemplate();
+            ftRuncardTemplate.setInternalProduct(ftInfo);
+        }
+        SpecialFormTemplate specialFormTemplate = ftRuncardTemplate.getSpecialFormTemplate();
+        switch (formType) {
+            case "reelcodeSheet":
+                specialFormTemplate.setReelcodeSheet(data);
+                break;
+            case "recordSheet":
+                specialFormTemplate.setRecordSheet(data);
+                break;
+            case "summarySheet":
+                specialFormTemplate.setSummarySheet(data);
+                break;
+            case "firstSheet":
+                specialFormTemplate.setFirstSheet(data);
+                break;
+            case "checkSheet":
+                specialFormTemplate.setCheckSheet(data);
+                break;
+            case "machineMaterialRecordSheet":
+                specialFormTemplate.setMachineMaterialRecordSheet(data);
+                break;
+        }
+        ftRuncardTemplate.save();
+        return InvokeResult.success();
+    }
+
 
 
 }

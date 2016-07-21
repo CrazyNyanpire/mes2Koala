@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class CPLotDTO implements Serializable {
+public class CPLotDTO extends BaseRightInfoDTO implements Serializable {
 
 	private Long id;
 
@@ -61,6 +61,10 @@ public class CPLotDTO implements Serializable {
 	private boolean showFlag; //分批后母批不显示用Flag
 	
 	private Long cpInfoId;
+	
+	private Long sourceParentSeparationId;//原始母批no
+	
+    private String sourceParentSeparationNo;
 	 
 	public void setShipmentProductNumber(String shipmentProductNumber) {
 		this.shipmentProductNumber = shipmentProductNumber;
@@ -285,6 +289,22 @@ public class CPLotDTO implements Serializable {
 
 	public void setShowFlag(boolean showFlag) {
 		this.showFlag = showFlag;
+	}
+
+	public Long getSourceParentSeparationId() {
+		return sourceParentSeparationId;
+	}
+
+	public void setSourceParentSeparationId(Long sourceParentSeparationId) {
+		this.sourceParentSeparationId = sourceParentSeparationId;
+	}
+
+	public String getSourceParentSeparationNo() {
+		return sourceParentSeparationNo;
+	}
+
+	public void setSourceParentSeparationNo(String sourceParentSeparationNo) {
+		this.sourceParentSeparationNo = sourceParentSeparationNo;
 	}
 
 	public Long getCpInfoId() {

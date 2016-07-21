@@ -136,6 +136,9 @@ public class ReelDiskApplicationImpl extends GenericMES2ApplicationImpl<ReelDisk
             for (int binIndex = 0; binIndex < 20; binIndex++) {
                 quantity += (finishBins[binIndex] != -1 && failBinValues[binIndex] != -1) ? failBinValues[binIndex] : 0;
             }
+            quantity += Integer.parseInt(failBin.getLoss());
+            quantity += Integer.parseInt(failBin.getOther());
+            quantity += Integer.parseInt(failBin.getMarkF());
             reelDisk.setQuantity(quantity);
             reelDisks.add(reelDisk);
         }

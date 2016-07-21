@@ -37,6 +37,8 @@ public class CPLotOptionLogDTO implements Serializable {
 			
 	private Long lotId;
 	
+	private String lotNo;
+	
 	public void setFlownow(String flownow) { 
 		this.flownow = flownow;
 	}
@@ -150,7 +152,15 @@ public class CPLotOptionLogDTO implements Serializable {
 		this.lotId = lotId;
 	}
 	
-    @Override
+    public String getLotNo() {
+		return lotNo;
+	}
+
+	public void setLotNo(String lotNo) {
+		this.lotNo = lotNo;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

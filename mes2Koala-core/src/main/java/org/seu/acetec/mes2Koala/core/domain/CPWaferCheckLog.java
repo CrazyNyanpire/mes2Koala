@@ -22,8 +22,10 @@ public class CPWaferCheckLog extends MES2AbstractEntity {
 	private CPLot cpLot;
 
 	private CPWafer cpWafer;
-
+	
 	private String node;
+	
+	private CPNode cpNode;
 
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "CP_WAFER_ID")
@@ -51,6 +53,16 @@ public class CPWaferCheckLog extends MES2AbstractEntity {
 
 	public void setCpLot(CPLot cpLot) {
 		this.cpLot = cpLot;
+	}
+
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "CP_NODE_ID")
+	public CPNode getCpNode() {
+		return cpNode;
+	}
+
+	public void setCpNode(CPNode cpNode) {
+		this.cpNode = cpNode;
 	}
 
 	@Override

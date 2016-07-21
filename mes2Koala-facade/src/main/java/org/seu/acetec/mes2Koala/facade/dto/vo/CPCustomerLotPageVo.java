@@ -1,5 +1,9 @@
 package org.seu.acetec.mes2Koala.facade.dto.vo;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * @author yuxiangque
  * @version 2016/3/30
@@ -41,7 +45,18 @@ public class CPCustomerLotPageVo {
 
     private String materialType;          // 内部物料类型
 
-
+    private String orderUser;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date orderDate;
+    
+    private String InternalLotNumber;
+    
+    private String shipmentProductNumber;
+    
+    private String internalProductNumber;
+    
+    private String packageNumber;
+    
     public Long getId() {
         return id;
     }
@@ -185,4 +200,52 @@ public class CPCustomerLotPageVo {
     public void setWaferLot(String waferLot) {
         this.waferLot = waferLot;
     }
+
+	public String getOrderUser() {
+		return orderUser;
+	}
+
+	public void setOrderUser(String orderUser) {
+		this.orderUser = orderUser;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public String getShipmentProductNumber() {
+		return shipmentProductNumber;
+	}
+
+	public void setShipmentProductNumber(String shipmentProductNumber) {
+		this.shipmentProductNumber = shipmentProductNumber;
+	}
+
+	public String getInternalProductNumber() {
+		return internalProductNumber;
+	}
+
+	public void setInternalProductNumber(String internalProductNumber) {
+		this.internalProductNumber = internalProductNumber;
+	}
+
+	public String getInternalLotNumber() {
+		return InternalLotNumber;
+	}
+
+	public void setInternalLotNumber(String internalLotNumber) {
+		InternalLotNumber = internalLotNumber;
+	}
+
+	public String getPackageNumber() {
+		return packageNumber;
+	}
+
+	public void setPackageNumber(String packageNumber) {
+		this.packageNumber = packageNumber;
+	}
 }

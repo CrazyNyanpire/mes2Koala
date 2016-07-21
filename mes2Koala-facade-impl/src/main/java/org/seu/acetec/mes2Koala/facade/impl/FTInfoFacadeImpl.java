@@ -17,9 +17,11 @@ import org.seu.acetec.mes2Koala.facade.dto.vo.FTInfoPageVo;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.EQCSettingAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.FTInfoAssembler;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.SBLTemplateAssembler;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,7 +38,7 @@ public class FTInfoFacadeImpl implements FTInfoFacade {
     @Inject
     private LabelApplication labelApplication;
     @Inject
-    private FTRuncardTemplateApplication FTRuncardTemplateApplication;
+    private FTRuncardTemplateApplication ftRuncardTemplateApplication;
     private QueryChannelService queryChannel;
 
     private QueryChannelService getQueryChannelService() {
@@ -46,10 +48,12 @@ public class FTInfoFacadeImpl implements FTInfoFacade {
         return queryChannel;
     }
 
+    @Transactional
     public InvokeResult getFTInfo(Long id) {
         return InvokeResult.success(FTInfoAssembler.toDTO(application.get(id)));
     }
     
+    @Transactional
     public InvokeResult getFTInfoPageVo( Long id ) {
     	return InvokeResult.success(FTInfoAssembler.toPageVo(application.get(id)));
     }
@@ -86,6 +90,7 @@ public class FTInfoFacadeImpl implements FTInfoFacade {
         return FTInfoAssembler.toDTOs(application.findAll());
     }
 
+    @Transactional
     public Page<FTInfoPageVo> pageQueryFTInfo(FTInfoDTO queryVo, int currentPage, int pageSize, String sortname, String sortorder) {
         List<Object> conditionVals = new ArrayList<Object>();
         StringBuilder jpql = new StringBuilder("select _fTInfo from FTInfo _fTInfo  where 1=1 ");
@@ -178,7 +183,12 @@ public class FTInfoFacadeImpl implements FTInfoFacade {
                 .setPage(currentPage, pageSize)
                 .pagedList();
 
-        return new Page<FTInfoPageVo>(pages.getStart(), pages.getResultCount(), pageSize, FTInfoAssembler.toPageVos(pages.getData()));
+        List<FTInfoPageVo> ftList = new ArrayList<FTInfoPageVo>();
+        for(FTInfoPageVo ftInfoPageVo : FTInfoAssembler.toPageVos(pages.getData())){
+        	ftInfoPageVo.setRuncardApproval(this.ftRuncardTemplateApplication.isRuncardSignedMsg(ftInfoPageVo.getId()));
+        	ftList.add(ftInfoPageVo);
+        }
+        return new Page<FTInfoPageVo>(pages.getStart(), pages.getResultCount(), pageSize, ftList);
     }
 
     @Override
@@ -250,9 +260,9 @@ public class FTInfoFacadeImpl implements FTInfoFacade {
         ftInfo.setProcessTemplate(processTemplate);
 
         //将runcardtemplace删除
-        FTRuncardTemplate FTRuncardTemplate = FTRuncardTemplateApplication.findByInternalProductId(id);
+        FTRuncardTemplate FTRuncardTemplate = ftRuncardTemplateApplication.findByInternalProductId(id);
         if (FTRuncardTemplate != null) {
-            FTRuncardTemplateApplication.remove(FTRuncardTemplate);
+        	ftRuncardTemplateApplication.remove(FTRuncardTemplate);
         }
 
 

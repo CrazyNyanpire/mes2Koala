@@ -111,7 +111,7 @@
         </div>
         <label class="col-lg-2 control-label">Lot Number:</label>
         <div class="col-lg-2">
-            <input name="InternalLotNumber" style="display:inline; width:120px;" class="form-control" type="text"
+            <input name="InternalLotNumber" style="display:inline; width:200px;" class="form-control" type="text"
                    id="InternalLotNumberID"/>
         </div>
         <label class="col-lg-2 control-label">出货型号:</label>

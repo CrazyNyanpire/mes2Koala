@@ -46,7 +46,19 @@ public class CustomerCPLotDTO {
     private String size;
     private String waferLot;
     private String materialType;
-
+    
+    private String orderUser;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date orderDate;
+    
+    private String packageNumber;
+    
+    private String customerProductNumber;
+    
+    private String sortname;
+    
+    private String sortorder;
+    
     public String getCreateEmployNo() {
         return createEmployNo;
     }
@@ -292,4 +304,52 @@ public class CustomerCPLotDTO {
     public void setWaferLot(String waferLot) {
         this.waferLot = waferLot;
     }
+
+	public String getOrderUser() {
+		return orderUser;
+	}
+
+	public void setOrderUser(String orderUser) {
+		this.orderUser = orderUser;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public String getPackageNumber() {
+		return packageNumber;
+	}
+
+	public void setPackageNumber(String packageNumber) {
+		this.packageNumber = packageNumber;
+	}
+
+	public String getCustomerProductNumber() {
+		return customerProductNumber;
+	}
+
+	public void setCustomerProductNumber(String customerProductNumber) {
+		this.customerProductNumber = customerProductNumber;
+	}
+
+	public String getSortname() {
+		return sortname;
+	}
+
+	public void setSortname(String sortname) {
+		this.sortname = sortname;
+	}
+
+	public String getSortorder() {
+		return sortorder;
+	}
+
+	public void setSortorder(String sortorder) {
+		this.sortorder = sortorder;
+	}
 }

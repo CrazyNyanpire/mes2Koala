@@ -2,6 +2,8 @@ package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
 
+import java.util.Date;
+
 /**
  * Created by LCN on 2016/6/1.
  */
@@ -14,6 +16,8 @@ public class CPRuncard extends MES2AbstractEntity {
     //flow
     private String IQC;
     private String FQC;
+    
+    private String INK;
 
     private String CP1;
     private String CP1_Before_Bake;
@@ -57,6 +61,12 @@ public class CPRuncard extends MES2AbstractEntity {
 
     private AcetecAuthorization keyTDEAuthorization;
     private AcetecAuthorization assistTDEAuthorization;
+
+    @Column(name = "SIGNEDTIME")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date signedTime;
+    
+    private String lotNo;//用于备份runcard属于哪个lot
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "CP_SPECIALFORM_ID")
@@ -362,8 +372,32 @@ public class CPRuncard extends MES2AbstractEntity {
         this.cpLot = cpLot;
     }
 
-    @Override
+    public Date getSignedTime() {
+        return signedTime;
+    }
+
+    public void setSignedTime(Date signedTime) {
+        this.signedTime = signedTime;
+    }
+
+    public String getLotNo() {
+		return lotNo;
+	}
+
+	public void setLotNo(String lotNo) {
+		this.lotNo = lotNo;
+	}
+
+	@Override
     public String[] businessKeys() {
         return new String[0];
     }
+
+	public String getINK() {
+		return INK;
+	}
+
+	public void setINK(String iNK) {
+		INK = iNK;
+	}
 }

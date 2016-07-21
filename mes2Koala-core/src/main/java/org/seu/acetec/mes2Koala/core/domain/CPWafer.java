@@ -39,6 +39,9 @@ public class CPWafer extends MES2AbstractEntity {
     
     private CPWaferCheck cpWaferCheck;
     
+    private String total;
+    
+    private String sblResult;
 
     //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
@@ -126,6 +129,22 @@ public class CPWafer extends MES2AbstractEntity {
 
 	public void setCpWaferCheck(CPWaferCheck cpWaferCheck) {
 		this.cpWaferCheck = cpWaferCheck;
+	}
+
+	public String getTotal() {
+		return total;
+	}
+
+	public void setTotal(String total) {
+		this.total = total;
+	}
+
+	public String getSblResult() {
+		return sblResult;
+	}
+
+	public void setSblResult(String sblResult) {
+		this.sblResult = sblResult;
 	}
 
 	@Override

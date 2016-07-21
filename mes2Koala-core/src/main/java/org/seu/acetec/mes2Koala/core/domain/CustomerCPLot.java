@@ -15,6 +15,8 @@ public class CustomerCPLot extends CustomerLot {
 
     private static final long serialVersionUID = -7842802453042830808L;
 
+
+
     private String packageLot; //封装厂批号
 
     private String maskName;  // MASK_NAME
@@ -103,6 +105,7 @@ public class CustomerCPLot extends CustomerLot {
     public void setMaterialType(String materialType) {
         this.materialType = materialType;
     }
+
 
     @Override
     public boolean equals(Object object) {

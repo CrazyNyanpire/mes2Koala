@@ -75,4 +75,10 @@ public class CPLotApplicationImpl extends GenericMES2ApplicationImpl<CPLot>
 		//return cpProductionSchedule.getCpTestingNode().getCpProcess().getCpLot();
 		
 	}
+	
+	@Override
+	public CPLot findByLotNumber(String lotNumber) {
+		CPLot cplot = findOne("select a from CPLot a where a.internalLotNumber ='" + lotNumber + "'");
+		return cplot;
+	}
 }

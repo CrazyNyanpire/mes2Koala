@@ -31,6 +31,9 @@ public class TestSysFacadeImpl implements TestSysFacade {
 
     @Inject
     private ProductionScheduleApplication productionScheduleApplication;
+    
+    @Inject
+    private EmsFetcher emsFetcher;
 
     private QueryChannelService queryChannel;
 
@@ -76,10 +79,10 @@ public class TestSysFacadeImpl implements TestSysFacade {
 			//尝试从EMS中获取所有的机台信息
     		String testerEmsJson = null;
     		if ( testType.toLowerCase().equals("ft") ){
-    			testerEmsJson = EmsFetcher.fetchAllFTPlatform();
+    			testerEmsJson = emsFetcher.fetchAllFTPlatform();
     		}
     		else if ( testType.toLowerCase().equals("cp") ){
-    			testerEmsJson = EmsFetcher.fetchAllCPPlatform();
+    			testerEmsJson = emsFetcher.fetchAllCPPlatform();
     		}
     		else {
     			throw new IllegalArgumentException("机台类型未指定");

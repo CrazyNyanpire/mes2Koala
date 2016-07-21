@@ -18,6 +18,7 @@ F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\listener\p
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\shiro\realm\ShiroUser.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\CPLotController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\TestingTemplateController.java
+F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\MESInfoController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\LabelController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\organisation\web\controller\EmployeeController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\org\listener\SecurityOrgDBInitListener.java
@@ -44,11 +45,13 @@ F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\cont
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\InternalProductController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\FTLotOptionLogController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\shiro\extend\ShiroFilterChainManager.java
+F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\filter\RightFilter.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\controller\PermissionController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\shiro\realm\package-info.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\taglibs\package-info.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\gqc\controller\generalquery\QueryController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\CPReworkController.java
+F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\TestDataReportController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\taglibs\AbstractAuthorizationTag.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\seu\acetec\mes2Koala\web\controller\RuncardNoteController.java
 F:\break\mes2Koala\mes2Koala-web\src\main\java\org\openkoala\security\shiro\package-info.java

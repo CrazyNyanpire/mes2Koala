@@ -16,7 +16,7 @@
             text-align: center;
         }
 
-        .left, .middle, .right{
+        .left,.right{
             display:inline-block;
             vertical-align:middle;
         }
@@ -27,19 +27,17 @@
             float:left;
         }
 
-        .middle{
-            width:85px;
-            text-align:center;
-            position:relative;
-            top:100px;
-        }
-
         .right{
-            width:650px;
+            width:750px;
             white-space:nowrap;
         }
 
         tr.change:hover
+       {
+           background-color:yellow
+       }
+       
+       .transfer
        {
            background-color:#00CCCC
        }
@@ -51,6 +49,7 @@
         var paramDirectory;
         var paramDirectoryName;
         $(function () {
+        	waferInfo = "";
             dialog = $("#<%=dialogId%>");
             var contentsTskDirectory = [{title: '请选择',
                                          value: ''}];
@@ -86,33 +85,68 @@
                  paramDirectoryName = $("#directoryNameID").val();
                  debugger;
             	 $("#tskFileNameBody").html('');
-                 $.get('${pageContext.request.contextPath}/CPLot/getTskFileNames.koala?upDown='+ paramDirectory + '&directory=' + paramDirectoryName).done(function (data) {
+                 $.post('${pageContext.request.contextPath}/TestDataReport/getTskFileNames.koala?upDown='+ paramDirectory + '&directory=' + paramDirectoryName).done(function (data) {
                      debugger;
                 	 var html = "";
-                     var th = "<table class='table table-bordered' style='background-color:#fff;margin-top:10px;text-align:center;'><tr height='30px'><td>目录名称</td></tr>";
+                     var th = "<table class='table table-bordered' style='background-color:#fff;margin-top:10px;text-align:center;'><tr height='30px' style='background-color: #CFF;' bordercolor='#0FFCFF'><td>目录名称</td><td>创建时间</td></tr>";
                      html += th;
                      data = data.data;
                      info = data;
                      for (var i = 0 ; i < data['directoryName'].length ; i++) {
-                         html += "<tr height='30px' class='change' ondblclick='dblclickResolveFile(" + parseInt(i) + ")'><td>" + data['directoryName'][i] + "</td></tr>";
+                         html += "<tr height='30px' class='change' ondblclick='dblclickResolveFile(" + parseInt(i) + ")'><td>" + data['directoryName'][i] + "</td><td>" + data['timeStamp'][i] + "</td></tr>";
                      }
                      html += "</table>";
                      $("#tskFileNameBody").html(html);
+                     $('tr').click(function(){
+                         $(this).addClass("transfer").siblings().removeClass("transfer");
+                     });
                  });
             });
             
+            dialog.find('#exportExcelID').on('click', function () {//导出Excel
+            	if (waferInfo == null || waferInfo == "") {
+            		dialog.message({
+                        type: 'warning',
+                        content: '请先双击左边目录选择批次'
+                    })
+            		return false;
+            	}
+            	data = {tskInfo: JSON.stringify(waferInfo)};
+            	$.post('${pageContext.request.contextPath}/TestDataReport/tskExportExcel.koala', data).done(function (result) {
+            		if (result.success) {
+            			dialog.message({
+                            type: 'success',
+                            content: '导出成功'
+                        });
+                        var dialog1 = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">导出Excel</h4></div><div class="modal-body"><p id="downloadID"></p></div><div class="modal-footer"><button type="button" class="btn btn-success" data-dismiss="modal" id="save">确定</button></div></div></div></div>');
+                        dialog1.modal({
+                            keyboard: false
+                        }).on({
+                            'hidden.bs.modal': function () {
+                                $(this).remove();
+                            }
+                        }).find('#downloadID').html("导出成功！" + "<a style='margin-left:20px;'   href='" + result.data + "'>点击下载</a>");
+                    } else {
+                    	dialog.message({
+                            type: 'error',
+                            content: result.errorMessage
+                        });
+                    }
+            	});
+           });
+            
+            
             //兼容IE8 IE9
-            if(window.ActiveXObject){
-                if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
-                    dialog.trigger('shown.bs.modal');
-                }
-            }
+            //if(window.ActiveXObject){
+            //    if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+            //        dialog.trigger('shown.bs.modal');
+            //    }
+            //}
         });
         
         function dblclickResolveFile(num) {
         	paramDirectoryName = info['directoryName'][num];
-        	$.get('${pageContext.request.contextPath}/CPLot/resolveFile.koala?upDown='+ paramDirectory + '&directoryName=' + info['directoryName'][num]).done(function (data) {
-        		debugger;
+        	$.get('${pageContext.request.contextPath}/TestDataReport/resolveFile.koala?upDown='+ paramDirectory + '&directoryName=' + info['directoryName'][num]).done(function (data) {
                 data = data.data;
                 waferInfo = data;
                 $('.waferInfo').find('.change').html('');
@@ -148,12 +182,14 @@
                             + "<td>" + data[i]['client_Pass_Dice'] + "</td>"
                             + "</tr>");
                 }
+                $('tr').click(function(){
+                    $(this).addClass("transfer").siblings().removeClass("transfer");
+                });
             });
         }
         
         function dblclickMapCreate11(num) {
-        	$.get('${pageContext.request.contextPath}/CPLot/mapCreate.koala?upDown='+ paramDirectory + '&directoryName=' + paramDirectoryName+ '&fileName=' + waferInfo[num]['fileName']).done(function (data) {
-        		debugger;
+        	$.post('${pageContext.request.contextPath}/TestDataReport/mapCreate.koala?upDown='+ paramDirectory + '&directoryName=' + paramDirectoryName+ '&fileName=' + waferInfo[num]['fileName']).done(function (data) {
         		data = data.data;
         		var dialog = $('<div class="modal fade"><div class="modal-dialog" style="width:1000px;height:1000px">'
                         + '<div class="modal-content"><div class="modal-header"><button type="button" class="close" '
@@ -163,10 +199,9 @@
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
                         + '<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
                         + '</div></div>');
-        		$.get('/html/map.html').done(function (html) {
+        		$.get('/pages/html/map.html').done(function (html) {
         		  dialog.find('.modal-body').html(html);
-        		  dialog.find('.table').html(data);
-        		  initPage(dialog.find('form'));
+        		  dialog.find('#newMap').html(data);
         		  dialog.modal({
                     keyboard: false
                 }).on({
@@ -179,25 +214,14 @@
         }
         
         function dblclickMapCreate(num) {
-        	$.get('${pageContext.request.contextPath}/CPLot/mapCreate.koala?upDown='+ paramDirectory + '&directoryName=' + paramDirectoryName+ '&fileName=' + waferInfo[num]['fileName']).done(function (data) {
-        		debugger;
+        	debugger;
+        	$.post('${pageContext.request.contextPath}/TestDataReport/mapCreate.koala?upDown='+ paramDirectory + '&directoryName=' + paramDirectoryName+ '&fileNameNum=' + num).done(function (data) {
         		data = data.data;
-        		OpenWindow = window.open('/html/map.html');
+        		OpenWindow = window.open();
         		OpenWindow.document.write(data);
         		OpenWindow.document.close();
         		//window.open ('map.html', 'newwindow', 'height=100, width=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
         	});
-        }
-        
-        function initPage(form) {
-            form.find('.form_datetime').datetimepicker({
-                language: 'zh-CN',
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                todayBtn: true,
-                minView: 2,
-                pickerPosition: 'bottom-left'
-            }).datetimepicker('setDate', new Date());//加载日期选择器
         }
     </script>
 </head>
@@ -220,19 +244,20 @@
             <div style="margin-left:15px;float:left;">
                 <input  class="form-control"  type= "text" name="directoryName" id="directoryNameID" style="width:220px;" />
                 <input  class="btn btn-default" type= "button" name="select" id="selectID" value = "搜索"/>
+                <input  class="btn btn-default" type= "button" name="export" id="exportExcelID" value = "导出Excel"/>
             </div>
         </div>
         <div class="col-lg-10" id="tskFileNameBody" style="margin-top:5px;height: 450px; overflow:auto">
             <table class='table table-bordered' style='background-color:#fff;margin-top:10px;text-align:center;'>
-                <tr height='30px'><td>目录名称</td></tr>
+                <tr height='30px' style='background-color: #CFF;' bordercolor='#0FFCFF'><td>目录名称</td><td>创建时间</td></tr>
             </table>
         </div>
     </div>
     <div class="right">
-        <div class="right-modal-body" style="margin-left:-500px;">Wafer信息：</div>
+        <div class="right-modal-body" style="margin-left:-650px;">Wafer信息：</div>
         <hr />
         <br />
-        <div class="col-lg-10" id="waferInfoBody" style="width:650px;margin-top:5px;overflow:auto">
+        <div class="col-lg-10" id="waferInfoBody" style="width:750px;margin-top:5px;overflow:auto">
             <table class='table table-bordered waferInfo' style='background-color:#fff;margin-top:10px;text-align:center;'>
                 <tr height='30px' style='background-color: #CFF;' bordercolor='#0FFCFF'>
                     <th>Device Name</th>

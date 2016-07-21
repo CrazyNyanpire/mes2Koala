@@ -42,7 +42,7 @@ public class FTProductionSchedule extends ProductionSchedule {
 		return result;
 	}
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FT_LOT_ID", referencedColumnName = "ID")
 	public FTLot getFtLot() {
 		return ftLot;
@@ -69,7 +69,7 @@ public class FTProductionSchedule extends ProductionSchedule {
 	public void setPlannedTimeTakes(Double plannedTimeTakes) {
 		Double hours = -1.0;
 		try {
-			Integer uphReality = getFtComposedTestNode().getTestProgram().getUphReality();
+			Float uphReality = getFtComposedTestNode().getTestProgram().getUphReality();
 			if (null != uphReality && 0 != uphReality)
 				hours = getAmount() * 1.0 / uphReality;
 		} catch (NullPointerException e) {

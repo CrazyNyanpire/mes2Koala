@@ -1,6 +1,9 @@
 package org.seu.acetec.mes2Koala.application;
 
 
+import java.util.List;
+
+import org.seu.acetec.mes2Koala.core.domain.FTNode;
 import org.seu.acetec.mes2Koala.core.domain.FTProcess;
 
 public interface FTProcessApplication extends GenericMES2Application<FTProcess> {
@@ -41,6 +44,8 @@ public interface FTProcessApplication extends GenericMES2Application<FTProcess> 
      * @version 2016/5/30 
      */
     void deleteFTProcess(Long ftLotId);
+    
+    public FTNode findToStartNode(List<FTNode> ftNodes) ;
     
 }
 

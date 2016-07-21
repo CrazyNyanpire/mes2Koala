@@ -78,6 +78,10 @@ public class ReworkDTO implements Serializable {
 	private String lotNo;
 	
 	private String status;
+	
+	private String reworkDateStr;
+	
+	private String testerNo;
 
 	public void setSummary(String summary) {
 		this.summary = summary;
@@ -333,6 +337,22 @@ public class ReworkDTO implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getReworkDateStr() {
+		return reworkDateStr;
+	}
+
+	public void setReworkDateStr(String reworkDateStr) {
+		this.reworkDateStr = reworkDateStr;
+	}
+
+	public String getTesterNo() {
+		return testerNo;
+	}
+
+	public void setTesterNo(String testerNo) {
+		this.testerNo = testerNo;
 	}
 
 	@Override

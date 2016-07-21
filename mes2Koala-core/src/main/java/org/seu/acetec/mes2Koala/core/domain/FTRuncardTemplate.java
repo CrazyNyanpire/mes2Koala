@@ -1,6 +1,7 @@
 package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by LCN on 2016/3/9.
@@ -28,7 +29,6 @@ public class FTRuncardTemplate extends MES2AbstractEntity {
 
     private String OQC;
 
-
     private SpecialFormTemplate specialFormTemplate;
     //对应6个产品负责人的签核记录
     private AcetecAuthorization keyQuantityAuthorization;
@@ -40,6 +40,11 @@ public class FTRuncardTemplate extends MES2AbstractEntity {
 
     private AcetecAuthorization keyTDEAuthorization;
     private AcetecAuthorization assistTDEAuthorization;
+
+
+    @Column(name = "SIGNEDTIME")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date signedTime;
 
 
     @Column(columnDefinition = "text")
@@ -201,6 +206,15 @@ public class FTRuncardTemplate extends MES2AbstractEntity {
 
     public void setSpecialFormTemplate(SpecialFormTemplate specialFormTemplate) {
         this.specialFormTemplate = specialFormTemplate;
+    }
+
+
+    public Date getSignedTime() {
+        return signedTime;
+    }
+
+    public void setSignedTime(Date signedTime) {
+        this.signedTime = signedTime;
     }
 
     @Override

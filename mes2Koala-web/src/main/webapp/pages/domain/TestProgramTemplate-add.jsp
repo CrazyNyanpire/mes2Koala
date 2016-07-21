@@ -21,6 +21,14 @@
             />
         </div>
     </div>
+<!--     <div class="form-group">
+        <label class="col-lg-3 control-label">客户产品型号</label>
+        <div class="col-lg-9">
+            <input name="internalProductDTO.Id" style="display:inline; width:94%;" list="internalProduct_list" class="form-control" type="text" id="internalProductDTOID"/>
+        </div>
+        <datalist id="internalProduct_list">
+		</datalist>
+    </div> -->
     <div class="form-group">
         <label class="col-lg-3 control-label">版本型号:</label>
         <div class="col-lg-6">

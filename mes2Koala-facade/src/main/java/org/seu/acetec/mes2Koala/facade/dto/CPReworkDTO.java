@@ -89,6 +89,8 @@ public class CPReworkDTO implements Serializable {
 	private String reworkWaferId;
 	
 	private String gist;
+	
+	private String testerNo;
 
 	public String getSummary() {
 		return this.summary;
@@ -388,6 +390,14 @@ public class CPReworkDTO implements Serializable {
 
 	public void setGist(String gist) {
 		this.gist = gist;
+	}
+
+	public String getTesterNo() {
+		return testerNo;
+	}
+
+	public void setTesterNo(String testerNo) {
+		this.testerNo = testerNo;
 	}
 
 	@Override

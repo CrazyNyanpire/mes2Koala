@@ -22,12 +22,12 @@
             PageLoader = {
                 //
                 initSearchPanel: function () {
-                    var contents = [{title: '请选择', value: ''}];//添加状态字典表维护
                     $.ajax({
                         url: '${pageContext.request.contextPath}/SystemDictionary/getByType/productionScheduleState.koala',
                         type: 'GET',
                         dataType: 'json'
                     }).done(function (msg) {
+                    	var contents = [{title: '请选择', value: ''}];//添加状态字典表维护
                         for (var i = 0; i < msg.length; i++) {
                             content[msg[i]['value']] = msg[i]['label'];
                             contents.push({
@@ -41,6 +41,15 @@
                         }).on('change', function () {
                             form.find('#stateID_').val($(this).getValue());
                         });
+                    });
+                    var contents = [{title: '请选择', value: ''}];//添加状态字典表维护
+                    contents.push({title: "FT",value: "FT"});
+                    contents.push({title: "CP",value: "CP"});
+                    form.find('#testTypeID').select({
+                        title: '请选择',
+                        contents: contents
+                    }).on('change', function () {
+                        form.find('#testTypeID_').val($(this).getValue());
                     });
                     var startTimeVal = form.find('#createTimestampID_start');
                     var startTime = startTimeVal.parent();
@@ -128,11 +137,12 @@
                         url: "${pageContext.request.contextPath}/ProductionSchedule/pageJson.koala",
                         columns: [
                             {title: '机台', name: 'testSysName', width: width},
+                            {title: '客户编号', name: 'customerNumber', width: 110},
                             {title: '艾科批号', name: 'lotNumber', width: width},
                             {
-                                title: 'PID',
+                                title: '艾科内部产品型号',
                                 name: 'internalProductNumber',
-                                width: width,
+                                width: 130,
                             },
                             {title: '客户型号', name: 'customerProductNumber', width: 130},
                             {title: '客户批号', name: 'customerLotNumber', width: width},
@@ -683,7 +693,7 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        <label class="control-label" style="width:100px;float:left;">机台:&nbsp;</label>
+                        <label class="control-label" style="width:55px;float:left;">机台:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <input name="testSysName" class="form-control" type="text" style="width:180px;"
                                    id="siteID"/>
@@ -693,10 +703,20 @@
                             <input name="lotNumber" class="form-control" type="text" style="width:180px;"
                                    id="lotNumberID"/>
                         </div>
-                        <label class="control-label" style="width:100px;float:left;">状态:&nbsp;</label>
+                        <label class="control-label" style="width:85px;float:left;">客户型号:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input name="customerProductNumber" class="form-control" type="text" style="width:180px;"
+                                   id="customerProductNumberID"/>
+                        </div>
+                        <label class="control-label" style="width:70px;float:left;">状态:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <div class="btn-group select" id="stateID"></div>
                             <input name="state" type="hidden" id="stateID_"/>
+                        </div>
+                        <label class="control-label" style="width:70px;float:left;">类型:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <div class="btn-group select" id="testTypeID"></div>
+                            <input name="testType" type="hidden" id="testTypeID_"/>
                         </div>
                     </div>
                 </td>

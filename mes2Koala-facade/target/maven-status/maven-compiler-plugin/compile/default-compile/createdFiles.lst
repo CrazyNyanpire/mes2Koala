@@ -7,7 +7,9 @@ org\openkoala\security\facade\command\ChangePermissionPropsCommand.class
 org\seu\acetec\mes2Koala\facade\CPLotFacade.class
 org\seu\acetec\mes2Koala\facade\CPQDNFacade.class
 org\seu\acetec\mes2Koala\facade\excelvo\LabelVoAssembler.class
+org\seu\acetec\mes2Koala\facade\dto\TestData3360InfoDTO.class
 org\openkoala\security\facade\command\CreatePermissionCommand.class
+org\seu\acetec\mes2Koala\facade\TestDataReportOperationFacade.class
 org\seu\acetec\mes2Koala\facade\ExcelFacade.class
 org\openkoala\security\facade\command\ChangeUserPasswordCommand.class
 org\seu\acetec\mes2Koala\facade\CPLotOptionLogFacade.class
@@ -112,6 +114,7 @@ org\openkoala\security\facade\dto\UrlAccessResourceDTO.class
 org\openkoala\security\org\facade\command\CreateEmpolyeeUserCommand.class
 org\seu\acetec\mes2Koala\facade\CPReworkItemFacade.class
 org\seu\acetec\mes2Koala\facade\dto\EQCSettingDTO.class
+org\seu\acetec\mes2Koala\facade\MESInfoFacade.class
 org\seu\acetec\mes2Koala\facade\dto\FTReworkDTO.class
 org\seu\acetec\mes2Koala\facade\BomTemplateFacade.class
 org\seu\acetec\mes2Koala\facade\dto\vo\CPSpecialFormStatusVo.class
@@ -173,6 +176,7 @@ org\openkoala\security\org\facade\SecurityOrgAccessFacade.class
 org\openkoala\security\facade\command\LoginCommand.class
 org\seu\acetec\mes2Koala\facade\CPLotNodeOperationFacade.class
 org\openkoala\gqc\facade\dto\QueryConditionDTO.class
+org\seu\acetec\mes2Koala\facade\dto\BaseRightInfoDTO.class
 org\seu\acetec\mes2Koala\facade\TestProgramTemplateFacade.class
 org\seu\acetec\mes2Koala\facade\ganttvo\RowVo.class
 org\seu\acetec\mes2Koala\facade\dto\BomUseDTO.class
@@ -211,6 +215,7 @@ org\seu\acetec\mes2Koala\facade\dto\SBLTemplateDTO.class
 org\openkoala\security\org\facade\command\GrantPermissionToUserInScopeCommand.class
 org\seu\acetec\mes2Koala\facade\dto\FTProcessDTO.class
 org\openkoala\organisation\facade\dto\ResponsiblePostDTO.class
+org\seu\acetec\mes2Koala\facade\sbl\SBLClient.class
 org\seu\acetec\mes2Koala\facade\ganttvo\RowVoAssembler.class
 org\seu\acetec\mes2Koala\facade\SpecialFormFacade.class
 org\seu\acetec\mes2Koala\facade\dto\IncrementNumberDTO.class

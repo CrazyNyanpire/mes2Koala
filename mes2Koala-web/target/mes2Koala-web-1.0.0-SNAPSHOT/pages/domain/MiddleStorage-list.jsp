@@ -5,6 +5,7 @@
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+<%@include file="/commons/taglibs.jsp" %>
 <%@ page import="java.util.Date"%>
 <% String formId = "form_" + new Date().getTime();
    String gridId = "grid_" + new Date().getTime();
@@ -25,6 +26,8 @@ $(function (){
 				        contents.push( {title : 'Pass' ,value : 'Pass'} );
 				        contents.push( {title : 'Pass1' ,value : 'Pass1'} );
 				        contents.push( {title : 'Pass2' ,value : 'Pass2'} );
+				        contents.push( {title : 'LAT' ,value : 'LAT'} );
+				        contents.push( {title : 'Other' ,value : 'Other'} );
 				        form.find('#qualityID').select({
 			                title: '请选择',
 			                contents: contents
@@ -88,31 +91,31 @@ $(function (){
 	        	 	searchCondition:{"status":"在库"},
 	                identity:"id",
 	                buttons: [
-	                        {content: '<button class="btn btn-success" type="button">修改</button>', action: 'modify'},
-	                        {content: '<button class="btn btn-danger" type="button">拆盘</button>', action: 'split'},
-	                        {content: '<button class="btn btn-primary" type="button">Lat打包</button>', action: 'latPackage'},
-	                        {content: '<button class="btn btn-primary" type="button">Fail品标签打印</button>', action: 'failPrint'},
-	                        {content: '<button class="btn btn-danger" type="button">开Hold</button>', action: 'hold'},
-	                        {content: '<button class="btn btn-primary" type="button">解Hold</button>', action: 'unhold'},
-	                        {content: '<button class="btn btn-primary" type="button">重工下单</button>', action: 'rework'},
-	                        {content: '<button class="btn btn-danger" type="button">重工申请</button>', action: 'reworkApply'},
-	                        {content: '<button class="btn btn-primary" type="button"><span>合批</button>', action: 'merge'},
-	                        {content: '<button class="btn btn-primary" type="button">出货</button>', action: 'shipping'},
-	                        {content: '<button class="btn btn-primary" type="button">丢料</button>', action: 'loss'},
-	                        {content: '<button class="btn btn-primary" type="button">借料</button>', action: 'borrow'},
-	                        {content: '<button class="btn btn-primary" type="button">特殊标示</button>', action: 'special'},
-	                        {content: '<button class="btn btn-primary" type="button">合批还原</button>', action: 'mergeRestore'},
-	                        {content: '<button class="btn btn-primary" type="button">工程打印</button>', action: 'enginePrint'},
-	                        {content: '<button class="btn btn-primary" type="button">Lat打印</button>', action: 'latPrint'}
-	                    ],
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageModify"><button class="btn btn-success" type="button">修改</button></ks:hasSecurityResource>', action: 'modify'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageSplit"><button class="btn btn-danger" type="button">拆盘</button></ks:hasSecurityResource>', action: 'split'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageLatPackage"><button class="btn btn-primary" type="button">Lat打包</button></ks:hasSecurityResource>', action: 'latPackage'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageFailPrint"><button class="btn btn-primary" type="button">Fail品标签打印</button></ks:hasSecurityResource>', action: 'failPrint'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageHold"><button class="btn btn-danger" type="button">开Hold</button></ks:hasSecurityResource>', action: 'hold'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageUnhold"><button class="btn btn-primary" type="button">解Hold</button></ks:hasSecurityResource>', action: 'unhold'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageRework"><button class="btn btn-primary" type="button">重工下单</button></ks:hasSecurityResource>', action: 'rework'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageReworkApply"><button class="btn btn-danger" type="button">重工申请</button></ks:hasSecurityResource>', action: 'reworkApply'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageMerge"><button class="btn btn-primary" type="button"><span>合批</button></ks:hasSecurityResource>', action: 'merge'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageShipping"><button class="btn btn-primary" type="button">出货</button></ks:hasSecurityResource>', action: 'shipping'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageLoss"><button class="btn btn-primary" type="button">丢料</button></ks:hasSecurityResource>', action: 'loss'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageBorrow"><button class="btn btn-primary" type="button">借料</button></ks:hasSecurityResource>', action: 'borrow'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageSpecial"><button class="btn btn-primary" type="button">特殊标示</button></ks:hasSecurityResource>', action: 'special'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageMergeRestore"><button class="btn btn-primary" type="button">合批还原</button></ks:hasSecurityResource>', action: 'mergeRestore'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageEnginePrint"><button class="btn btn-primary" type="button">工程打印</button></ks:hasSecurityResource>', action: 'enginePrint'},
+	                            {content: '<ks:hasSecurityResource identifier="MiddleStorageLatPrint"><button class="btn btn-primary" type="button">Lat打印</button></ks:hasSecurityResource>', action: 'latPrint'}
+	                        ],
 	                url:"${pageContext.request.contextPath}/ReelDiskTransferStorage/pageJson.koala",
 	                columns: [
- 									 { title: 'Approve', name: 'approve', width: 70},
+ 									 { title: 'Approve', name: 'approve', width: 90},
 									 { title: '状态', name: 'status', width: 70},
 									 { title: 'ReelCode', name: 'reelCode', width: width},
            	                      	 { title: 'dateCode', name: 'dateCode', width: 90},
            	                   		 { title: '实际数量', name: 'quantity', width: 90},
-           	                   		 { title: '版本型号', name: 'customerProductNumber', width: width},
+           	                   		 { title: '版本型号', name: 'customerProductRevision', width: width},
            	                      	 { title: '来料型号', name: 'customerProductNumber', width: width},
         	                         { title: '出货型号', name: 'shipmentProductNumber', width: width},
         	                         { title: '特殊标示', name: 'specialSign', width: 90, render: function (rowdata, name, index)
@@ -609,6 +612,7 @@ $(function (){
 								'shown.bs.modal' : function(){
 									var width=110;
 									var notGrantRolecolumns = [
+													{ title: '标识码', name: 'latPackageNo', width: width},
 													{ title: 'Approve', name: 'approve', width: width},
 													{ title: '状态', name: 'status', width: width},
 													{ title: '来料时间', name: '', width: width, render: function (rowdata, name, index)
@@ -650,7 +654,7 @@ $(function (){
 										identity: 'id',
 										columns: notGrantRolecolumns,
 										isShowPages:false,
-										url: "${pageContext.request.contextPath}/ReelDiskTransferStorage/pageJson.koala?quality=LAT&latSign=1&page=0&pagesize=100"
+										url: "${pageContext.request.contextPath}/ReelDiskTransferStorage/pageJson.koala?quality=lat&latSign=1&page=0&pagesize=100"
 									});
 									staffDialog.find("#latGrid .grid-table-body").css("height","281px");
 								}
@@ -681,7 +685,8 @@ $(function (){
 								ids.push(grantRolesToUserTableItems[a].id);
 								}
 							ids=ids.join(",");
-							$.get('${pageContext.request.contextPath}/ReelDiskTransferStorage/latPrint.koala?id='+ids+'&latPackageNo='+grantRolesToUserTableItems[0].latPackageNo).done(function(result){
+							window.open('${pageContext.request.contextPath}/ReelDiskTransferStorage/latPrint.koala?id='+ids+'&latPackageNo='+grantRolesToUserTableItems[0].latPackageNo);
+							/*$.get('${pageContext.request.contextPath}/ReelDiskTransferStorage/latPrint.koala?id='+ids+'&latPackageNo='+grantRolesToUserTableItems[0].latPackageNo).done(function(result){
 		                        if(result.success){
 		                        	staffDialog.modal('hide');
 		                            e.data.grid.data('koala.grid').refresh();
@@ -704,7 +709,7 @@ $(function (){
 		                        		});
 		                        	}
 		                        }
-		                    });
+		                    }); */
 							staffDialog.modal('hide');
 						});
 					})

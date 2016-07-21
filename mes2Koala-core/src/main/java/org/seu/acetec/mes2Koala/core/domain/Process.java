@@ -19,6 +19,8 @@ public class Process extends MES2AbstractEntity {
 
     private String testContent;
     private String specialForm;
+    
+    private String lotNo;//改变PID时备份和lot的关联
 
 
     public String getName() {
@@ -77,7 +79,15 @@ public class Process extends MES2AbstractEntity {
         this.specialForm = specialForm;
     }
 
-    @Override
+    public String getLotNo() {
+		return lotNo;
+	}
+
+	public void setLotNo(String lotNo) {
+		this.lotNo = lotNo;
+	}
+
+	@Override
     public String[] businessKeys() {
         return new String[0];
     }

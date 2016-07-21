@@ -164,7 +164,7 @@ public class CustomerFTLotFacadeImpl implements CustomerFTLotFacade {
 			jpql.append(" order by _customerFTLot." + sortname + " "
 					+ sortorder);
 		} else {
-			jpql.append(" order by _customerFTLot.incomingDate DESC");
+			jpql.append(" order by _customerFTLot.state,_customerFTLot.incomingDate DESC ");
 		}
 		Page<CustomerFTLot> pages = getQueryChannelService()
 				.createJpqlQuery(jpql.toString()).setParameters(conditionVals)
@@ -206,12 +206,12 @@ public class CustomerFTLotFacadeImpl implements CustomerFTLotFacade {
 	@Transactional
 	@Override
 	public InvokeResult orderInBatches(Long[] customerFTLotIds,
-			String operatorName) {
+			String operatorName, FTLotDTO ftLotDTO) {
 		FTLotOptionLog ftLotOptionLog = new FTLotOptionLog();
 		try {
 			Map<String, Integer> messages = new HashMap<String, Integer>();
 			List<Long> ftLotIds = customerFTLotApplication.orderInBatches(
-					customerFTLotIds, messages);
+					customerFTLotIds, messages, ftLotDTO.getFtInfoId());
 			// 添加日志信息
 			ftLotOptionLog.setRemark("批量下单："
 					+ Joiner.on(",").join(customerFTLotIds));
@@ -502,6 +502,7 @@ public class CustomerFTLotFacadeImpl implements CustomerFTLotFacade {
 	 * @version v1.0
 	 * @lastModifyDate 2016.06.06
 	 */
+	@Transactional
 	public InvokeResult findPIDByCustomerFTLotId(Long id) {
 		CustomerFTLot customerFTLot = this.customerFTLotApplication.get(id);
 		List<FTInfo> result = null;

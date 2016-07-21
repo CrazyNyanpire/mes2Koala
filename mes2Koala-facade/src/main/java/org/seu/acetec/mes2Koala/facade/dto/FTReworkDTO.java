@@ -81,6 +81,8 @@ public class FTReworkDTO implements Serializable {
 	private Date approveDate;
 
 	private String approveRemark;
+	
+	private String testerNo;
 
 	public String getSummary() {
 		return this.summary;
@@ -347,6 +349,14 @@ public class FTReworkDTO implements Serializable {
 
 	public void setApproveRemark(String approveRemark) {
 		this.approveRemark = approveRemark;
+	}
+
+	public String getTesterNo() {
+		return testerNo;
+	}
+
+	public void setTesterNo(String testerNo) {
+		this.testerNo = testerNo;
 	}
 
 	@Override

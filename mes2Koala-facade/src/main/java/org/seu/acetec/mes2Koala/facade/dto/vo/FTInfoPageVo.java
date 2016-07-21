@@ -60,6 +60,8 @@ public class FTInfoPageVo {
     
     //PID
     private String internalProductNumber;
+    
+    private String runcardApproval;
 
     public Long getId() {
         return id;
@@ -227,5 +229,13 @@ public class FTInfoPageVo {
 
 	public void setInternalProductNumber(String internalProductNumber) {
 		this.internalProductNumber = internalProductNumber;
+	}
+
+	public String getRuncardApproval() {
+		return runcardApproval;
+	}
+
+	public void setRuncardApproval(String runcardApproval) {
+		this.runcardApproval = runcardApproval;
 	}
 }

@@ -28,14 +28,17 @@ public class TestProgramTemplate extends MES2AbstractEntity {
     private String testSys;
     private String site;
     private boolean isYellow;
-    private Integer UPHReality;
-    private Integer UPHTheory;
+    private Float UPHReality;
+    private Float UPHTheory;
     private String revision;
     private String note;
     private String testType;
     private String allowState;
     private List<AcetecAuthorization> acetecAuthorizations = new ArrayList<AcetecAuthorization>();
     private InternalProduct internalProduct;
+    private String temperature;
+    private String productName;
+    private String testSoftwareVersion;
 
     public String getName() {
         return name;
@@ -77,19 +80,19 @@ public class TestProgramTemplate extends MES2AbstractEntity {
         this.isYellow = isYellow;
     }
 
-    public Integer getUPHReality() {
+    public Float getUPHReality() {
         return UPHReality;
     }
 
-    public void setUPHReality(Integer uPHReality) {
+    public void setUPHReality(Float uPHReality) {
         UPHReality = uPHReality;
     }
 
-    public int getUPHTheory() {
+    public Float getUPHTheory() {
         return UPHTheory;
     }
 
-    public void setUPHTheory(int uPHTheory) {
+    public void setUPHTheory(Float uPHTheory) {
         UPHTheory = uPHTheory;
     }
 
@@ -149,6 +152,30 @@ public class TestProgramTemplate extends MES2AbstractEntity {
 
 	public void setAllowState(String allowState) {
 		this.allowState = allowState;
+	}
+
+	public String getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getTestSoftwareVersion() {
+		return testSoftwareVersion;
+	}
+
+	public void setTestSoftwareVersion(String testSoftwareVersion) {
+		this.testSoftwareVersion = testSoftwareVersion;
 	}
 
 }

@@ -22,6 +22,19 @@
         div {
             width: 100%;
         }
+        td{
+        	border:1px solid #333;
+        }
+        table{
+        	margin:0 auto;
+        	width:850px;
+        	border-collapse: collapse;
+        	page-break-after: auto;
+        	
+        }
+        .nextpage{
+        	page-break-after: always;
+        }
     </style>
 </head>
 <body>
@@ -101,12 +114,13 @@
             }).done(function (msg) {
                 str = msg['data'];
                 UE.getEditor('editor').execCommand('insertHtml', str);
+                UE.getEditor('editor').iframe.contentDocument.title="RunCard";
+                //$("body").html(str);
             });
         }
         ue.addListener('ready', function () {
             insertHtml();
             var readOnly = '${currentSite}';
-            debugger
             if (readOnly === 'BeforeOrdered' || readOnly === 'AfterOrdered' || readOnly === 'ALL') {
                 UE.getEditor('editor').setDisabled([]);
                 $("#btns").hide();

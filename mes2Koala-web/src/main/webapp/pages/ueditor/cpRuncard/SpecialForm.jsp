@@ -40,7 +40,6 @@
             }).done(function (msg) {
                 debugger
                 str = msg['data'];
-                debugger;
                 UE.getEditor('editor').execCommand('insertHtml', str);
             });
         }
@@ -48,8 +47,50 @@
 
         ue.addListener('ready', function (ue) {
             insertHtml();
-            UE.getEditor('editor').setDisabled([]);
         });
+
+
+        function save() {
+            $.ajax({
+                async: false,
+                url: '<%=contextPath %>/cpRuncardController/isRuncardInfoSigned.koala?cpinfoId=${cpinfoId}',
+                type: 'GET',
+                dataType: 'json'
+            }).done(function (msg) {
+                success = msg['success'];
+                if (success == true) {
+                    alert("runcard已经签核，不能修改！");
+                } else {
+                    //获取文本中的数据并向服务器端发送
+                    var content = UE.getEditor('editor').getContent();
+                    var json = {
+                        'data': content,
+                        'cpinfoId':${cpinfoId},
+                        'formType': "${formType}"
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '<%=contextPath %>/cpRuncardController/saveSpecialForm.koala',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        dataType: 'json',
+                        success: function (data) {
+                            alert("保存成功!");
+                        },
+                        error: function (data) {
+                            alert("保存失败！" + data);
+                        }
+                    });
+                }
+            });
+
+        }
+
+
+        function closeWindow() {
+            window.opener = null;
+            window.close();
+        }
 
     </script>
 
@@ -58,6 +99,10 @@
 <div style="text-align: center;padding-left: 20%;padding-top: 5%">
     <div>
         <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+    </div>
+    <div>
+        <button onclick="save()">保存内容</button>
+        <button onclick="closeWindow()">关闭窗口</button>
     </div>
 </div>
 </body>

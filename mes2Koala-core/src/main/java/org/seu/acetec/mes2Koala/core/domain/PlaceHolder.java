@@ -62,7 +62,36 @@ public class PlaceHolder extends MES2AbstractEntity {
 	private String taxType;
 	private String packingType;
 	private String shippingType;
-		
+	private String waferManufacturer;
+	private String keyQuantityManagerName;
+	private String keyProductionManagerName;
+	private String keyTDEManagerName;
+	private String signedTime;	
+	
+	public String getWaferManufacturer() {
+		return waferManufacturer;
+	}
+	public void setWaferManufacturer(String waferManufacturer) {
+		this.waferManufacturer = waferManufacturer;
+	}
+	public String getKeyQuantityManagerName() {
+		return keyQuantityManagerName;
+	}
+	public void setKeyQuantityManagerName(String keyQuantityManagerName) {
+		this.keyQuantityManagerName = keyQuantityManagerName;
+	}
+	public String getKeyProductionManagerName() {
+		return keyProductionManagerName;
+	}
+	public void setKeyProductionManagerName(String keyProductionManagerName) {
+		this.keyProductionManagerName = keyProductionManagerName;
+	}
+	public String getKeyTDEManagerName() {
+		return keyTDEManagerName;
+	}
+	public void setKeyTDEManagerName(String keyTDEManagerName) {
+		this.keyTDEManagerName = keyTDEManagerName;
+	}
 	public String getProductVersion() {
 		return productVersion;
 	}
@@ -406,4 +435,11 @@ public class PlaceHolder extends MES2AbstractEntity {
 		this.shippingType = shippingType;
 	}
 	
+	public String getSignedTime() {
+		return signedTime;
+	}
+
+	public void setSignedTime(String signedTime) {
+		this.signedTime = signedTime;
+	}
 }

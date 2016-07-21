@@ -48,8 +48,50 @@
 
         ue.addListener('ready', function (ue) {
             insertHtml();
-            UE.getEditor('editor').setDisabled([]);
         });
+
+
+        function save() {
+            $.ajax({
+                async: false,
+                url: '<%=contextPath %>/ueditor/isRuncardInfoSigned.koala?ftinfoId=${ftinfoId}',
+                type: 'GET',
+                dataType: 'json'
+            }).done(function (msg) {
+                success = msg['success'];
+                if (success == true) {
+                    alert("runcard已经签核，不能修改！");
+                } else {
+                    //获取文本中的数据并向服务器端发送
+                    var content = UE.getEditor('editor').getContent();
+                    var json = {
+                        'data': content,
+                        'ftinfoId':${ftinfoId},
+                        'formType': "${formType}"
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '<%=contextPath %>/ueditor/saveSpecialForm.koala',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        dataType: 'json',
+                        success: function (data) {
+                            alert("保存成功!");
+                        },
+                        error: function (data) {
+                            alert("保存失败！" + data);
+                        }
+                    });
+                }
+            });
+
+        }
+
+
+        function closeWindow() {
+            window.opener = null;
+            window.close();
+        }
 
     </script>
 
@@ -59,6 +101,12 @@
     <div>
         <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
     </div>
+    <div>
+        <button onclick="save()">保存内容</button>
+        <button onclick="closeWindow()">关闭窗口</button>
+    </div>
 </div>
+
+
 </body>
 </html>

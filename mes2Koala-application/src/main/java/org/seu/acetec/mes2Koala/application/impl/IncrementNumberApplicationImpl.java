@@ -87,7 +87,7 @@ public class IncrementNumberApplicationImpl extends GenericMES2ApplicationImpl<I
 			incrementNumber = new IncrementNumber();
 			incrementNumber.setMaxNum(999);
 			incrementNumber.setIntervalNum(1);
-			incrementNumber.setSerialNum(0);
+			incrementNumber.setSerialNum(1);
 			incrementNumber.setType(type);
 			create(incrementNumber);
 		}
@@ -208,7 +208,7 @@ public class IncrementNumberApplicationImpl extends GenericMES2ApplicationImpl<I
 		int serialNum = in.getSerialNum();
 		if (!Objects.equals(in.getStartStr(), startStr)) {
 			in.setStartStr(startStr);
-			in.setSerialNum(0);
+			in.setSerialNum(1);
 			update(in);
 			return false;
 		} else if (serialNum >= in.getMaxNum()) { // 达到预定的最大值
@@ -489,7 +489,7 @@ public class IncrementNumberApplicationImpl extends GenericMES2ApplicationImpl<I
 		String result = peekReelCode(ftInfo);
 		if(incReelCode(type)==false){
 			result = result.substring(0, result.length()-3);
-			result += "000";
+			result += "001";
 			incReelCode(type);		
 		}
 		return result;

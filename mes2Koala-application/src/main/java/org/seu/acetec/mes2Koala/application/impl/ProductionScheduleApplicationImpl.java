@@ -1,14 +1,18 @@
 package org.seu.acetec.mes2Koala.application.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.seu.acetec.mes2Koala.application.CPProductionScheduleApplication;
 import org.seu.acetec.mes2Koala.application.CPTestingNodeApplication;
 import org.seu.acetec.mes2Koala.application.FTCompostedTestApplication;
+import org.seu.acetec.mes2Koala.application.FTProductionScheduleApplication;
 import org.seu.acetec.mes2Koala.application.ProductionScheduleApplication;
+import org.seu.acetec.mes2Koala.application.TestProgramTemplateApplication;
 import org.seu.acetec.mes2Koala.application.TestSysApplication;
 import org.seu.acetec.mes2Koala.application.utils.Mes2EntityOperator;
 import org.seu.acetec.mes2Koala.core.domain.CPLot;
@@ -20,6 +24,8 @@ import org.seu.acetec.mes2Koala.core.domain.FTComposedTestNode;
 import org.seu.acetec.mes2Koala.core.domain.FTLot;
 import org.seu.acetec.mes2Koala.core.domain.FTProductionSchedule;
 import org.seu.acetec.mes2Koala.core.domain.ProductionSchedule;
+import org.seu.acetec.mes2Koala.core.domain.TestProgram;
+import org.seu.acetec.mes2Koala.core.domain.TestProgramTemplate;
 import org.seu.acetec.mes2Koala.core.domain.TestSys;
 import org.seu.acetec.mes2Koala.core.enums.TransferStorageState;
 import org.seu.acetec.mes2Koala.infra.EmsFetcher;
@@ -28,8 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named
 @Transactional
-public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImpl<ProductionSchedule>
-		implements ProductionScheduleApplication {
+public class ProductionScheduleApplicationImpl extends
+		GenericMES2ApplicationImpl<ProductionSchedule> implements
+		ProductionScheduleApplication {
 
 	@Inject
 	private TestSysApplication testSysApplication;
@@ -38,17 +45,31 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	@Inject
 	private CPTestingNodeApplication cpTestingNodeApplication;
 
+	@Inject
+	private CPProductionScheduleApplication cpProductionScheduleApplication;
+
+	@Inject
+	private FTProductionScheduleApplication ftProductionScheduleApplication;
+
+	@Inject
+	private TestProgramTemplateApplication testProgramTemplateApplication;
+
+	@Inject
+	private EmsFetcher emsFetcher;
+
 	@Override
 	public void createNewFtSchedule(Long testSysId, Long ftComposedTestNodeId) {
 
 		// 根据id取出TestSys FTComposedTestNode CustomerFTLot实体
-		TestSys testSys = testSysId == null ? null : testSysApplication.get(testSysId);
+		TestSys testSys = testSysId == null ? null : testSysApplication
+				.get(testSysId);
 		FTComposedTestNode ftComposedTestNode;
 		FTLot ftLot;
 		CustomerFTLot customerFTLot;
 		try {
 
-			ftComposedTestNode = ftCompostedTestApplication.get(ftComposedTestNodeId);
+			ftComposedTestNode = ftCompostedTestApplication
+					.get(ftComposedTestNodeId);
 			ftLot = ftComposedTestNode.getFtProcess().getFtLot();
 			customerFTLot = ftLot.getCustomerFTLot();
 			/*
@@ -71,14 +92,18 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			// ftComposedTestNode.setProductionSchedule(productionSchedule);
 
 			ftProductionSchedule.setState(TaskState.NOT_TEST_YET.getState());
-			ftProductionSchedule.setAmount(customerFTLot.getIncomingQuantity());
+			// 数量为下单后lot中的数量
+			ftProductionSchedule.setAmount(ftLot.getQty());
 			ftProductionSchedule.setDoneQty(0L);
 			ftProductionSchedule.setNote("");
 			ftProductionSchedule.setLotNumber(ftLot.getInternalLotNumber());
 			ftProductionSchedule.setpPO(customerFTLot.getCustomerPPO());
-			ftProductionSchedule.setCustomerProductNumber(customerFTLot.getCustomerProductNumber());
-			ftProductionSchedule.setPackageNumber(customerFTLot.getPackageNumber());
-			ftProductionSchedule.setCustomerLotNumber(customerFTLot.getCustomerLotNumber());
+			ftProductionSchedule.setCustomerProductNumber(customerFTLot
+					.getCustomerProductNumber());
+			ftProductionSchedule.setPackageNumber(customerFTLot
+					.getPackageNumber());
+			ftProductionSchedule.setCustomerLotNumber(customerFTLot
+					.getCustomerLotNumber());
 			/*
 			 * // 时间相关，初步设定简单的时间值，之后参照需求细则再做修改
 			 * productionSchedule.setPlanedStartTimestamp(new Date());
@@ -94,15 +119,15 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	}
 
 	@Override
-	public void createNewCpSchedule(Long testSysId, Long cpTestingNodeId) {
+	public void createNewCpSchedule(Long testSysId, CPTestingNode cpTestingNode) {
 
 		// 根据id取出TestSys CPLot CustomerCPLot实体
-		TestSys testSys = testSysId == null ? null : testSysApplication.get(testSysId);
-		CPTestingNode cpTestingNode = null;
+		TestSys testSys = testSysId == null ? null : testSysApplication
+				.get(testSysId);
 		CPLot cpLot;
 		CustomerCPLot customerCPLot;
 		try {
-			cpTestingNode = cpTestingNodeApplication.get(cpTestingNodeId);
+			// cpTestingNode = cpTestingNodeApplication.get(cpTestingNodeId);
 			cpLot = cpTestingNode.getCpProcess().getCpLot();
 			customerCPLot = cpLot.getCustomerCPLot();
 		} catch (Exception e) {
@@ -119,14 +144,16 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			cpProductionSchedule.setCpLot(cpLot);
 
 			cpProductionSchedule.setState(TaskState.NOT_TEST_YET.getState());
-			cpProductionSchedule.setAmount(customerCPLot.getIncomingQuantity());
+			cpProductionSchedule.setAmount(cpLot.getQuantity());
 			cpProductionSchedule.setDoneQty(0L);
 			cpProductionSchedule.setNote("");
 			cpProductionSchedule.setLotNumber(cpLot.getInternalLotNumber());
 			cpProductionSchedule.setpPO(customerCPLot.getCustomerPPO());
-			cpProductionSchedule.setCustomerProductNumber(customerCPLot.getCustomerProductNumber());
-			cpProductionSchedule.setPackageNumber(customerCPLot.getPackingLot());
-			cpProductionSchedule.setCustomerLotNumber(customerCPLot.getCustomerLotNumber());
+			cpProductionSchedule.setCustomerProductNumber(customerCPLot
+					.getCustomerProductNumber());
+			cpProductionSchedule.setPackingLot(customerCPLot.getPackingLot());
+			cpProductionSchedule.setCustomerLotNumber(customerCPLot
+					.getCustomerLotNumber());
 
 			create(cpProductionSchedule);
 		} catch (Exception e) {
@@ -136,7 +163,7 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	}
 
 	@Override
-	public void basicScheduling(Long id, Integer version, Long testSysId ) {
+	public void basicScheduling(Long id, Integer version, Long testSysId) {
 		if (null == id || null == testSysId)
 			throw new IllegalArgumentException("任务id或机台id为空，排产失败");
 		if (null == version)
@@ -151,7 +178,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		// 更新相应信息
 		TestSys targetTestSys = testSysApplication.get(testSysId);
 		Long order = getTheLastOrder(targetTestSys.getProductions());
-		Date lastPlanedEndTime = getTheLastPlanedEndTime(targetTestSys.getProductions());
+		Date lastPlanedEndTime = getTheLastPlanedEndTime(targetTestSys
+				.getProductions());
 		// 设置相应信息
 		productionSchedule.setVersion(version);
 		productionSchedule.setScheduleOrder(++order);
@@ -167,7 +195,7 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			throw new IllegalArgumentException("id为空，无法开始测试");
 
 		ProductionSchedule productionSchedule = get(id);
-//		productionSchedule.setActualStartTimestamp(new Date());
+		productionSchedule.setActualStartTimestamp(new Date());
 		productionSchedule.setState(TaskState.TESTING.getState());
 		// 同时更新计划开始时间
 		// productionSchedule.setPlanedStartTimestamp(productionSchedule.getActualStartTimestamp());
@@ -180,11 +208,14 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			throw new RuntimeException("找不到机台。请检查是否已排产");
 		}
 		ProductionSchedule preTask = getPreviousTask(productionSchedule);
-		if (preTask != null && (preTask.getState().equals(TaskState.NOT_TEST_YET.getState())
-				|| preTask.getState().equals(TaskState.TESTING.getState())))
+		if (preTask != null
+				&& (preTask.getState()
+						.equals(TaskState.NOT_TEST_YET.getState()) || preTask
+						.getState().equals(TaskState.TESTING.getState())))
 			throw new RuntimeException("该排产任务之前还有待测试或正在测试状态的任务");
 		else
-			updatePlanedTimeFromTargetIndex(tasks, tasks.indexOf(productionSchedule) + 1); // 已包含持久化操作
+			updatePlanedTimeFromTargetIndex(tasks,
+					tasks.indexOf(productionSchedule) + 1); // 已包含持久化操作
 
 		// update(productionSchedule);
 	}
@@ -203,7 +234,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	}
 
 	@Override
-	public void separate(Long id, String newLotNumber, Double percent, Long targetTestSysId) {
+	public void separate(Long id, String newLotNumber, Double percent,
+			Long targetTestSysId) {
 		// 取出源批次
 		ProductionSchedule sourceProduction = get(id);
 
@@ -212,7 +244,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 				.instancePrototype(sourceProduction);
 
 		// 设置批号、计算并设置数量、设置对应的TestSys及其id
-		Long targetAmount = Math.round(sourceProduction.getAmount() * percent / 100);
+		Long targetAmount = Math.round(sourceProduction.getAmount() * percent
+				/ 100);
 		targetProduction.setLotNumber(newLotNumber);
 		targetProduction.setAmount(targetAmount);
 		// sourceLot.setAmount(sourceLot.getAmount() - targetAmount); //源批次数量不变
@@ -254,19 +287,29 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	}
 
 	@Override
-	public void arrangeProductionsInATestSys(Long[] productionIds, Long testSysId) {
+	public void arrangeProductionsInATestSys(Long[] productionIds,
+			Long testSysId) {
 		TestSys testSys = testSysApplication.get(testSysId);
+
 		List<ProductionSchedule> tasks = testSys.getProductions();
 		Long order = getTheLastOrder(tasks);
 
 		for (Long id : productionIds) {
+			if (!(this.checkTestSysCP(testSys, id) || this.checkTestSysFT(
+					testSys, id))) {
+				throw new RuntimeException("不能排产到机台"
+						+ testSys.getTesterNumber());
+			}
 			ProductionSchedule temp = get(id);
+			if (temp.getTestSys() != null) {
+				throw new RuntimeException("此批次已经排产");
+			}
 			temp.setTestSys(testSys);
 			temp.setScheduleOrder(++order);
 
 			// 如果有上一条记录，则取上一条记录的planedEndTimestamp，否则取新的日期
-			temp.setPlanedStartTimestamp(
-					tasks.size() > 0 ? tasks.get(tasks.size() - 1).getPlanedEndTimestamp() : new Date());
+			temp.setPlanedStartTimestamp(tasks.size() > 0 ? tasks.get(
+					tasks.size() - 1).getPlanedEndTimestamp() : new Date());
 			temp.setPlannedTimeTakes(null);// 私有逻辑
 			temp.setActualTimeTakes(null);// 私有逻辑(DO NOT MODIFY THIS!)
 
@@ -275,6 +318,80 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		}
 		testSys.setProductions(tasks);
 		testSysApplication.update(testSys);
+	}
+
+	/**
+	 * CP检查排产机台是否为release
+	 * 
+	 * @param testSys
+	 * @param productionScheduleId
+	 * @return
+	 */
+	private boolean checkTestSysCP(TestSys testSys, Long productionScheduleId) {
+		CPProductionSchedule cpProductionSchedule = cpProductionScheduleApplication
+				.get(productionScheduleId);
+		if (cpProductionSchedule == null) {
+			return false;
+		}
+		CPTestingNode cpTestingNode = cpProductionSchedule.getCpTestingNode();
+		TestProgram testProgram = cpTestingNode.getTestProgram();
+		String[] testSysArray = testProgram.getTestSys().split(",");
+		for (String testSysStr : testSysArray) {
+			if (testSysStr.indexOf(testSys.getTesterNumber()) > -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * FT检查排产机台是否为release
+	 * 
+	 * @param testSys
+	 * @param productionScheduleId
+	 * @return
+	 */
+	private boolean checkTestSysFT(TestSys testSys, Long productionScheduleId) {
+		FTProductionSchedule ftProductionSchedule = ftProductionScheduleApplication
+				.get(productionScheduleId);
+		// 2016/07/11 Hongyu add
+		if (ftProductionSchedule == null) {
+			return false;
+		}
+		FTComposedTestNode ftComposedTestNode = ftProductionSchedule
+				.getFtComposedTestNode();
+		if (ftComposedTestNode == null) {
+			return false;
+		}
+		TestProgram testProgram = ftComposedTestNode.getTestProgram();
+		String testSysT = null;
+		if (testProgram == null) {
+			testSysT = this.testSys(ftComposedTestNode.getName(),
+					ftProductionSchedule.getFtLot().getFtInfo().getId());
+		} else {
+			testSysT = testProgram.getTestSys();
+		}
+		if (testSysT == null) {
+			throw new RuntimeException("站点测试程序未配置"
+					+ ftComposedTestNode.getName());
+		}
+		String[] testSysArray = testSysT.split(",");
+		for (String testSysStr : testSysArray) {
+			if (testSysStr.indexOf(testSys.getTesterNumber()) > -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String testSys(String node, Long id) {
+		TestProgramTemplate testProgramTemplate = this.testProgramTemplateApplication
+				.findOne(
+						"select o from TestProgramTemplate o where o.site=? and o.internalProduct.id = ?",
+						node, id);
+		if (testProgramTemplate != null)
+			return testProgramTemplate.getTestSys();
+		return null;
 	}
 
 	@Override
@@ -323,9 +440,11 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	 *            状态，枚举类型
 	 * @return 返回索引值。否则返回-1
 	 */
-	private int getIndexOfLastStateTask(List<ProductionSchedule> list, TaskState taskState) {
+	private int getIndexOfLastStateTask(List<ProductionSchedule> list,
+			TaskState taskState) {
 		if (null == list)
-			throw new IllegalArgumentException("无法获取列表的最后一个" + taskState.getState() + "的批次：参数错误");
+			throw new IllegalArgumentException("无法获取列表的最后一个"
+					+ taskState.getState() + "的批次：参数错误");
 
 		int index = list.size() - 1;
 		for (; index >= 0; --index) {
@@ -340,7 +459,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		ProductionSchedule productionSchedule = get(id);
 		List<ProductionSchedule> productionSchedules;
 		try {
-			productionSchedules = productionSchedule.getTestSys().getProductions();
+			productionSchedules = productionSchedule.getTestSys()
+					.getProductions();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new RuntimeException("无法获取对应机台的排产任务列表");
@@ -361,7 +481,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		ProductionSchedule productionSchedule = get(id);
 		List<ProductionSchedule> productionSchedules;
 		try {
-			productionSchedules = productionSchedule.getTestSys().getProductions();
+			productionSchedules = productionSchedule.getTestSys()
+					.getProductions();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new RuntimeException("无法获取对应机台的排产任务列表");
@@ -385,7 +506,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			ProductionSchedule productionSchedule = get(id);
 			List<ProductionSchedule> productionSchedules;
 			try {
-				productionSchedules = productionSchedule.getTestSys().getProductions();
+				productionSchedules = productionSchedule.getTestSys()
+						.getProductions();
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 				throw new RuntimeException("无法获取对应机台的排产任务列表");
@@ -396,9 +518,11 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			} else if (index == 0) {
 				throw new RuntimeException("已为当前机台任务列表的第一项");
 			} else {
-				int indexOfLastTestingTask = getIndexOfLastStateTask(productionSchedules, TaskState.TESTING);
+				int indexOfLastTestingTask = getIndexOfLastStateTask(
+						productionSchedules, TaskState.TESTING);
 				if (index > indexOfLastTestingTask) {
-					adjustOrder(productionSchedules, index, indexOfLastTestingTask + 1);
+					adjustOrder(productionSchedules, index,
+							indexOfLastTestingTask + 1);
 				}
 			}
 		}
@@ -414,16 +538,20 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	 * @param targetIndex
 	 *            目标索引
 	 */
-	private void adjustOrder(List<ProductionSchedule> productionSchedules, int sourceIndex, int targetIndex) {
+	private void adjustOrder(List<ProductionSchedule> productionSchedules,
+			int sourceIndex, int targetIndex) {
 
-		if (sourceIndex < 0 || targetIndex < 0 || sourceIndex > productionSchedules.size()
+		if (sourceIndex < 0 || targetIndex < 0
+				|| sourceIndex > productionSchedules.size()
 				|| targetIndex > productionSchedules.size()) {
 			throw new IllegalArgumentException();
 		}
 		// 获取最后一个正在测试任务的索引
-		int indexOfLastTestingTask = getIndexOfLastStateTask(productionSchedules, TaskState.TESTING);
+		int indexOfLastTestingTask = getIndexOfLastStateTask(
+				productionSchedules, TaskState.TESTING);
 		// 获取最后一个已完成任务的索引
-		int indexOfLastDoneTask = getIndexOfLastStateTask(productionSchedules, TaskState.TEST_DONE);
+		int indexOfLastDoneTask = getIndexOfLastStateTask(productionSchedules,
+				TaskState.TEST_DONE);
 
 		// 判断任务是否可移动
 		if (indexOfLastTestingTask != -1) {
@@ -440,12 +568,14 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		}
 
 		// 执行移动
-		ProductionSchedule productionSchedule = productionSchedules.get(sourceIndex);
+		ProductionSchedule productionSchedule = productionSchedules
+				.get(sourceIndex);
 		productionSchedules.remove(sourceIndex);
 		productionSchedules.add(targetIndex, productionSchedule);
 
 		// 更新时间
-		updatePlanedTimeFromTargetIndex(productionSchedules, sourceIndex < targetIndex ? sourceIndex : targetIndex);
+		updatePlanedTimeFromTargetIndex(productionSchedules,
+				sourceIndex < targetIndex ? sourceIndex : targetIndex);
 	}
 
 	/**
@@ -458,7 +588,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 		if (productionSchedule == null)
 			throw new IllegalArgumentException();
 
-		List<ProductionSchedule> productionSchedules = productionSchedule.getTestSys().getProductions();
+		List<ProductionSchedule> productionSchedules = productionSchedule
+				.getTestSys().getProductions();
 		int index = productionSchedules.indexOf(productionSchedule);
 		if (index + 1 < productionSchedules.size())
 			return productionSchedules.get(index + 1);
@@ -472,12 +603,20 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	 * @param productionSchedule
 	 * @return 若存在，则返回实体对象，否则返回null
 	 */
-	private ProductionSchedule getPreviousTask(ProductionSchedule productionSchedule) {
+	private ProductionSchedule getPreviousTask(
+			ProductionSchedule productionSchedule) {
 		if (productionSchedule == null)
 			throw new IllegalArgumentException();
 
-		List<ProductionSchedule> productionSchedules = productionSchedule.getTestSys().getProductions();
-		int index = productionSchedules.indexOf(productionSchedule);
+		List<ProductionSchedule> productionSchedules = productionSchedule
+				.getTestSys().getProductions();
+		List<ProductionSchedule> psList = new ArrayList<ProductionSchedule>();
+		for (ProductionSchedule temp : productionSchedules) {
+			if ((temp.getLogic() == null || temp.getLogic() != 1) && !"1".equals(temp.getState())) {
+				psList.add(temp);
+			}
+		}
+		int index = psList.indexOf(productionSchedule);
 		if (index - 1 >= 0)
 			return productionSchedules.get(index - 1);
 		else
@@ -489,11 +628,13 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	 *
 	 * @param productionSchedule
 	 */
-	private void removeTargetAndUpdateTaskList(ProductionSchedule productionSchedule) {
+	private void removeTargetAndUpdateTaskList(
+			ProductionSchedule productionSchedule) {
 		if (productionSchedule == null)
 			throw new IllegalArgumentException();
 
-		List<ProductionSchedule> sourceProductionSchedules = productionSchedule.getTestSys().getProductions();
+		List<ProductionSchedule> sourceProductionSchedules = productionSchedule
+				.getTestSys().getProductions();
 		int sourceIndex = sourceProductionSchedules.indexOf(productionSchedule);
 		sourceProductionSchedules.remove(sourceIndex);
 		updatePlanedTimeFromTargetIndex(sourceProductionSchedules, sourceIndex);
@@ -501,29 +642,36 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 
 	/**
 	 * 更新指定测试任务所在机台的后续任务的计划时间
+	 * 
 	 * @param changedProduction
 	 */
-	private void refreshPlanedTime( ProductionSchedule changedProduction ) {
-		if ( changedProduction == null ) return;
+	private void refreshPlanedTime(ProductionSchedule changedProduction) {
+		if (changedProduction == null)
+			return;
 
-		try{
-			List<ProductionSchedule> sourceProductionSchedules = changedProduction.getTestSys().getProductions();
-			int sourceIndex = sourceProductionSchedules.indexOf(changedProduction);
-			updatePlanedTimeFromTargetIndex(sourceProductionSchedules, sourceIndex + 1);
-		} catch ( NullPointerException e ) {
-			//没有拿到所在机台的任务列表
+		try {
+			List<ProductionSchedule> sourceProductionSchedules = changedProduction
+					.getTestSys().getProductions();
+			int sourceIndex = sourceProductionSchedules
+					.indexOf(changedProduction);
+			updatePlanedTimeFromTargetIndex(sourceProductionSchedules,
+					sourceIndex + 1);
+		} catch (NullPointerException e) {
+			// 没有拿到所在机台的任务列表
 		}
 	}
-	
+
 	/**
-	 * 重载：对指定列表中的所有排产任务update
-	 * {@link org.seu.acetec.mes2Koala.application.impl.ProductionScheduleApplicationImpl.refreshPlanedTime(ProductionSchedule) }
+	 * 重载：对指定列表中的所有排产任务update {@link org.seu.acetec.mes2Koala.application.impl.
+	 * ProductionScheduleApplicationImpl.refreshPlanedTime(ProductionSchedule) }
+	 * 
 	 * @param changedProductions
 	 */
-	private void refreshPlanedTime( List<ProductionSchedule> changedProductions ) {
-		if ( changedProductions == null ) return;
+	private void refreshPlanedTime(List<ProductionSchedule> changedProductions) {
+		if (changedProductions == null)
+			return;
 
-		for ( ProductionSchedule productionSchedule : changedProductions ) {
+		for (ProductionSchedule productionSchedule : changedProductions) {
 			refreshPlanedTime(productionSchedule);
 		}
 	}
@@ -536,8 +684,10 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	 * @param targetIndex
 	 *            指定索引处
 	 */
-	private void updatePlanedTimeFromTargetIndex(List<ProductionSchedule> productionSchedules, int targetIndex) {
-		if (productionSchedules == null || targetIndex < 0 || targetIndex > productionSchedules.size())
+	private void updatePlanedTimeFromTargetIndex(
+			List<ProductionSchedule> productionSchedules, int targetIndex) {
+		if (productionSchedules == null || targetIndex < 0
+				|| targetIndex > productionSchedules.size())
 			throw new IllegalArgumentException();
 
 		for (int i = targetIndex; i < productionSchedules.size(); ++i) {
@@ -545,7 +695,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 			if (i == 0) {
 				temp.setPlanedStartTimestamp(new Date());
 			} else {
-				temp.setPlanedStartTimestamp(productionSchedules.get(i - 1).getPlanedEndTimestamp());
+				temp.setPlanedStartTimestamp(productionSchedules.get(i - 1)
+						.getPlanedEndTimestamp());
 			}
 		}
 		updateAll(productionSchedules);
@@ -554,7 +705,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	@Override
 	public void updateAllTestingProduction() {
 		// 获取所有状态为正在测试的批次
-		List<ProductionSchedule> productionSchedules = find("select o from ProductionSchedule o where o.state=?",
+		List<ProductionSchedule> productionSchedules = find(
+				"select o from ProductionSchedule o where o.state=?",
 				TaskState.TESTING.getState());
 		for (ProductionSchedule p : productionSchedules) {
 			Long platformId = null;
@@ -564,7 +716,7 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 				System.err.println("测试任务" + p.getId() + "获取测试平台ID失败");
 				continue;
 			}
-			//更新相关信息
+			// 更新相关信息
 			updateTestingProduction(p, platformId);
 		}
 		// 持久化
@@ -572,41 +724,48 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 
 	}
 
-	private void updateTestingProduction(ProductionSchedule productionSchedule, Long platformId) {
+	private void updateTestingProduction(ProductionSchedule productionSchedule,
+			Long platformId) {
 
 		/* 从EMS获取机台状态 */
-		String subState = EmsFetcher.getPlatformState(platformId);
+		String subState = emsFetcher.getPlatformState(platformId);
 		productionSchedule.setSubState(subState);
 
 		/* 从EMS获取setup时间 */
-		if ( productionSchedule.getActualStartTimestamp() == null ) {
-			Date actualStartTime = EmsFetcher.getSetupTime(platformId, productionSchedule.getLotNumber());
+		if (productionSchedule.getActualStartTimestamp() == null) {
+			Date actualStartTime = emsFetcher.getSetupTime(platformId,
+					productionSchedule.getLotNumber());
 			productionSchedule.setActualStartTimestamp(actualStartTime);
-			//更新所在机台的后续排产任务的计划时间（可能会引起持久化异常）
+			// 更新所在机台的后续排产任务的计划时间（可能会引起持久化异常）
 			refreshPlanedTime(productionSchedule);
 		}
 
 		/* 尝试针对该批次从EMS获取已完成数量 */
 		Long doneQty = null;
-		if ( productionSchedule instanceof FTProductionSchedule ) {
-			doneQty = EmsFetcher.getFtDoneQty(platformId);
-		} else if ( productionSchedule instanceof CPProductionSchedule ) {
-			doneQty = EmsFetcher.getCpDoneQty(platformId);
+		if (productionSchedule instanceof FTProductionSchedule) {
+			doneQty = emsFetcher.getFtDoneQty(platformId);
+		} else if (productionSchedule instanceof CPProductionSchedule) {
+			//doneQty = emsFetcher.getCpDoneQty(platformId);
 		} else {
 			doneQty = null;
 		}
-		if (doneQty == null && productionSchedule.getActualStartTimestamp() != null ) {
+		if (doneQty == null
+				&& productionSchedule.getActualStartTimestamp() != null) {
 			// 若无法获取则根据时间和UPH计算
 			// 直接获取对应节点的uphReality，不再检查
-			int uphReality = 0;
-			if ( productionSchedule instanceof FTProductionSchedule ) {
-				uphReality = ((FTProductionSchedule) productionSchedule).getFtComposedTestNode().getTestProgram().getUphReality();
-			} else if ( productionSchedule instanceof CPProductionSchedule ) {
-				uphReality = ((CPProductionSchedule) productionSchedule).getCpTestingNode().getTestProgram().getUphReality();
+			Float uphReality = Float.valueOf(0);
+			if (productionSchedule instanceof FTProductionSchedule) {
+				uphReality = ((FTProductionSchedule) productionSchedule)
+						.getFtComposedTestNode().getTestProgram()
+						.getUphReality();
+			} else if (productionSchedule instanceof CPProductionSchedule) {
+				uphReality = ((CPProductionSchedule) productionSchedule)
+						.getCpTestingNode().getTestProgram().getUphReality();
 			} else {
-				uphReality = 0;
+				uphReality = Float.valueOf(0);
 			}
-			Double hourDiff = MyDateUtils.hourDateDiff(productionSchedule.getActualStartTimestamp(), new Date());
+			Double hourDiff = MyDateUtils.hourDateDiff(
+					productionSchedule.getActualStartTimestamp(), new Date());
 			doneQty = (long) (uphReality * hourDiff);
 		}
 		productionSchedule.setDoneQty(doneQty);
@@ -619,7 +778,8 @@ public class ProductionScheduleApplicationImpl extends GenericMES2ApplicationImp
 	}
 
 	public enum TaskState {
-		NOT_TEST_YET("0"), TEST_DONE("1"), TESTING("2"), WAIT_FOR_ENGINEERING("3"), WAIT_FOR_NOTIFY("4");
+		NOT_TEST_YET("0"), TEST_DONE("1"), TESTING("2"), WAIT_FOR_ENGINEERING(
+				"3"), WAIT_FOR_NOTIFY("4");
 
 		private String state;
 

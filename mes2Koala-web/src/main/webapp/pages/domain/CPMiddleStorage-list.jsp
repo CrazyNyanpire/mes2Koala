@@ -5,6 +5,7 @@
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+<%@include file="/commons/taglibs.jsp" %>
 <%@ page import="java.util.Date"%>
 <% String formId = "form_" + new Date().getTime();
    String gridId = "grid_" + new Date().getTime();
@@ -77,11 +78,11 @@ $(function (){
 	         return grid.grid({
 	                identity:"id",
 	                buttons: [
-	                        {content: '<button class="btn btn-success" type="button">修改</button>', action: 'modify'},
-	                        {content: '<button class="btn btn-primary" type="button">重工建批</button>', action: 'rework'},
-	                        {content: '<button class="btn btn-danger" type="button">重工申请</button>', action: 'reworkApply'},
-	                        {content: '<button class="btn btn-danger" type="button">分批</button>', action: 'split'},
-	                        {content: '<button class="btn btn-primary" type="button">合批</button>', action: 'merge'},
+/* 	                        {content: '<button class="btn btn-success" type="button">修改</button>', action: 'modify'}, */
+	                        {content: '<ks:hasSecurityResource identifier="CPMiddleStorageSplit"><button class="btn btn-danger" type="button">拆盘</button></ks:hasSecurityResource>', action: 'split'},
+	                        {content: '<ks:hasSecurityResource identifier="CPMiddleStorageMerge"><button class="btn btn-primary" type="button"><span>合批</button></ks:hasSecurityResource>', action: 'merge'},
+                            {content: '<ks:hasSecurityResource identifier="CPMiddleStorageRework"><button class="btn btn-primary" type="button">重工下单</button></ks:hasSecurityResource>', action: 'rework'},
+                            {content: '<ks:hasSecurityResource identifier="CPMiddleStorageReworkApply"><button class="btn btn-danger" type="button">重工申请</button></ks:hasSecurityResource>', action: 'reworkApply'}
 /* 	                        {content: '<button class="btn btn-primary" type="button">退库记录</button>', action: 'record'}, */
 	                    ],
 	                url:"${pageContext.request.contextPath}/CPTransferStorage/pageJson.koala",
@@ -93,6 +94,14 @@ $(function (){
 	                                }
 	                            },
 	                            {title: '内部批号', name: 'internalLotNumber', width: width},
+	                            {
+	                                title: '内部产品型号(PID)',
+	                                name: 'internalProductNumber',
+	                                width: width,
+	                                render: function (rowdata, rowindex, value){
+	                                    return rowdata['customerCPLotDTO']['internalProductDTO'][rowindex];
+	                                }
+	                            },
 	                            {title: '封装厂批号', name: 'packageNumber', width: width},
 	                            {title: '客户编号', name: 'customerNumber', width: width,
 	                                render: function (rowdata, rowindex, value){
@@ -100,9 +109,13 @@ $(function (){
 	                                }
 	                            },
 	                            {title: '产品编号', name: 'customerNumber', width: width},
-	                            {title: '客户型号', name: 'internalLotNumber', width: width},
+	                            {title: '来料型号', name: 'customerProductNumber', width: width,
+	                                render: function (rowdata, rowindex, value){
+	                                    return rowdata['customerCPLotDTO']['internalProductDTO'][rowindex];
+	                                }
+	                            },
 	                            {title: '出货型号', name: 'shipmentProductNumber', width: width},
-	                            {title: '数量', name: 'diskContent', width: width},
+	                            {title: '数量', name: 'quantity', width: width},
 	                            {title: '片号', name: 'packageNumber', width: width},
 	                            {title: '测试设备', name: 'tester', width: width},
 	                            {title: 'MASK Name', name: 'maskName', width: width,
@@ -1032,6 +1045,32 @@ $(function (){
                   	for (var i = 0;i < json['cPWaferDTOs'].length;i++) {
                          var waferCode = json['cPWaferDTOs'][i]["internalWaferCode"].substring(json['cPWaferDTOs'][i]["internalWaferCode"].lastIndexOf("-")+1);
                          dialog.find('#motherlot' + '-' + waferCode).attr("checked",true);
+                    }
+                  	dialog.find('#childrenLotNumberSpan').html('');
+                    dialog.find('#childrenLotNumberText').html('');
+                    dialog.find('#childrenShipmentNumberSpan').html('');
+                    dialog.find('#childrenShipmentNumberText').html('');
+                    var number = dialog.find('#divideAmountID').val();
+                    debugger;
+                    for (var i = 0; i < parseInt(number); i++) {
+                    	if ( i == 0 ) {
+                    		var htmlSpan = $('<p style="margin-top: 8%;"><span>子批' + parseInt(i + 1) + ':</span></p>');  
+                    	} else {
+                    		var htmlSpan = $('<p style="margin-top: 37%;"><span>子批' + parseInt(i + 1) + ':</span></p>');  
+                    	}
+                    	var htmlText = $('<p><input style="width:100%;"type="text" id="lotNumber' + parseInt(i + 1) + '" class="form-control"  value=' + dialog.find('#internalLotNumber').text() + "-" + parseInt(i + 1) + '></p>');  
+                    	dialog.find('#childrenLotNumberSpan').append(htmlSpan);
+                        dialog.find('#childrenLotNumberText').append(htmlText);
+                    }
+                    for (var i = 0; i < parseInt(number); i++) {
+                    	if ( i == 0 ) {
+                    		var htmlSpan = $('<p style="margin-top: 8%;"><span>出货' + parseInt(i + 1) + ':</span></p>');  
+                    	} else {
+                    		var htmlSpan = $('<p style="margin-top: 37%;"><span>出货' + parseInt(i + 1) + ':</span></p>');  
+                    	}  
+                    	var htmlText = $('<p><input style="width:100%;"type="text" id="shipmentNumber' + parseInt(i + 1) + '" class="form-control" value=' + dialog.find('#shipmentProductNumber').text() + '></p>');  
+                    	dialog.find('#childrenShipmentNumberSpan').append(htmlSpan);
+                        dialog.find('#childrenShipmentNumberText').append(htmlText);
                     }
                 });
                 dialog.modal({

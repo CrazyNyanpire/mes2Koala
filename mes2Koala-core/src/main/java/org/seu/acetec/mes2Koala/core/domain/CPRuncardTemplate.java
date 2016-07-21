@@ -1,6 +1,7 @@
 package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by LCN on 2016/4/27.
@@ -12,6 +13,8 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
     //flow
     private String IQC;
     private String FQC;
+    
+    private String INK;
 
     private String CP1;
     private String CP1_Before_Bake;
@@ -35,7 +38,6 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
     private String CP4_After_Bake;
     private String CP4_DT;
 
-
     private String Packing;
 
     private String OQC;
@@ -57,6 +59,10 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
 
     private AcetecAuthorization keyTDEAuthorization;
     private AcetecAuthorization assistTDEAuthorization;
+
+    @Column(name = "SIGNEDTIME")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date signedTime;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "INTERNAL_PRODUCT_ID")
@@ -362,6 +368,14 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
         this.CP4_DT = CP4_DT;
     }
 
+    public Date getSignedTime() {
+        return signedTime;
+    }
+
+    public void setSignedTime(Date signedTime) {
+        this.signedTime = signedTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -372,6 +386,7 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
 
         if (IQC != null ? !IQC.equals(that.IQC) : that.IQC != null) return false;
         if (FQC != null ? !FQC.equals(that.FQC) : that.FQC != null) return false;
+        if (INK != null ? !INK.equals(that.INK) : that.INK != null) return false;
         if (CP1_DT != null ? !CP1_DT.equals(that.CP1_DT) : that.CP1_DT != null) return false;
         if (CP1 != null ? !CP1.equals(that.CP1) : that.CP1 != null) return false;
         if (CP1_Before_Bake != null ? !CP1_Before_Bake.equals(that.CP1_Before_Bake) : that.CP1_Before_Bake != null)
@@ -423,6 +438,7 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
         int result = super.hashCode();
         result = 31 * result + (IQC != null ? IQC.hashCode() : 0);
         result = 31 * result + (FQC != null ? FQC.hashCode() : 0);
+        result = 31 * result + (INK != null ? INK.hashCode() : 0);
         result = 31 * result + (CP1_DT != null ? CP1_DT.hashCode() : 0);
         result = 31 * result + (CP1 != null ? CP1.hashCode() : 0);
         result = 31 * result + (CP1_Before_Bake != null ? CP1_Before_Bake.hashCode() : 0);
@@ -458,5 +474,13 @@ public class CPRuncardTemplate extends MES2AbstractEntity {
     public String[] businessKeys() {
         return new String[0];
     }
+
+	public String getINK() {
+		return INK;
+	}
+
+	public void setINK(String iNK) {
+		INK = iNK;
+	}
 
 }

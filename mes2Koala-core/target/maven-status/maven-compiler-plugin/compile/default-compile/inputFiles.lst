@@ -5,11 +5,12 @@ F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\do
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\CustomerLot.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\enums\CPNodeState.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\FTQDN.java
+F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\PlaceHolderCP.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\package-info.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\domain\Person.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\gqc\core\domain\DataSource.java
-F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\Authorization.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\Permission.java
+F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\Authorization.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\FTPassNode.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\BomUse.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\enums\CPWaferState.java
@@ -68,6 +69,7 @@ F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\doma
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\FTRuncardTemplate.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\gqc\core\domain\DataSourceType.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\gqc\core\DataSourceBeingUsedException.java
+F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\CPWaferLog.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\EmailIsExistedException.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\Authority.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\SampleShipping.java
@@ -115,6 +117,7 @@ F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\en
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\CustomerCPLot.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\OrganizationHasEmployee.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\TestingTemplate.java
+F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\TskInfo.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\gqc\core\domain\utils\SqlStatmentMode.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\domain\OrganizationLineManagement.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\Label.java
@@ -137,6 +140,7 @@ F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\do
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\HasPrincipalPostYetException.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\CPStorage.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\IdentifierIsExistedException.java
+F:\break\mes2Koala\mes2Koala-core\src\main\java\org\seu\acetec\mes2Koala\core\domain\AbstractQueryEntity.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\security\core\domain\MethodInvocationResource.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\SnIsExistException.java
 F:\break\mes2Koala\mes2Koala-core\src\main\java\org\openkoala\organisation\core\domain\OrganizationAbstractEntity.java

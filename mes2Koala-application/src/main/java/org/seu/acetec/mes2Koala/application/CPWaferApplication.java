@@ -4,6 +4,9 @@ package org.seu.acetec.mes2Koala.application;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.json.JSONArray;
+
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import  org.seu.acetec.mes2Koala.core.domain.CPWafer;
 import org.seu.acetec.mes2Koala.core.enums.CPWaferCheck;
 import org.seu.acetec.mes2Koala.core.enums.CPWaferState;
@@ -24,7 +27,9 @@ public interface CPWaferApplication extends GenericMES2Application<CPWafer> {
 	
 	public void changeStatus(Long waferId ,CPWaferState passed);
 	
-	public void saveCheck(String waferIds , CPWaferCheck check);
+	public void saveCheck(String waferIds , CPWaferCheck check, SaveBaseBean sbb);
+	
+	public void changeStatusSBL(JSONArray cpWaferArray, Long cpLotId);
 	
 }
 

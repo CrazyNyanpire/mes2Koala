@@ -20,6 +20,7 @@ import org.seu.acetec.mes2Koala.facade.dto.CPSBLTemplateDTO;
 import org.seu.acetec.mes2Koala.facade.dto.FTLotDTO;
 import org.seu.acetec.mes2Koala.facade.dto.FTNodeDTO;
 import org.seu.acetec.mes2Koala.facade.dto.FTQDNDTO;
+import org.seu.acetec.mes2Koala.infra.MyDateUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Array;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,7 +169,9 @@ public class CPLotController extends BaseController {
     @ResponseBody
     @RequestMapping("/startCPNode/{processId}")
     public InvokeResult startNode(@PathVariable Long processId) {
-        return cpLotFacade.startCPNode(processId);
+    	CPLotDTO  cpLotDTO  = new CPLotDTO();
+    	cpLotDTO = this.createBase(cpLotDTO);
+        return cpLotFacade.startCPNode(processId,cpLotDTO);
     }
 
     /**
@@ -179,7 +183,9 @@ public class CPLotController extends BaseController {
     @ResponseBody
     @RequestMapping("/endCPNode/{processId}")
     public InvokeResult endFTNode(@PathVariable Long processId) {
-        return cpLotFacade.endCPNode(processId);
+    	CPLotDTO  cpLotDTO  = new CPLotDTO();
+    	cpLotDTO = this.lastModifyBase(cpLotDTO);
+        return cpLotFacade.endCPNode(processId,cpLotDTO);
     }
     
     /**
@@ -193,7 +199,9 @@ public class CPLotController extends BaseController {
     public InvokeResult endCPNodeIncoming(@PathVariable Long processId,@RequestParam String data) {
     	JSONObject jsonObjet = JSONObject.fromObject(data);
     	JSONArray waferCodes = jsonObjet.getJSONArray("waferCode");
-        return cpLotFacade.endCPNodeIncoming(processId, waferCodes);
+    	CPLotDTO  cpLotDTO  = new CPLotDTO();
+    	cpLotDTO = this.lastModifyBase(cpLotDTO);
+        return cpLotFacade.endCPNodeIncoming(processId, waferCodes,cpLotDTO);
     }
 
     /**
@@ -241,7 +249,9 @@ public class CPLotController extends BaseController {
     public InvokeResult splitLot(@RequestParam Long id,@RequestParam("childsInfo") String childsInfo) {
     	List<CPLotDTO> list = (List) JSONArray.toCollection(JSONArray.fromObject(childsInfo), CPLotDTO.class);
     	this.createBase(list.get(0));
-        return cpLotNodeOperationFacade.separateCPLot(id, list);
+    	CPLotDTO  cpLotDTO  = new CPLotDTO();
+    	cpLotDTO = this.lastModifyBase(cpLotDTO);
+        return cpLotNodeOperationFacade.separateCPLot(id, list,cpLotDTO);
     }
 
     @ResponseBody
@@ -303,24 +313,10 @@ public class CPLotController extends BaseController {
 		return InvokeResult.success("upload/cpDataCompensationFile/" + suffix);
 	}
 	
-	
     @ResponseBody
-    @RequestMapping("/getTskFileNames")
-    public InvokeResult getTskFileNames(@RequestParam String upDown,@RequestParam String directory) {
-        return cpLotNodeOperationFacade.getTskFileNames(upDown,directory);
-    }
-    
-    @ResponseBody
-    @RequestMapping("/resolveFile")
-    public InvokeResult resolveFile(@RequestParam String upDown,@RequestParam String directoryName) {
-        return cpLotNodeOperationFacade.resolveFile(upDown,directoryName);
-    }
-    
-    @ResponseBody
-    @RequestMapping("/mapCreate")
-    public InvokeResult mapCreate(@RequestParam String upDown,@RequestParam String directoryName,@RequestParam String fileName) {
-    	String classPath = this.getClass().getClassLoader().getResource("").getPath();
-    	String mapPath = classPath + "tskMapHtml";
-    	return cpLotNodeOperationFacade.mapCreate(upDown,directoryName,fileName,mapPath);
+    @RequestMapping("/changePid")
+    public InvokeResult dataCompensation( CPLotDTO cpLotDTO,@RequestParam String ids) {
+    	cpLotDTO = this.lastModifyBase(cpLotDTO);
+    	return cpLotFacade.changePid(cpLotDTO,ids);
     }
 }

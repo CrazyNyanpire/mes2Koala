@@ -25,6 +25,7 @@ public class CPLotOptionLogAssembler {
      	result.setRemark (cPLotOptionLog.getRemark());
      	result.setFlownow (cPLotOptionLog.getFlownow());
      	result.setCpLotDTO (CPLotAssembler.toDTO(cPLotOptionLog.getCpLot()));
+     	result.setLotNo(cPLotOptionLog.getCpLot().getInternalLotNumber());
      	return result;
 	 }
 	

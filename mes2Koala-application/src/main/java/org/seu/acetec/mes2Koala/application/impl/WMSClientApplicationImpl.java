@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class WMSClientApplicationImpl implements WMSClientApplication {
 	private String namespace="http://ws.wms.com";
 	//private String address = "http://127.0.0.1:7001/wms/services/WmsService?wsdl";
-	  	private String  address = "http://192.168.1.58:7001/wms/services/WmsService?wsdl";
+	private String  address = "http://192.168.1.58:7001/wms/services/WmsService?wsdl";
+	//private String  address = "http://192.168.60.14:7001/wms/services/WmsService?wsdl";
 	Long timeout=(long) 20000;//30秒
 	/**
 	 * 调用下单接口，生成领料信息

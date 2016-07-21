@@ -4,12 +4,14 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
 import org.seu.acetec.mes2Koala.application.GenericMES2Application;
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import org.seu.acetec.mes2Koala.core.domain.MES2AbstractEntity;
 import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -28,6 +30,11 @@ public abstract class GenericMES2ApplicationImpl<T extends MES2AbstractEntity> i
     private QueryChannelService queryChannel;
 
     private EntityManager entityManager;
+    
+    /**
+     * 用于保存基础信息
+     */
+    private SaveBaseBean sbb;
 
 
     public GenericMES2ApplicationImpl() {
@@ -228,5 +235,13 @@ public abstract class GenericMES2ApplicationImpl<T extends MES2AbstractEntity> i
                 .singleResult();
         return t;
     }
+
+	public SaveBaseBean getSbb() {
+		return sbb;
+	}
+
+	public void setSbb(SaveBaseBean sbb) {
+		this.sbb = sbb;
+	}
 
 }

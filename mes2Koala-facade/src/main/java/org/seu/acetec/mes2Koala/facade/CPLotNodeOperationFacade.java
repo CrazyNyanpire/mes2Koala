@@ -13,11 +13,11 @@ import org.seu.acetec.mes2Koala.facade.dto.CPQDNDTO;
  */
 public interface CPLotNodeOperationFacade {
 
-    InvokeResult startCPNode(Long processId);
+    InvokeResult startCPNode(Long processId, CPNodeDTO cpNodeDTO);
 
     InvokeResult saveCPNode(Long processId, CPNodeDTO cpNodeDTO);
 
-    InvokeResult endCPNode(Long processId);
+    InvokeResult endCPNode(Long processId, CPNodeDTO cpNodeDTO);
 
     InvokeResult jumpCPNode(Long processId, CPNodeDTO cpNodeDTO);
 
@@ -27,9 +27,9 @@ public interface CPLotNodeOperationFacade {
 
     InvokeResult futureHold(CPQDNDTO cpqdndto);
 
-    InvokeResult separateCPLot(Long cpLotId, List<CPLotDTO> cpLotDTOs);
+    InvokeResult separateCPLot(Long cpLotId, List<CPLotDTO> cpLotDTOs, CPLotDTO cpLotDTO);
 
-    InvokeResult integrateCPLots(Long[] cpLotIds);
+    InvokeResult integrateCPLots(Long[] cpLotIds, CPNodeDTO cpNodeDTO);
 
 	void exportExcel(List<Object> cpLotDTOs, String fileName);
 
@@ -41,9 +41,4 @@ public interface CPLotNodeOperationFacade {
 
 	InvokeResult dataCompensation(String string);
 
-	InvokeResult getTskFileNames(String upDown, String directory);
-
-	InvokeResult resolveFile(String upDown, String directoryName);
-
-	InvokeResult mapCreate(String upDown, String directoryName, String fileName, String mapPath);
 }

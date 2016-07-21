@@ -1,6 +1,7 @@
 package org.seu.acetec.mes2Koala.core.domain;
 
 import javax.persistence.*;
+
 import java.util.List;
 
 /**
@@ -39,8 +40,18 @@ public class InternalLot extends MES2AbstractEntity {
 
     //用于与分批中的母批产生关联
     private Long parentSeparationId;
+    
+    //原始母批id
+    private Long sourceParentSeparationId;
+    
+    //原始母批no
+    private String sourceParentSeparationNo;
 
     private String wmsTestId;
+    
+	private Boolean isFuture;//是否是预hold
+	
+	private String futureFlow;//预hold
     
     public String getWmsTestId() {
 		return wmsTestId;
@@ -107,7 +118,39 @@ public class InternalLot extends MES2AbstractEntity {
     }
 
 
-    @Override
+    public Boolean getIsFuture() {
+		return isFuture;
+	}
+
+	public void setIsFuture(Boolean isFuture) {
+		this.isFuture = isFuture;
+	}
+
+	public String getFutureFlow() {
+		return futureFlow;
+	}
+
+	public void setFutureFlow(String futureFlow) {
+		this.futureFlow = futureFlow;
+	}
+
+	public Long getSourceParentSeparationId() {
+		return sourceParentSeparationId;
+	}
+
+	public void setSourceParentSeparationId(Long sourceParentSeparationId) {
+		this.sourceParentSeparationId = sourceParentSeparationId;
+	}
+
+	public String getSourceParentSeparationNo() {
+		return sourceParentSeparationNo;
+	}
+
+	public void setSourceParentSeparationNo(String sourceParentSeparationNo) {
+		this.sourceParentSeparationNo = sourceParentSeparationNo;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

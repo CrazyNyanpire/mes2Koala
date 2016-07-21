@@ -43,7 +43,7 @@ public interface CustomerCPLotFacade {
      * @param customerCPLotIds 需要批量下单的批次ids
      * @return 返回批量下单结果
      */
-    InvokeResult batchOrder(Long[] customerCPLotIds);
+    InvokeResult batchOrder(Long[] customerCPLotIds, CPLotDTO cpLotDTO);
 
     /**
      * 获取内部产品批号

@@ -73,6 +73,8 @@ public class Rework extends MES2AbstractEntity {
 	private String lotNo;
 	
 	private String status;
+	
+	private String testerNo;
 
 	public String getReworkRCNo() {
 		return reworkRCNo;
@@ -240,6 +242,14 @@ public class Rework extends MES2AbstractEntity {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getTesterNo() {
+		return testerNo;
+	}
+
+	public void setTesterNo(String testerNo) {
+		this.testerNo = testerNo;
 	}
 
 	@Override

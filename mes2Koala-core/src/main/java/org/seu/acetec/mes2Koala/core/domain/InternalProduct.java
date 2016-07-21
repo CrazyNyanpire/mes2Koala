@@ -16,310 +16,307 @@ import java.util.List;
  * @lastModifyDate 2015.12.15
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)    //使用joined继承类型
+@Inheritance(strategy = InheritanceType.JOINED)
+// 使用joined继承类型
 @Table(name = "E_INTERNALPRODUCT")
-@Access(AccessType.PROPERTY)    //所有注解置于属性上方
+@Access(AccessType.PROPERTY)
+// 所有注解置于属性上方
 public class InternalProduct extends MES2AbstractEntity {
 
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = 3049125298494154735L;
+	private static final long serialVersionUID = 3049125298494154735L;
 
-    private Customer customerDirect;
-    private Customer customerIndirect;
-    private String customerProductNumber;
-    private String customerProductRevision;
-    private String internalProductNumber; //PID
-    private String internalProductRevision;
-    private String packageType;
-    private String shipmentProductNumber;
-    private String testType;
-    // private SpecialForm specialForm;
-    // private TestProgramPlan testProgramPlan;
-    // private ProcessTemplate processTemplate;
-    // private LabelPlan labelPlan;
-    // private FTInfo ftInfo;
-    // private CPInfo cpInfo;
+	private Customer customerDirect;
+	private Customer customerIndirect;
+	private String customerProductNumber;
+	private String customerProductRevision;
+	private String internalProductNumber; // PID
+	private String internalProductRevision;
+	private String packageType;
+	private String shipmentProductNumber;
+	private String testType;
+	// private SpecialForm specialForm;
+	// private TestProgramPlan testProgramPlan;
+	// private ProcessTemplate processTemplate;
+	// private LabelPlan labelPlan;
+	// private FTInfo ftInfo;
+	// private CPInfo cpInfo;
 
-    private ProcessTemplate processTemplate;
-    private List<Label> labels = new ArrayList<Label>();
-    private List<SBLTemplate> sblTemplates;
-    private List<EQCSetting> eqcSettings;
+	private ProcessTemplate processTemplate;
+	private List<Label> labels = new ArrayList<Label>();
+	private List<SBLTemplate> sblTemplates;
+	private List<EQCSetting> eqcSettings;
 
+	// 6个产品责任人
+	// 质量
+	private Employee keyQuantityManager;
+	private Employee assistQuantityManager;
+	// 生产
+	private Employee keyProductionManager;
+	private Employee assistProductionManager;
 
-    //6个产品责任人
-    //质量
-    private Employee keyQuantityManager;
-    private Employee assistQuantityManager;
-    //生产
-    private Employee keyProductionManager;
-    private Employee assistProductionManager;
+	// TDE
+	private Employee keyTDEManager;
+	private Employee assistTDEManager;
 
-    //TDE
-    private Employee keyTDEManager;
-    private Employee assistTDEManager;
+	// FTRuncardTemplate
+	private FTRuncardTemplate FTRuncardTemplate;
 
+	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "internalProduct")
+	public FTRuncardTemplate getFTRuncardTemplate() {
+		return FTRuncardTemplate;
+	}
 
-    //FTRuncardTemplate
-    private FTRuncardTemplate FTRuncardTemplate;
+	public void setFTRuncardTemplate(FTRuncardTemplate FTRuncardTemplate) {
+		this.FTRuncardTemplate = FTRuncardTemplate;
+	}
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "internalProduct")
-    public FTRuncardTemplate getFTRuncardTemplate() {
-        return FTRuncardTemplate;
-    }
+	// CPRuncardTemplate
+	private CPRuncardTemplate CPRuncardTemplate;
 
-    public void setFTRuncardTemplate(FTRuncardTemplate FTRuncardTemplate) {
-        this.FTRuncardTemplate = FTRuncardTemplate;
-    }
+	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "internalProduct")
+	public CPRuncardTemplate getCPRuncardTemplate() {
+		return CPRuncardTemplate;
+	}
 
-    //CPRuncardTemplate
-    private CPRuncardTemplate CPRuncardTemplate;
+	public void setCPRuncardTemplate(CPRuncardTemplate CPRuncardTemplate) {
+		this.CPRuncardTemplate = CPRuncardTemplate;
+	}
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "internalProduct")
-    public CPRuncardTemplate getCPRuncardTemplate() {
-        return CPRuncardTemplate;
-    }
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "keyQuantityManager_id")
+	public Employee getKeyQuantityManager() {
+		return keyQuantityManager;
+	}
 
-    public void setCPRuncardTemplate(CPRuncardTemplate CPRuncardTemplate) {
-        this.CPRuncardTemplate = CPRuncardTemplate;
-    }
+	public void setKeyQuantityManager(Employee keyQuantityManager) {
+		this.keyQuantityManager = keyQuantityManager;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "keyQuantityManager_id")
-    public Employee getKeyQuantityManager() {
-        return keyQuantityManager;
-    }
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assistQuantityManager_id")
+	public Employee getAssistQuantityManager() {
+		return assistQuantityManager;
+	}
 
-    public void setKeyQuantityManager(Employee keyQuantityManager) {
-        this.keyQuantityManager = keyQuantityManager;
-    }
+	public void setAssistQuantityManager(Employee assistQuantityManager) {
+		this.assistQuantityManager = assistQuantityManager;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "assistQuantityManager_id")
-    public Employee getAssistQuantityManager() {
-        return assistQuantityManager;
-    }
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "keyProductionManager_id")
+	public Employee getKeyProductionManager() {
+		return keyProductionManager;
+	}
 
-    public void setAssistQuantityManager(Employee assistQuantityManager) {
-        this.assistQuantityManager = assistQuantityManager;
-    }
+	public void setKeyProductionManager(Employee keyProductionManager) {
+		this.keyProductionManager = keyProductionManager;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "keyProductionManager_id")
-    public Employee getKeyProductionManager() {
-        return keyProductionManager;
-    }
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assistProductionManager_id")
+	public Employee getAssistProductionManager() {
+		return assistProductionManager;
+	}
 
-    public void setKeyProductionManager(Employee keyProductionManager) {
-        this.keyProductionManager = keyProductionManager;
-    }
+	public void setAssistProductionManager(Employee assistProductionManager) {
+		this.assistProductionManager = assistProductionManager;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "assistProductionManager_id")
-    public Employee getAssistProductionManager() {
-        return assistProductionManager;
-    }
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "keyTDEManager_id")
+	public Employee getKeyTDEManager() {
+		return keyTDEManager;
+	}
 
-    public void setAssistProductionManager(Employee assistProductionManager) {
-        this.assistProductionManager = assistProductionManager;
-    }
+	public void setKeyTDEManager(Employee keyTDEManager) {
+		this.keyTDEManager = keyTDEManager;
+	}
 
+	@OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assistTDEManager_id")
+	public Employee getAssistTDEManager() {
+		return assistTDEManager;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "keyTDEManager_id")
-    public Employee getKeyTDEManager() {
-        return keyTDEManager;
-    }
+	public void setAssistTDEManager(Employee assistTDEManager) {
+		this.assistTDEManager = assistTDEManager;
+	}
 
-    public void setKeyTDEManager(Employee keyTDEManager) {
-        this.keyTDEManager = keyTDEManager;
-    }
+	/**
+	 * 测试类型：FT、CP
+	 *
+	 * @return
+	 */
+	public String getTestType() {
+		return testType;
+	}
 
-    @OneToOne(cascade = CascadeType.REFRESH, targetEntity = Employee.class)
-    @JoinColumn(name = "assistTDEManager_id")
-    public Employee getAssistTDEManager() {
-        return assistTDEManager;
-    }
+	public void setTestType(String testType) {
+		this.testType = testType;
+	}
 
-    public void setAssistTDEManager(Employee assistTDEManager) {
-        this.assistTDEManager = assistTDEManager;
-    }
+	/**
+	 * 直接客户，多对一，以ID作为外键。
+	 *
+	 * @return
+	 */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "CUSTOMERDIRECT_ID", referencedColumnName = "ID")
+	public Customer getCustomerDirect() {
+		return customerDirect;
+	}
 
-    /**
-     * 测试类型：FT、CP
-     *
-     * @return
-     */
-    public String getTestType() {
-        return testType;
-    }
+	public void setCustomerDirect(Customer customerDirect) {
+		this.customerDirect = customerDirect;
+	}
 
-    public void setTestType(String testType) {
-        this.testType = testType;
-    }
+	/**
+	 * 间接客户，多对一，以ID作为外键。
+	 *
+	 * @return
+	 */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "CUSTOMERINDIRECT_ID", referencedColumnName = "ID")
+	public Customer getCustomerIndirect() {
+		return customerIndirect;
+	}
 
-    /**
-     * 直接客户，多对一，以ID作为外键。
-     *
-     * @return
-     */
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CUSTOMERDIRECT_ID", referencedColumnName = "ID")
-    public Customer getCustomerDirect() {
-        return customerDirect;
-    }
+	public void setCustomerIndirect(Customer customerIndirect) {
+		this.customerIndirect = customerIndirect;
+	}
 
-    public void setCustomerDirect(Customer customerDirect) {
-        this.customerDirect = customerDirect;
-    }
+	/**
+	 * process模板，多对一，以ID作为外键。 process模板以字符串的形式存储详细的流程信息，在下单时解析以其他的形式存储详细流程信息。
+	 *
+	 * @return
+	 */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "Process_ID", referencedColumnName = "ID")
+	public ProcessTemplate getProcessTemplate() {
+		return processTemplate;
+	}
 
-    /**
-     * 间接客户，多对一，以ID作为外键。
-     *
-     * @return
-     */
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CUSTOMERINDIRECT_ID", referencedColumnName = "ID")
-    public Customer getCustomerIndirect() {
-        return customerIndirect;
-    }
+	public void setProcessTemplate(ProcessTemplate processTemplate) {
+		this.processTemplate = processTemplate;
+	}
 
-    public void setCustomerIndirect(Customer customerIndirect) {
-        this.customerIndirect = customerIndirect;
-    }
+	/**
+	 * 客户产品型号，用于对外标识某项产品；在程序内部以内部产品型号internalProduct作为产品的唯一标识
+	 *
+	 * @return
+	 */
+	public String getCustomerProductNumber() {
+		return customerProductNumber;
+	}
 
-    /**
-     * process模板，多对一，以ID作为外键。
-     * process模板以字符串的形式存储详细的流程信息，在下单时解析以其他的形式存储详细流程信息。
-     *
-     * @return
-     */
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "Process_ID", referencedColumnName = "ID")
-    public ProcessTemplate getProcessTemplate() {
-        return processTemplate;
-    }
+	public void setCustomerProductNumber(String customerProductNumber) {
+		this.customerProductNumber = customerProductNumber;
+	}
 
-    public void setProcessTemplate(ProcessTemplate processTemplate) {
-        this.processTemplate = processTemplate;
-    }
+	/**
+	 * 客户产品版本，暂时弃之不用；真正意义的产品版本在测试程序管理中维护
+	 *
+	 * @return
+	 */
+	public String getCustomerProductRevision() {
+		return customerProductRevision;
+	}
 
-    /**
-     * 客户产品型号，用于对外标识某项产品；在程序内部以内部产品型号internalProduct作为产品的唯一标识
-     *
-     * @return
-     */
-    public String getCustomerProductNumber() {
-        return customerProductNumber;
-    }
+	public void setCustomerProductRevision(String customerProductRevision) {
+		this.customerProductRevision = customerProductRevision;
+	}
 
-    public void setCustomerProductNumber(String customerProductNumber) {
-        this.customerProductNumber = customerProductNumber;
-    }
+	/**
+	 * 内部产品型号，以一定规则生成，在系统内部唯一标识某项产品
+	 *
+	 * @return
+	 */
+	public String getInternalProductNumber() {
+		return internalProductNumber;
+	}
 
-    /**
-     * 客户产品版本，暂时弃之不用；真正意义的产品版本在测试程序管理中维护
-     *
-     * @return
-     */
-    public String getCustomerProductRevision() {
-        return customerProductRevision;
-    }
+	public void setInternalProductNumber(String internalProductNumber) {
+		this.internalProductNumber = internalProductNumber;
+	}
 
-    public void setCustomerProductRevision(String customerProductRevision) {
-        this.customerProductRevision = customerProductRevision;
-    }
+	/**
+	 * 内部产品版本，暂时无用
+	 *
+	 * @return
+	 */
+	public String getInternalProductRevision() {
+		return internalProductRevision;
+	}
 
-    /**
-     * 内部产品型号，以一定规则生成，在系统内部唯一标识某项产品
-     *
-     * @return
-     */
-    public String getInternalProductNumber() {
-        return internalProductNumber;
-    }
+	public void setInternalProductRevision(String internalProductRevision) {
+		this.internalProductRevision = internalProductRevision;
+	}
 
-    public void setInternalProductNumber(String internalProductNumber) {
-        this.internalProductNumber = internalProductNumber;
-    }
+	/**
+	 * 封装类型。仅有FT产品才有封装类型，但在实际应用中经常通过封装类型查询信息，故将封装类型放在了父类当中。
+	 *
+	 * @return
+	 */
+	public String getPackageType() {
+		return packageType;
+	}
 
-    /**
-     * 内部产品版本，暂时无用
-     *
-     * @return
-     */
-    public String getInternalProductRevision() {
-        return internalProductRevision;
-    }
+	public void setPackageType(String packageType) {
+		this.packageType = packageType;
+	}
 
-    public void setInternalProductRevision(String internalProductRevision) {
-        this.internalProductRevision = internalProductRevision;
-    }
+	/**
+	 * 出货产品型号，暂时未用到
+	 *
+	 * @return
+	 */
+	public String getShipmentProductNumber() {
+		return shipmentProductNumber;
+	}
 
-    /**
-     * 封装类型。仅有FT产品才有封装类型，但在实际应用中经常通过封装类型查询信息，故将封装类型放在了父类当中。
-     *
-     * @return
-     */
-    public String getPackageType() {
-        return packageType;
-    }
+	public void setShipmentProductNumber(String shipmentProductNumber) {
+		this.shipmentProductNumber = shipmentProductNumber;
+	}
 
-    public void setPackageType(String packageType) {
-        this.packageType = packageType;
-    }
+	/**
+	 * 标签，多对多。立即加载。
+	 *
+	 * @return
+	 */
+	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List<Label> getLabels() {
+		return labels;
+	}
 
-    /**
-     * 出货产品型号，暂时未用到
-     *
-     * @return
-     */
-    public String getShipmentProductNumber() {
-        return shipmentProductNumber;
-    }
+	public void setLabels(List<Label> labels) {
+		this.labels = labels;
+	}
 
-    public void setShipmentProductNumber(String shipmentProductNumber) {
-        this.shipmentProductNumber = shipmentProductNumber;
-    }
+	@OneToMany(mappedBy = "internalProduct", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List<EQCSetting> getEqcSettings() {
+		return eqcSettings;
+	}
 
+	public void setEqcSettings(List<EQCSetting> eqcSettings) {
+		this.eqcSettings = eqcSettings;
+	}
 
-    /**
-     * 标签，多对多。立即加载。
-     *
-     * @return
-     */
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    public List<Label> getLabels() {
-        return labels;
-    }
+	@OneToMany(mappedBy = "internalProduct", fetch = FetchType.LAZY)
+	@Fetch(FetchMode.SUBSELECT)
+	public List<SBLTemplate> getSblTemplates() {
+		return sblTemplates;
+	}
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
+	public void setSblTemplates(List<SBLTemplate> sblTemplates) {
+		this.sblTemplates = sblTemplates;
+	}
 
-    @OneToMany(mappedBy = "internalProduct", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    public List<EQCSetting> getEqcSettings() {
-        return eqcSettings;
-    }
-
-    public void setEqcSettings(List<EQCSetting> eqcSettings) {
-        this.eqcSettings = eqcSettings;
-    }
-
-    @OneToMany(mappedBy = "internalProduct", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    public List<SBLTemplate> getSblTemplates() {
-        return sblTemplates;
-    }
-
-    public void setSblTemplates(List<SBLTemplate> sblTemplates) {
-        this.sblTemplates = sblTemplates;
-    }
-
-    @Override
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -331,7 +328,8 @@ public class InternalProduct extends MES2AbstractEntity {
 		if (assistProductionManager == null) {
 			if (other.assistProductionManager != null)
 				return false;
-		} else if (!assistProductionManager.equals(other.assistProductionManager))
+		} else if (!assistProductionManager
+				.equals(other.assistProductionManager))
 			return false;
 		if (assistQuantityManager == null) {
 			if (other.assistQuantityManager != null)
@@ -361,7 +359,8 @@ public class InternalProduct extends MES2AbstractEntity {
 		if (customerProductRevision == null) {
 			if (other.customerProductRevision != null)
 				return false;
-		} else if (!customerProductRevision.equals(other.customerProductRevision))
+		} else if (!customerProductRevision
+				.equals(other.customerProductRevision))
 			return false;
 		if (eqcSettings == null) {
 			if (other.eqcSettings != null)
@@ -376,7 +375,8 @@ public class InternalProduct extends MES2AbstractEntity {
 		if (internalProductRevision == null) {
 			if (other.internalProductRevision != null)
 				return false;
-		} else if (!internalProductRevision.equals(other.internalProductRevision))
+		} else if (!internalProductRevision
+				.equals(other.internalProductRevision))
 			return false;
 		if (keyProductionManager == null) {
 			if (other.keyProductionManager != null)
@@ -426,36 +426,53 @@ public class InternalProduct extends MES2AbstractEntity {
 		return true;
 	}
 
-    @Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((assistProductionManager == null) ? 0 : assistProductionManager.hashCode());
-		result = prime * result + ((assistQuantityManager == null) ? 0 : assistQuantityManager.hashCode());
-		result = prime * result + ((assistTDEManager == null) ? 0 : assistTDEManager.hashCode());
-		result = prime * result + ((customerDirect == null) ? 0 : customerDirect.hashCode());
-		result = prime * result + ((customerIndirect == null) ? 0 : customerIndirect.hashCode());
-		result = prime * result + ((customerProductNumber == null) ? 0 : customerProductNumber.hashCode());
-		result = prime * result + ((customerProductRevision == null) ? 0 : customerProductRevision.hashCode());
-		result = prime * result + ((eqcSettings == null) ? 0 : eqcSettings.hashCode());
-		result = prime * result + ((internalProductNumber == null) ? 0 : internalProductNumber.hashCode());
-		result = prime * result + ((internalProductRevision == null) ? 0 : internalProductRevision.hashCode());
-		result = prime * result + ((keyProductionManager == null) ? 0 : keyProductionManager.hashCode());
-		result = prime * result + ((keyQuantityManager == null) ? 0 : keyQuantityManager.hashCode());
-		result = prime * result + ((keyTDEManager == null) ? 0 : keyTDEManager.hashCode());
+		result = prime * result
+				+ ((customerDirect == null) ? 0 : customerDirect.hashCode());
+		result = prime
+				* result
+				+ ((customerIndirect == null) ? 0 : customerIndirect.hashCode());
+		result = prime
+				* result
+				+ ((customerProductNumber == null) ? 0 : customerProductNumber
+						.hashCode());
+		result = prime
+				* result
+				+ ((customerProductRevision == null) ? 0
+						: customerProductRevision.hashCode());
+		result = prime * result
+				+ ((eqcSettings == null) ? 0 : eqcSettings.hashCode());
+		result = prime
+				* result
+				+ ((internalProductNumber == null) ? 0 : internalProductNumber
+						.hashCode());
+		result = prime
+				* result
+				+ ((internalProductRevision == null) ? 0
+						: internalProductRevision.hashCode());
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
-		result = prime * result + ((packageType == null) ? 0 : packageType.hashCode());
-		result = prime * result + ((processTemplate == null) ? 0 : processTemplate.hashCode());
-		result = prime * result + ((sblTemplates == null) ? 0 : sblTemplates.hashCode());
-		result = prime * result + ((shipmentProductNumber == null) ? 0 : shipmentProductNumber.hashCode());
-		result = prime * result + ((testType == null) ? 0 : testType.hashCode());
+		result = prime * result
+				+ ((packageType == null) ? 0 : packageType.hashCode());
+		result = prime * result
+				+ ((processTemplate == null) ? 0 : processTemplate.hashCode());
+		result = prime * result
+				+ ((sblTemplates == null) ? 0 : sblTemplates.hashCode());
+		result = prime
+				* result
+				+ ((shipmentProductNumber == null) ? 0 : shipmentProductNumber
+						.hashCode());
+		result = prime * result
+				+ ((testType == null) ? 0 : testType.hashCode());
 		return result;
 	}
 
-    @Override
-    public String[] businessKeys() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

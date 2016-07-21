@@ -62,7 +62,7 @@ public class CPProductionSchedule extends ProductionSchedule {
 	public void setPlannedTimeTakes(Double plannedTimeTakes) {
 		Double hours = -1.0;
 		try {
-			Integer uphReality = getCpTestingNode().getTestProgram().getUphReality();
+			Float uphReality = getCpTestingNode().getTestProgram().getUphReality();
 			if (null != uphReality && 0 != uphReality)
 				hours = getAmount() * 1.0 / uphReality;
 		} catch (NullPointerException e) {

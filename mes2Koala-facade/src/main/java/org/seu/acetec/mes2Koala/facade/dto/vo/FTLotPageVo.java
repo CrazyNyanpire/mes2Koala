@@ -3,6 +3,8 @@ package org.seu.acetec.mes2Koala.facade.dto.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.seu.acetec.mes2Koala.facade.dto.CustomerFTLotDTO;
+
 public class FTLotPageVo implements Serializable {
 	
 	/**
@@ -31,7 +33,11 @@ public class FTLotPageVo implements Serializable {
 	private Date createTimestamp;
 	private Date createTimestampEnd;
 	
+	private String currentState ;
+	
 	private String internalProductNumber;
+	
+	private long customerFTLotDTOId;
 
 	public Long getId() {
 		return id;
@@ -153,6 +159,12 @@ public class FTLotPageVo implements Serializable {
 	public void setInternalProductNumber(String internalProductNumber) {
 		this.internalProductNumber = internalProductNumber;
 	}
+	public String getCurrentState() {
+		return currentState;
+	}
+	public void setCurrentState(String currentState) {
+		this.currentState = currentState;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -253,6 +265,13 @@ public class FTLotPageVo implements Serializable {
 		} else if (!waferLotNumber.equals(other.waferLotNumber))
 			return false;
 		return true;
+	}
+
+	public long getCustomerFTLotDTOId() {
+		return customerFTLotDTOId;
+	}
+	public void setCustomerFTLotDTOId(long customerFTLotDTOId) {
+		this.customerFTLotDTOId = customerFTLotDTOId;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -23,7 +24,7 @@ import org.openkoala.koala.commons.InvokeResult;
 
 @Controller
 @RequestMapping("/CPWafer")
-public class CPWaferController {
+public class CPWaferController extends BaseController{
 		
 	@Inject
 	private CPWaferFacade cPWaferFacade;
@@ -94,19 +95,38 @@ public class CPWaferController {
 	@ResponseBody
 	@RequestMapping("/changeStatusPassed")
 	public InvokeResult changeStatusPassed(@RequestParam String ids) {
+		CPWaferDTO cPWaferDTO = new CPWaferDTO();
+		cPWaferDTO = this.lastModifyBase(cPWaferDTO);
 		return cPWaferFacade.changeStatusPassed(ids);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/saveCheck")
 	public InvokeResult saveCheck(@RequestParam String ids) {
-		return cPWaferFacade.saveCheck(ids);
+		CPWaferDTO cPWaferDTO = new CPWaferDTO();
+		cPWaferDTO = this.lastModifyBase(cPWaferDTO);
+		return cPWaferFacade.saveCheck(ids,cPWaferDTO);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getCPWaferInfo")
 	public InvokeResult getCPWaferInfo(@RequestParam Long cpLotId,@RequestParam Long nodeId) {
 		return cPWaferFacade.getCPWaferInfoByNode(cpLotId,nodeId);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/getCPWaferCheck")
+	public InvokeResult getCPWaferCheck(@RequestParam Long cpLotId,@RequestParam Long nodeId) {
+		return cPWaferFacade.getCPWaferCheck(cpLotId,nodeId);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/getCPWaferYieldByLotId")
+	public InvokeResult getCPWaferYieldByLotId(@RequestParam Long cpLotId) {
+		List<CPWaferDTO> list = cPWaferFacade.getCPWaferYieldByLotId(cpLotId);
+		return InvokeResult.success(list);
 	}
 	
 }

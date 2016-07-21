@@ -5,6 +5,10 @@
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ include file="/pages/common/header.jsp"%><!--引入权限系统该页面需无须引用header.jsp -->
+    <%@include file="/commons/taglibs.jsp"%>
+    <script type="text/javascript" src="<%=contextPath %>/js/common.js"></script>
+    <LINK rel="stylesheet" type="text/css" href="<%=contextPath %>/js/easyui/themes/default/easyui.css"/>
+    <script type="text/javascript" src="<%=contextPath %>/js/easyui/jquery.easyui.min.1.2.2.js"></script>
     <%@ page import="java.util.Date" %>
     <% String formId = "form_" + new Date().getTime();
         String gridId = "grid_" + new Date().getTime();
@@ -16,6 +20,10 @@
         var isModify = 0;
         var _dialog;
         var buttonName;
+        var timer;
+        var checklotId;
+        var checknodeId;
+        var checkcount = 0;
         $(function () {
             grid = $("#<%=gridId%>");
             form = $("#<%=formId%>");
@@ -84,67 +92,71 @@
                         identity: "id",
                         gridheight:1000,
                         buttons: [
-                            {
-                                content: '<button class="btn btn-danger" type="button">开HOLD</button>',
-                                action: 'hold'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">解Hold</button>',
-                                action: 'unhold'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">流程卡</button>',
-                                action: 'runcard'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">导出Excel</button>',
-                                action: 'exportExcel'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">跳站</button>',
-                                action: 'jumpNode'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" id="updateftList" type="button">修改</button>',
-                                action: 'updata'
-                            },
-                            {
-                                content: '<button class="btn btn-danger" id="updateftList" type="button">良率放行</button>',
-                                action: 'endFailTest'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">预Hold</button>',
-                                action: 'featuHold'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">标签打印</button>',
-                                action: 'labelPrint'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">操作日志</button>',
-                                action: 'optdetal'
-                            },
-                            {
-                                content: '<button class="btn btn-primary" type="button">设备嫁动</button>',
-                                action: 'ems'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">分批</button>',
-                                action: 'split'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">合批</button>',
-                                action: 'merge'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">数据补偿</button>',
-                                action: 'dataCompensation'
-                            },
-                            {
-                                content: '<button class="btn btn-success" type="button">删除</button>',
-                                action: 'delete'
-                            }
-                        ],
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotHold"><button class="btn btn-danger" type="button">开HOLD</button></ks:hasSecurityResource>',
+                                      action: 'hold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotUnhold"><button class="btn btn-success" type="button">解Hold</button></ks:hasSecurityResource>',
+                                      action: 'unhold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotRuncard"><button class="btn btn-primary" type="button">流程卡</button></ks:hasSecurityResource>',
+                                      action: 'runcard'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotExportExcel"><button class="btn btn-primary" type="button">导出Excel</button></ks:hasSecurityResource>',
+                                      action: 'exportExcel'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotJumpNode"><button class="btn btn-primary" type="button">跳站</button></ks:hasSecurityResource>',
+                                      action: 'jumpNode'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotUpdata"><button class="btn btn-danger" id="updateftList" type="button">修改</button></ks:hasSecurityResource>',
+                                      action: 'updata'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotEndFailTest"><button class="btn btn-danger" id="updateftList" type="button">良率放行</button></ks:hasSecurityResource>',
+                                      action: 'endFailTest'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotFeatuHold"><button class="btn btn-success" type="button">预Hold</button></ks:hasSecurityResource>',
+                                      action: 'featuHold'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotLabelPrint"><button class="btn btn-success" type="button">标签打印</button></ks:hasSecurityResource>',
+                                      action: 'labelPrint'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotOptdetal"><button class="btn btn-primary" type="button">操作日志</button></ks:hasSecurityResource>',
+                                      action: 'optdetal'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotEms"><button class="btn btn-primary" type="button">设备嫁动</button></ks:hasSecurityResource>',
+                                      action: 'ems'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotSplit"><button class="btn btn-success" type="button">分批</button></ks:hasSecurityResource>',
+                                      action: 'split'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotMerge"><button class="btn btn-success" type="button">合批</button></ks:hasSecurityResource>',
+                                      action: 'merge'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotDataCompensation"><button class="btn btn-success" type="button">数据补偿</button></ks:hasSecurityResource>',
+                                      action: 'dataCompensation'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotDelete"><button class="btn btn-danger" type="button">删除</button></ks:hasSecurityResource>',
+                                      action: 'delete'
+                                  },
+                                  {
+                                      content: '<ks:hasSecurityResource identifier="CPLotPIDchange"><button class="btn btn-success" type="button">变更PID</button></ks:hasSecurityResource>',
+                                      action: 'PIDchange'
+                                  }
+                              ],
                         url: "${pageContext.request.contextPath}/CPLot/pageJson.koala",
                         columns: [
                             {title: '状态', name: 'currentState', width: width},
@@ -155,15 +167,26 @@
                             },
                             {title: '内部批号', name: 'internalLotNumber', width: width},
                             {
-                                title: 'PID',
+                                title: '艾科内部产品型号',
                                 name: 'internalProductNumber',
                                 width: width,
+                                render: function (rowdata, rowindex, value){
+                                    return rowdata['customerCPLotDTO']['internalProductDTO'][rowindex];
+                                }
                             },
-                            {title: '数量', name: 'diskContent', width: width},
-                            {title: '产品编号', name: 'customerNumber', width: width},
-                            {title: '客户型号', name: 'shipmentProductNumber', width: width},
+                            {title: '数量', name: 'quantity', width: width},
+/*                             {title: '产品编号', name: 'customerNumber', width: width}, */
+                            {title: '来料型号', name: 'customerProductNumber', width: width,
+                                render: function (rowdata, rowindex, value){
+                                    return rowdata['customerCPLotDTO']['internalProductDTO'][rowindex];
+                                }
+                            },
                             {title: '出货型号', name: 'shipmentProductNumber', width: width},
-                            {title: '封装厂批号', name: 'packageNumber', width: width},
+                            {title: '封装厂批号', name: 'packageNumber', width: width,
+                                render: function (rowdata, rowindex, value){
+                                    return rowdata['customerCPLotDTO']['packingLot'][rowindex];
+                                }
+                            },
                             {title: '客户编号', name: 'customerNumber', width: width,
                                 render: function (rowdata, rowindex, value){
                                     return rowdata['customerCPLotDTO'][rowindex];
@@ -238,14 +261,15 @@
                                 })
                                 return;
                             }
-                            if (data.item[0].state != "HOLD") {
+                            debugger;
+                            if (data.item[0].holdState != "Hold") {
                                 $this.message({
                                     type: 'warning',
                                     content: '该批次状态不是Hold无法解Hold'
                                 })
                                 return;
                             }
-                            self.unhold(indexs[0], $this);
+                            self.unhold(indexs[0], $this);      
                         },
                         'runcard': function (event, data) {
                             var indexs = data.data;
@@ -455,8 +479,95 @@
 	                            content: '确定要删除所选记录吗?',
 	                            callBack: remove
 	                        });
-	                   }
+	                   },
+	                   'PIDchange': function (event, data) {
+                           var indexs = data.data;
+                           var $this = $(this);
+                           if (indexs.length == 0) {
+                               $this.message({
+                                   type: 'warning',
+                                   content: '请选择要变更的批次'
+                               });
+                               return;
+                           }
+                           if (indexs.length > 1) {
+                               $this.message({
+                                   type: 'warning',
+                                   content: '只能选择一条记录进行变更'
+                               })
+                               return;
+                           }
+                           var PIDchange = function () {
+                               self.PIDchange(indexs, $this,data['item'][0]['customerCPLotDTO']['id']);
+                           };
+                           $this.confirm({
+                               content: '确定要变更选批次吗?',
+                               callBack: PIDchange
+                           });
+                       }
                     });
+                },
+                PIDchange: function (ids, grid,customerLotId) {
+					var self = this;
+                    var data = [{name: 'ids', value: ids[0]}];
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog">'
+            	        	+'<div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+            	        	+'<h4 class="modal-title">PID变更</h4></div><div class="modal-body"><form class="form-horizontal">'
+            	        	+'<div class="form-group"><label class="col-lg-3 control-label">PID:</label>'
+            	            +'<div class="col-lg-9"><div class="btn-group select" id="internalProductNumberID"></div>'
+            	            +'<input type="hidden" id="internalProductNumberID_" name="cpInfoId" dataType="Require"/><span class="required">*</span>'
+            	            +'</div><form></div></div><div class="modal-footer">'
+            	        	+'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
+            	        	+'<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
+            	        	+'</div></div>');
+            	            dialog.modal({
+            	                keyboard:false
+            	            }).on({
+            	                'hidden.bs.modal': function(){
+            	                    $(this).remove();
+            	                }
+            	            })
+            	            $.get('${pageContext.request.contextPath}/CustomerCPLot/findPIDByCustomerCPLotId/'+customerLotId+'.koala').done(function (json) {
+	                          if (json.success) {
+	                              	json = json.data;
+	                              	var contents = [ {title : '请选择',value : ''} ];
+	                              	$.each(json,function(a){
+	                              		contents.push({title : json[a]['internalProductNumber'],value : json[a]['id']});
+	                              	})
+		                  	      	dialog.find('#internalProductNumberID').select({
+		                                  title: '请选择',
+		                                  contents: contents
+	                             	}).on('change',function(){
+	                             		dialog.find('#internalProductNumberID_').val($(this).getValue());
+	                             	});
+	                          } else {
+	                              dialog.find('.modal-content').message({
+	                                  type: 'error',
+	                                  content: result.errorMessage
+	                              });
+	                          }
+	                      	});
+            	            //self.initPage(dialog.find('form'));
+            	        dialog.find('#save').on('click',{grid: grid}, function(e){
+            	              if(!Validator.Validate(dialog.find('form')[0],3))return;
+            	              data.push({name:'cpInfoId',value:$("#internalProductNumberID_").val()});
+            	              $.post('${pageContext.request.contextPath}/CPLot/changePid.koala', data).done(function (result) {
+                                  if (result.success) {
+                                	  dialog.modal('hide');
+                                      e.data.grid.data('koala.grid').refresh();
+                                      e.data.grid.message({
+                                          type: 'success',
+                                          content: 'PID变更成功'
+                                      });
+                                  } else {
+                                      grid.message({
+                                          type: 'error',
+                                          content: result.errorMessage
+                                      });
+                                  }
+                              });
+            	        });
+                    
                 },
                 runcard: function (id,grid) {
                     var self = this;
@@ -466,35 +577,68 @@
                             + '<h4 class="modal-title">RunCard</h4></div><div class="modal-body">'
                             + '<p>One fine body&hellip;</p></div><div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
-                            + '<button type="button" class="btn btn-success" id="save">保存</button></div></div>'
+                            + '<button type="button" class="btn btn-success" id="save">查看Runcard</button></div></div>'
                             + '</div></div>');
-                    $.get('<%=path%>/FTRunCard.jsp').done(function (html) {
-                        dialog.modal({
-                            keyboard: false
-                        }).on({
-                            'hidden.bs.modal': function () {
-                                $(this).remove();
-                            }
-                        }).find('.modal-body').html(html);
-                        self.initPage(dialog.find('form'));
+                    $.get('${pageContext.request.contextPath}/cpRuncardController/getSpecialFormStatusByCPLotId.koala?cpLotId=' + id).done(function (json) {
+                        data = json['data'];
+                        var cp1SheetStatus = data['cp1SheetStatus'];
+                        var cp2SheetStatus = data['cp2SheetStatus'];
+                        var sheet1Status = data['sheet1Status'];
+                        var sheet2Status = data['sheet2Status'];
+                        var mcp_COVER1SheetStatus = data['mcp_COVER1SheetStatus'];
+                        var map_SHIFT1Status = data['map_SHIFT1Status'];
+
+                        $.get('<%=contextPath %>/cpRuncardController/getSpecialFormPage.koala?&cpinfoId=' + id).done(function (html) {
+                            debugger
+                            dialog.find('.modal-body').html(html);
+                            self.initPage(dialog.find('form'));
+                            dialog.find('.modal-body').find("form").append($('<hr/>'
+                                    + '<div class="form-group">'
+                                    + '<div class="col-lg-10 col-lg-offset-2">'
+                                    + '<div style="margin-bottom:15px">'
+                                    + '<input type="radio" name="optionsRadios" id="optionsRadios1" value="0" >从起始站点开始列印</div>'
+                                    + '<div style="margin-bottom:15px">'
+                                    + '<input type="radio" name="optionsRadios" id="optionsRadios2" value="1">从生产批目前作业站开始列印</div>'
+                                    + '<div style="margin-bottom:15px">'
+                                    + '<input type="radio" name="optionsRadios" id="optionsRadios3" value="2">只列印目前作业站</div></div></div>'));
+
+                            dialog.find("#cp1SheetStatus").attr("checked", cp1SheetStatus);
+                            dialog.find("#cp2SheetStatus").attr("checked", cp2SheetStatus);
+                            dialog.find("#sheet1Status").attr("checked", sheet1Status);
+                            dialog.find("#sheet2Status").attr("checked", sheet2Status);
+                            dialog.find("#mcp_COVER1SheetStatus").attr("checked", mcp_COVER1SheetStatus);
+                            dialog.find("#map_SHIFT1Status").attr("checked", map_SHIFT1Status);
+
+                        });
                     });
+
+                    dialog.modal({
+                        keyboard: false
+                    }).on({
+                        'hidden.bs.modal': function () {
+                            $(this).remove();
+                        }
+                    });
+
                     dialog.find('#save').on('click', {grid: grid}, function (e) {
                         if (!Validator.Validate(dialog.find('form')[0], 3))return;
-                        $.post('${pageContext.request.contextPath}/FTLot/add.koala', dialog.find('form').serialize()).done(function (result) {
-                            if (result.success) {
-                                dialog.modal('hide');
-                                e.data.grid.data('koala.grid').refresh();
-                                e.data.grid.message({
-                                    type: 'success',
-                                    content: '保存成功'
-                                });
-                            } else {
-                                dialog.find('.modal-content').message({
-                                    type: 'error',
-                                    content: result.errorMessage
-                                });
+                        var specialFormStr = dialog.find('form').find('input[type=checkbox]:checked').map(function () {
+                            if (this.name == "flowForm") {
+                                return;
                             }
-                        });
+                            else {
+                                return this.name;
+                            }
+                        }).get().join(',');
+                        var state = dialog.find('form').find('input[type=radio]:checked').val();
+                        if (state == undefined) {
+                            dialog.find('.modal-content').message({
+                                type: 'warning',
+                                content: '请选择列印状态'
+                            })
+                            return;
+                        }
+                        createmodalwindow("UEditor", 800, 500, '<%=contextPath %>/cpRuncardController/getPageForRuncard.koala?cpLotId=' + id + '&specialFormStr=' + specialFormStr + '&state=' + state);
                     });
                 },
                 hold: function (id, grid) {
@@ -559,6 +703,18 @@
                                 dialog.find("#QDN_initiator").text(json['data']['userAccount'] + "|" + json['data']['name']);
                                 dialog.find("[name='workPerson']").val(json['data']['userAccount'] + "|" + json['data']['name']);
                             });//获取申请人
+                        });
+                        $.get('${pageContext.request.contextPath}/CPWafer/getCPWaferYieldByLotId.koala?cpLotId='+id).done(function (json) {
+                            debugger;
+                        	json = json.data;
+                        	for (var a = 0 ; a < json.length ; a++) {
+                        		var waferID = json[a]['internalWaferCode'];
+                        		var index = waferID.substring(waferID.lastIndexOf("-") + 1);
+                        		if ( json[a]['yield']!=null && json[a]['yield'] != "") {
+                        			var yield = json[a]['yield'].substring(0,json[a]['yield'].lastIndexOf(","));
+                        			dialog.find('#num' + index).val(yield);
+                        		}
+                        	}
                         });
                         dialog.modal({
                             keyboard: false
@@ -795,7 +951,7 @@
                 },
                 featuHold: function (id, grid) {
                     var self = this;
-                    var dialog = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">开Hold</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">保存</button></div></div></div></div>');
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">预Hold</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">保存</button></div></div></div></div>');
                     $.get('<%=path%>/CPfutureHold.jsp').done(function (html) {
                         dialog.find('.modal-body').html(html);
                         dialog.find("input[name='To']").bind("click", function () {
@@ -1007,7 +1163,7 @@
                     var self = this;
                     var labelName = "";
                     var labelInfo = "";
-                    var dialog = $('<div class="modal fade"><div class="modal-dialog" style="width:800px"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">标签打印</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">打印</button></div></div></div></div>');
+                    var dialog = $('<div class="modal fade"><div class="modal-dialog" style="width:900px"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">标签打印</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-success" id="save">打印</button></div></div></div></div>');
                     $.get('<%=path%>/CPLabelPrint.jsp').done(function (html) {
                         dialog.find('.modal-body').html(html);
                         self.initPage(dialog.find('form'));
@@ -1026,11 +1182,11 @@
                             }
                             if(json['cPWaferDTOs'].length==25)
                            	{
-                            	$(".checkItemAll").attr("checked","checked");
+                            	dialog.find(".checkItemAll").attr("checked","checked");
                            	}
                             else{
                             	$.each(json['cPWaferDTOs'],function(a){
-    		                		$(".checkItem"+this.customerWaferIndex).attr("checked","checked");
+                            		dialog.find(".checkItem"+this.customerWaferIndex).attr("checked","checked");
     		                	})
                             }
                             
@@ -1045,8 +1201,7 @@
                         dialog.find('#save').on('click', {grid: grid}, function (e) {
                             if (!Validator.Validate(dialog.find('form')[0], 3))return;
                             labelName=$("#labelNameID").val();
-                            labelName="CPShipping.btw";
-                            
+                            //labelName="CPShipping.btw";
                             if ( labelName == "" || labelName == undefined) {
                                 dialog.message({
                                     type: 'warning',
@@ -1118,20 +1273,21 @@
                             cpLotDTO = json;
                             dialog.find('#quantityID').val(json['qty']);
                             //dialog.find('#lotNumberID').val(json['internalLotNumber']);
-                            dialog.find('#internalLotNumber').text(json['internalLotNumber']);
+                            dialog.find('#internalLotNumber').text(json['internalLotNumber'].trim());
                             dialog.find('#currentState').text(json['currentState']);
                             dialog.find('#shipmentProductNumber').text(json['shipmentProductNumber']);
                             dialog.find('#qty').text(json['cPWaferDTOs'].length);
                           	for (var i = 0;i < json['cPWaferDTOs'].length;i++) {
-                                 var waferCode = json['cPWaferDTOs'][i]["internalWaferCode"].substring(json['cPWaferDTOs'][i]["internalWaferCode"].lastIndexOf("-")+1);
-                                 dialog.find('#motherlot' + '-' + waferCode).attr("checked",true);
+                          		debugger;
+                          		var waferCode = json['cPWaferDTOs'][i]["customerWaferIndex"];
+                                dialog.find('#motherlot' + '-' + waferCode).attr("checked",true);
                             }
                           	dialog.find('#childrenLotNumberSpan').html('');
                             dialog.find('#childrenLotNumberText').html('');
                             dialog.find('#childrenShipmentNumberSpan').html('');
                             dialog.find('#childrenShipmentNumberText').html('');
                             var number = dialog.find('#divideAmountID').val();
-                            //debugger;
+                            debugger;
                             for (var i = 0; i < parseInt(number); i++) {
                             	if ( i == 0 ) {
                             		var htmlSpan = $('<p style="margin-top: 8%;"><span>子批' + parseInt(i + 1) + ':</span></p>');  
@@ -1251,9 +1407,9 @@
                       		    	      }
                                 	 });
                                 }
-                            	debugger;
                 			    for (var i = 0;i < cpLotDTO['cPWaferDTOs'].length;i++) {
-                                    var waferCode = cpLotDTO['cPWaferDTOs'][i]["internalWaferCode"].substring(cpLotDTO['cPWaferDTOs'][i]["internalWaferCode"].lastIndexOf("-")+1);
+                			    	debugger;
+                			    	var waferCode = cpLotDTO['cPWaferDTOs'][i]["customerWaferIndex"];
                                     dialog.find('#lot1' + '-' + waferCode).attr("checked",true);
                                     dialog.find('#lot1' + '-' + waferCode).attr("disabled",false);
                                     for (var j =2;j <= number;j++){
@@ -1261,7 +1417,7 @@
                                         dialog.find('#lot' + j + '-' + waferCode).attr("disabled",false);
                     			    } 
                                 }
-                           });
+                            });
                             dialog.find("input[type='checkbox']").on("click", function () {
                             	var checkboxID = $(this).attr("id");
                             	var lotnum = checkboxID.substring(0,checkboxID.indexOf("-"));
@@ -1348,7 +1504,8 @@
                           				      	    if ( $(this).children().is(':checked')) {
                           				      	    	var checkboxnum = $(this).children().attr("id").substring($(this).children().attr("id").indexOf("-")+1);
                           				      	        for (var j = 0;j < json['cPWaferDTOs'].length;j++) {
-                                                    	  var waferCode = json['cPWaferDTOs'][j]["internalWaferCode"].substring(json['cPWaferDTOs'][j]["internalWaferCode"].lastIndexOf("-")+1);
+                                                    	  var waferCode = json['cPWaferDTOs'][j]["customerWaferIndex"];
+                                                    	  debugger;
                                                     	  if( parseInt(waferCode) == checkboxnum) {
                                                     		  chlidwaferdata.push(json['cPWaferDTOs'][j]);
                                 				      	      chliddata["cPWaferDTOs"] = chlidwaferdata;
@@ -1458,7 +1615,7 @@
                                 dialog.find('#mergecurrentState' + parseInt(i + 1) +'').text(json[i]['currentState']);
                                 dialog.find('#mergeqty' + parseInt(i + 1) +'').text(json[i]['cPWaferDTOs'].length);
                                 for (var j = 0;j < json[i]['cPWaferDTOs'].length;j++) {
-                                	var waferCode = json[i]['cPWaferDTOs'][j]["internalWaferCode"].substring(json[i]['cPWaferDTOs'][j]["internalWaferCode"].lastIndexOf("-")+1);
+                                	var waferCode = json[i]['cPWaferDTOs'][j]["customerWaferIndex"];
                                 	dialog.find('#mergechildslot' + parseInt(i + 1) + '-' + waferCode).attr("checked",true);
                                 }
                                 if (json[i]['internalLotNumber'].indexOf("-H") != -1) {
@@ -1475,30 +1632,38 @@
                             var idsCount = "";
                             var checklotnum;
                             var motherqty = 0;
-                            dialog.find('.ChildsINFO').find("tr").each(function() {
-                            	childsSum ++;
-                            	$(this).find("input[type='checkbox']").each(function() {
-                            		if($(this).attr("id").startsWith("mergelot") && $(this).is(":checked")){
-                            			i++;
-                            			checklotnum = $(this).attr("id").substring($(this).attr("id").indexOf("mergelot")+8);
-                                    	if (dialog.find('#mergeqty'+ checklotnum).text() != ""){
-                                    		motherqty = motherqty + parseInt(dialog.find('#mergeqty'+ checklotnum).text());
-                                    	}
-                            		}
-                            	});
-                            	if(nodeState ==""){
-                            		nodeState = dialog.find('#mergecurrentState'+ checklotnum).text();
-                            	}else{
-                            		if (nodeState != dialog.find('#mergecurrentState'+ checklotnum).text()){
-                            			dialog.message({
-                                            type: 'warning',
-                                            content: '请选择相同站点状态的子批合批！'
-                                        })
-                                        return false;
-                            		}
-                            	}
+                            if (nodeState == "") {
                             	
-                            });
+                            }
+                            try {
+                            	dialog.find('.ChildsINFO').find("tr").each(function() {
+                                	childsSum ++;
+                                	$(this).find("input[type='checkbox']").each(function() {
+                                		if($(this).attr("id").startsWith("mergelot") && $(this).is(":checked")){
+                                			i++;
+                                			checklotnum = $(this).attr("id").substring($(this).attr("id").indexOf("mergelot")+8);
+                                        	if (dialog.find('#mergeqty'+ checklotnum).text() != ""){
+                                        		motherqty = motherqty + parseInt(dialog.find('#mergeqty'+ checklotnum).text());
+                                        	}
+                                		}
+                                	});
+                                	debugger;
+                                	if(nodeState == ""){
+                                		nodeState = dialog.find('#mergecurrentState'+ checklotnum).text();
+                                	}else{
+                                		if (nodeState != dialog.find('#mergecurrentState'+ checklotnum).text()){
+                                			throw "请选择相同站点状态的子批合批！";
+                                		}
+                                	}
+                                });
+                            }catch (e) {
+                            	dialog.message({
+                                    type: 'warning',
+                                    content: e
+                                })
+                                return false;
+                            }
+                            
                             if (i < 2) {
                                 dialog.message({
                                     type: 'warning',
@@ -1542,12 +1707,12 @@
                                 	$(this).find("input[type='checkbox']").each(function() {
                                 		if($(this).attr("id").startsWith("mergelot") && $(this).is(":checked")){
                                 			checklotnum = $(this).attr("id").substring($(this).attr("id").indexOf("mergelot")+8);
-                                			for (var a = 0;a < cpLotDTOs[checklotnum-1]['cPWaferDTOs'].length;a++) {
-                                            	var waferCode = cpLotDTOs[checklotnum-1]['cPWaferDTOs'][a]["internalWaferCode"].substring(cpLotDTOs[checklotnum-1]['cPWaferDTOs'][a]["internalWaferCode"].lastIndexOf("-")+1);
-                                            	dialog.find('#mergemotherlot' + waferCode).attr("checked",true);
-                                            	dialog.find('#mergechildslot' + waferCode).attr("disabled",true);
-                                            }
                                 			debugger;
+                                			for (var a = 0;a < cpLotDTOs[checklotnum-1]['cPWaferDTOs'].length;a++) {
+                                            	var waferCode = cpLotDTOs[checklotnum-1]['cPWaferDTOs'][a]["customerWaferIndex"];
+                                            	dialog.find('#mergemotherlot' + waferCode).attr("checked",true);
+                                            	dialog.find('#mergemotherlot' + waferCode).attr("disabled",true);
+                                            }
                                 			if (idsCount == ""){
                                 				idsCount = cpLotDTOs[checklotnum-1]['id'] + ",";
                                 			}else {
@@ -1935,6 +2100,10 @@
                         type: 'success',
                         content: '进站成功'
                     })
+                    debugger;
+                    if (nodeName.startsWith("CP")) {
+                	    timer = setInterval("timerCheck()",45000);
+                    }
                     //CPtablebind($("#CPDetail table"));
                  } else {
                 	 grid.message({
@@ -1942,6 +2111,7 @@
                         content: '进站失败' + result.errorMessage
                     })
                 }
+                
             }) 
         }
         // 保存
@@ -1955,6 +2125,7 @@
                             isModify = 0;
                             $('#updateftList').addClass('btn-success').removeClass('btn-default');
                             grid.getGrid().refresh();
+                            $(".checkerbox[data-value='"+checkedId+"']").click();
                             grid.message({
                                 type: 'success',
                                 content: '保存成功'
@@ -1977,8 +2148,12 @@
                     isModify = 0;
                     $('#updateftList').addClass('btn-success').removeClass('btn-default');
                     grid.getGrid().refresh();
+                    $(".checkerbox[data-value='"+checkedId+"']").click();
                     //getDataafterClick(checkedId, nodeName);
                     refreshDetailAndButtonList(checkedId);
+                    if (timer != null) {
+                    	clearInterval(timer);
+                    }
                     grid.message({
                         type: 'success',
                         content: '出站成功'
@@ -2000,6 +2175,7 @@
                      isModify = 0;
                      $('#updateftList').addClass('btn-success').removeClass('btn-default');
                      grid.getGrid().refresh();
+                     $(".checkerbox[data-value='"+checkedId+"']").click();
                      //getDataafterClick(checkedId, nodeName);
                      refreshDetailAndButtonList(checkedId);
                      grid.message({
@@ -2119,7 +2295,7 @@
                                 type: 'success',
                                 content: '保存成功'
                             });
-                            renderRawData();
+                            refreshDetailAndButtonList(grid.getGrid().selectedRowsIndex());
                         } else {
                             dialog.find('.modal-content').message({
                                 type: 'error',
@@ -2158,8 +2334,9 @@
                			{
                 			color="#f6ad49";
                			}
+                		var map=!!data[a].map==0?"#":data[a].map;
                 		$("#CPDetail table tbody").append('<tr><td><div style="background-color:'+color+';height: 15px;width: 15px;border-radius: 50%;"></div></td>'
-                        		+'<td><span style="display:none;">'+data[a].id+'</span>'+parseInt(a+1)+'</td><td>'+data[a].internalWaferCode+'</td><td>'+optitem+'</td><td><a href="'+data[a].map+'">查看</a></td>'
+                        		+'<td><span style="display:none;">'+data[a].id+'</span>'+parseInt(a+1)+'</td><td>'+data[a].internalWaferCode+'</td><td>'+optitem+'</td><td><a href="'+map+'">查看</a></td>'
                         		+'<td><a>详情</a></td><td>'+data[a].internalWaferCode+'</td><td>'+data[a].pass+'</td><td>'+data[a].fail+'</td><td>'+data[a].internalOffset+'</td><td>'+data[a].customerOffset+'</td></tr>');
                 	});
                 	if (ftNodeDTO.cpState == 2) {
@@ -2277,6 +2454,8 @@
                 $('#CPDetail').html(html);
               	//IQC界面根据Wafer片生成对应操作表格
               	debugger;
+              	checklotId = checkedId; 
+              	checknodeId = ftNodeDTO.id;
                 $.get('${pageContext.request.contextPath}/CPWafer/getCPWaferInfo.koala?cpLotId='+checkedId+'&nodeId='+ftNodeDTO.id).done(function (data) {
                 	debugger;
                 	data=data['data'];
@@ -2291,12 +2470,18 @@
                 		else{
                 			optitem='<a style="color:#888">已通过'+ftNodeDTO.name+'</a>';
                 		}
+                		//debugger;
+                		var map=!!data[a].map==0?"#":data[a].map;
                 		$("#CPDetail table tbody").append('<tr><td><div style="background-color: #999;height: 15px;width: 15px;border-radius: 50%;"></div></td>'
-                        		+'<td><span style="display:none;">'+data[a].id+'</span>'+parseInt(a+1)+'</td><td>'+data[a].internalWaferCode+'</td><td>'+optitem+'</td><td><a href="'+data[a].map+'">查看</a></td>'
+                        		+'<td><span style="display:none;">'+data[a].id+'</span>'+parseInt(a+1)+'</td><td>'+data[a].internalWaferCode+'</td><td>'+optitem+'</td><td><a href="'+map+'">查看</a></td>'
                         		+'<td><a>详情</a></td><td>'+data[a].internalWaferCode+'</td><td>'+data[a].pass+'</td><td>'+data[a].fail+'</td><td>'+data[a].internalOffset+'</td><td>'+data[a].customerOffset+'</td></tr>');
                 	});
                 	if (ftNodeDTO.cpState == 2) {
                         CPtablebind($("#CPDetail table"));
+                    }
+                	debugger;
+                	if (ftNodeDTO.name.startsWith("CP") && ftNodeDTO.cpState == 2) {
+                    	timer = setInterval("timerCheck()",45000);
                     }
                 }); 
                 var elm;
@@ -2517,7 +2702,7 @@
         };
 
         var onClickedDispatcher = function (checkedId, CPProcessDTO, nodeName) {
-            debugger;
+            //debugger;
             var callbackMap = {
             	"Incoming": onIncomingNodeClicked,
                 "IQC": onIQCNodeClicked,
@@ -2536,6 +2721,39 @@
             callback(checkedId, CPProcessDTO, cpNodeDTO);
         };
 
+        function timerCheck() {
+        	$.get('${pageContext.request.contextPath}/CPWafer/getCPWaferCheck.koala?cpLotId='+checklotId+'&nodeId='+checknodeId).done(function (result) {
+        		if (result.success) {
+
+        		} else {
+        			//checkcount++;
+        			//if (checkcount > 2) {
+        			//	debugger;
+        			//	clearInterval(timer);
+        			//	alert("错误次数过多，请重新点击左边站点，进入定时服务！");
+                	//	return false;
+                	//}
+        			if (result.success == false || result.success != undefined) {
+        				 if (result.errorMessage == "TestingEnd-3360") {
+        					 clearInterval(timer);
+        					 //alert("所有wafer良率正常，定时服务停止！");
+        				 }else if (result.errorMessage == "TestingEnd"){
+        					 clearInterval(timer);
+        				 }else {
+        					 debugger;
+        					 clearInterval(timer);
+        					 alert(result.errorMessage + "。监视停止！可以点击左边站点，重新进入监视服务");
+        				 }
+                    } else {
+                    	clearInterval(timer);
+                    	grid.message({
+                            type: 'error',
+                            content: result.actionError
+                        });
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -2554,13 +2772,19 @@
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <label class="control-label" style="width:80px;float:left;">封装类型:&nbsp;</label>
+                                    <label class="control-label" style="width:60px;float:left;">状态:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
-                                        <input name="packageType" class="form-control" type="text" style="width:80px;" id="typeID"/>
-                                    </div>
-                                    <label class="control-label" style="width:50px;float:left;">状态:&nbsp;</label>
-                                    <div style="margin-left:5px;float:left;">
-                                        <input name="currentState" class="form-control" type="text" style="width:80px;" id="currentStateID"/>
+                                        <input name="currentState" class="form-control" type="text" style="width:80px;" list="currentStateList" id="currentStateID"/>
+                                        <datalist id="currentStateList">
+										  <option value="完结批次">
+										  <option value="进行批次">
+										  <option value="IQC">
+										  <option value="BAKING">
+										  <option value="CP">
+										  <option value="FQC">
+										  <option value="OQC">
+										  <option value="HOLD">
+										</datalist>
                                     </div>
 <!--                                     <label class="control-label" style="width:50px;float:left;">站点:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
@@ -2568,7 +2792,7 @@
                                     </div> -->
                                     <label class="control-label" style="width:50px;float:left;">Lot:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">
-                                        <input name="internalLotNumber" class="form-control" type="text" style="width:80px;" id="internalLotNumberID"/>
+                                        <input name="internalLotNumber" class="form-control" type="text" style="width:150px;" id="internalLotNumberID"/>
                                     </div>
                                     <label class="control-label" style="width:50px;float:left;">时段:&nbsp;</label>
                                     <div style="margin-left:5px;float:left;">

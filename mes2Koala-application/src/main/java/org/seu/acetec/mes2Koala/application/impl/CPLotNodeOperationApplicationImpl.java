@@ -11,9 +11,12 @@ import org.seu.acetec.mes2Koala.application.CPLotOptionLogApplication;
 import org.seu.acetec.mes2Koala.application.CPNodeApplication;
 import org.seu.acetec.mes2Koala.application.CPProcessApplication;
 import org.seu.acetec.mes2Koala.application.CPQDNApplication;
+import org.seu.acetec.mes2Koala.application.CPSBLTemplateApplication;
 import org.seu.acetec.mes2Koala.application.CPWaferApplication;
 import org.seu.acetec.mes2Koala.application.ProductionScheduleApplication;
+import org.seu.acetec.mes2Koala.application.TskInfoApplication;
 import org.seu.acetec.mes2Koala.application.WMSClientApplication;
+import org.seu.acetec.mes2Koala.application.bean.SaveBaseBean;
 import org.seu.acetec.mes2Koala.core.common.BeanUtils;
 import org.seu.acetec.mes2Koala.core.domain.CPLot;
 import org.seu.acetec.mes2Koala.core.domain.CPLotOptionLog;
@@ -21,12 +24,16 @@ import org.seu.acetec.mes2Koala.core.domain.CPNode;
 import org.seu.acetec.mes2Koala.core.domain.CPProcess;
 import org.seu.acetec.mes2Koala.core.domain.CPProductionSchedule;
 import org.seu.acetec.mes2Koala.core.domain.CPQDN;
+import org.seu.acetec.mes2Koala.core.domain.CPSBLTemplate;
 import org.seu.acetec.mes2Koala.core.domain.CPStorage;
 import org.seu.acetec.mes2Koala.core.domain.CPStorageWafer;
 import org.seu.acetec.mes2Koala.core.domain.CPTestingNode;
+import org.seu.acetec.mes2Koala.core.domain.CPWaferCheckLog;
 import org.seu.acetec.mes2Koala.core.domain.CustomerCPLot;
 import org.seu.acetec.mes2Koala.core.domain.CPWafer;
+import org.seu.acetec.mes2Koala.core.domain.TskInfo;
 import org.seu.acetec.mes2Koala.core.enums.CPNodeState;
+import org.seu.acetec.mes2Koala.core.enums.CPWaferCheck;
 import org.seu.acetec.mes2Koala.core.enums.CPWaferState;
 import org.seu.acetec.mes2Koala.core.enums.StorageType;
 import org.seu.acetec.mes2Koala.core.enums.TestTypeForWms;
@@ -34,13 +41,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityNotFoundException;
+import javax.swing.JOptionPane;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 /**
@@ -76,10 +88,24 @@ public class CPLotNodeOperationApplicationImpl implements
 	@Inject
 	private ProductionScheduleApplication productionScheduleApplication;
 
+	@Inject
+	private TskInfoApplication tskInfoApplication;
+
+	@Inject
+	private CPSBLTemplateApplication cpSBLTemplateApplication;
+
+	private Timer timer = new Timer();
+
+	private CPLot timerCplot = null;
+
 	@Override
-	public void startCPNode(Long processId) {
+	public void startCPNode(Long processId, SaveBaseBean sbb) {
 		CPProcess process = cpProcessApplication.get(processId);
 		CPLot cpLot = process.getCpLot();
+		timerCplot = cpLot;
+		// 更新最后修改时间及修改人
+		BeanUtils.copyProperties(sbb, cpLot);
+		BeanUtils.copyProperties(sbb, process);
 		if (Objects.equals(cpLot.getHoldState(), CPLot.HOLD_STATE_HOLD)) {
 			throw new RuntimeException("进站失败：开HOLD");
 		}
@@ -91,6 +117,7 @@ public class CPLotNodeOperationApplicationImpl implements
 			case ENDED: // 已经出站的跳过
 				break;
 			case TO_START: // 到这个站没进站
+				process.setNowNode(cpNode);
 				cpNode.setState(CPNodeState.STARTED); // 更新状态为已经进站
 				String nodeName = cpNode.getName();
 				// nodeName = nodeName.startsWith("Test-") ?
@@ -104,7 +131,9 @@ public class CPLotNodeOperationApplicationImpl implements
 				cpLot.setCurrentState(nodeStateDescription);
 
 				cpLotApplication.update(cpLot);
+				BeanUtils.copyProperties(sbb, cpNode);
 				cpNodeApplication.update(cpNode);
+				this.cpProcessApplication.update(process);
 				// 操作记录
 				cpLotOptionLogApplication.createStartCPNode(cpLot, cpNode);
 				return;
@@ -117,9 +146,16 @@ public class CPLotNodeOperationApplicationImpl implements
 
 	private void updateExtraOnStartCPNode(CPLot cpLot, CPNode cpNode,
 			List<CPNode> cpNodes) {
-		if (cpNode instanceof CPTestingNode) {
-			List<CPProductionSchedule> cpProductionSchedules = ((CPTestingNode) cpNode)
+		if (cpNode instanceof CPTestingNode
+				|| cpNode.getName().indexOf("CP") > -1) {
+			CPTestingNode cpTestingNode = CPTestingNode.get(
+					CPTestingNode.class, cpNode.getId());
+			List<CPProductionSchedule> cpProductionSchedules = cpTestingNode
 					.getCpProductionSchedules();
+			if (cpProductionSchedules == null
+					|| cpProductionSchedules.size() < 1) {
+				throw new RuntimeException("没有排产不能进入测试站点！");
+			}
 			for (CPProductionSchedule cpProductionSchedule : cpProductionSchedules) {
 				productionScheduleApplication.startTesting(cpProductionSchedule
 						.getId());
@@ -133,18 +169,22 @@ public class CPLotNodeOperationApplicationImpl implements
 	}
 
 	@Override
-	public void endCPNode(Long processId) {
-		this.endCPNode(processId, true, null);
+	public void endCPNode(Long processId, SaveBaseBean sbb) {
+		this.endCPNode(processId, true, null, sbb);
 	}
 
 	@Override
-	public void endCPNodeIncoming(Long processId, JSONArray wafers) {
-		this.endCPNode(processId, true, wafers);
+	public void endCPNodeIncoming(Long processId, JSONArray wafers,
+			SaveBaseBean sbb) {
+		this.endCPNode(processId, true, wafers, sbb);
 	}
 
-	public void endCPNode(Long processId, boolean checkWafer, JSONArray wafers) {
+	public void endCPNode(Long processId, boolean checkWafer, JSONArray wafers,
+			SaveBaseBean sbb) {
 		CPProcess process = cpProcessApplication.get(processId); // 找到流程
 		CPLot cpLot = process.getCpLot();
+		BeanUtils.copyProperties(sbb, cpLot);
+		BeanUtils.copyProperties(sbb, process);
 		if (Objects.equals(cpLot.getHoldState(), CPLot.HOLD_STATE_HOLD)) {
 			throw new RuntimeException("出站失败：开HOLD");
 		}
@@ -154,9 +194,13 @@ public class CPLotNodeOperationApplicationImpl implements
 		Collections.sort(cpNodes);
 
 		// 获取future Hold 节点名称
-		String futureHoldNodes = this.futureHoldNodes(cpLot.getId());
+		String futureHoldNodes = "";
+		if (cpLot.getIsFuture() != null && cpLot.getIsFuture()) {
+			futureHoldNodes = cpLot.getFutureFlow();
+		}
 		for (int index = 0; index < cpNodes.size(); index++) {
-			CPNode cpNode = cpNodes.get(index);
+			// CPNode cpNode = cpNodes.get(index);
+			CPNode cpNode = cpLot.getCpProcess().getCpNodes().get(index);
 			switch (cpNode.getState()) {
 			case ENDED: // 已经出站的跳过
 				break;
@@ -168,6 +212,8 @@ public class CPLotNodeOperationApplicationImpl implements
 				// }
 
 				cpNode.setState(CPNodeState.ENDED); // 更新状态为已经出站
+				// 操作日志
+				cpLotOptionLogApplication.createEndCPNode(cpLot, cpNode);
 				// 更新当前站点的下一个站点为等待入站
 				if (index != cpNodes.size() - 1) {
 					CPNode nextCPNode = cpNodes.get(index + 1);
@@ -187,14 +233,15 @@ public class CPLotNodeOperationApplicationImpl implements
 						cpLot.getId());
 				// 检查所有的wafer都通过本站,Incoming除外
 				if (checkWafer
-						&& !cpNode.getName().equalsIgnoreCase("Incoming")
-						&& !cpNode.getName().equalsIgnoreCase("FQC")
-						&& !cpNode.getName().equalsIgnoreCase("IQC"))
-					this.checkCpWaferAllPassed(cpWafers);
+						&& !cpNode.getName().equalsIgnoreCase("Incoming")) {
+					this.checkCpWaferAllPassed(cpWafers, cpNode.getName());
+				}
+
 				boolean updateWaferInfo = false;
 				if (wafers != null) {
 					updateWaferInfo = true;
 				}
+				// 变更wafer的状态：未通过，未抽检
 				for (CPWafer cpWafer : cpWafers) {
 					if (updateWaferInfo) {
 						String waferCode = this.getWaferInfo(wafers, cpWafer
@@ -203,8 +250,10 @@ public class CPLotNodeOperationApplicationImpl implements
 							cpWafer.setInternalWaferCode(waferCode);
 						}
 					}
-
+					this.saveCheckLog(cpWafer, cpNode);
 					cpWafer.setState(CPWaferState.UNPASS);
+					cpWafer.setCpWaferCheck(CPWaferCheck.UNCHECKED);
+					BeanUtils.copyProperties(sbb, cpWafer);
 					cpWafer.save();
 				}
 				// 如果当下一站点是future hold站点设置lot状态hold
@@ -214,14 +263,14 @@ public class CPLotNodeOperationApplicationImpl implements
 						cpLot.setCurrentState("Hold");
 						cpLot.setHoldState(CPLot.HOLD_STATE_HOLD);
 					}
+					BeanUtils.copyProperties(sbb, nextCPNode);
+					process.setNowNode(nextCPNode);
 				}
 				// cpLotOptionLogApplication.createEndCPNode(cpLot, cpNode);
 				updateExtraOnEndCPNode(cpLot, cpNode, cpNodes);
-
 				cpLotApplication.update(cpLot);
 				cpProcessApplication.update(process);// 级联
-				// 操作日志
-				cpLotOptionLogApplication.createEndCPNode(cpLot, cpNode);
+
 				// Eva 2016-4-19 Packing出站完成之后，WMS添加入库申请
 				// harlow 2016-5-30 OQC出站完成之后，WMS添加入库申请
 				if (cpNode.getName().toUpperCase().equals("OQC")) {
@@ -233,7 +282,61 @@ public class CPLotNodeOperationApplicationImpl implements
 							StorageType.getValue(StorageType.FINISH_STORAGE),
 							lotjson);
 				}
-
+				// Hongyu 2016/07/18 3360平台出站tskInfo和SBl卡控
+				if (cpNode.getName().startsWith("CP")) {
+					CPTestingNode cpTestingNode = CPTestingNode.get(
+							CPTestingNode.class, cpNode.getId());
+					if (cpTestingNode.getTestProgram().getTestSys()
+							.contains("3360")) {
+						List<TskInfo> tskInfoList = tskInfoApplication
+								.find("select o from TskInfo o where o.lotNum like ? and o.testSite like ? order by o.waferId",
+										cpLot.getInternalLotNumber(),
+										cpNode.getName());
+						List<CPSBLTemplate> cpSBLTemplates = cpSBLTemplateApplication
+								.findByInternalProductId(cpLot
+										.getCustomerCPLot().getCpInfo().getId());
+						for (int p = 0; p < cpSBLTemplates.size(); p++) {
+							if (cpSBLTemplates.get(0) == null) {
+								throw new RuntimeException("请先维护SBL信息");
+							}
+							if ("by wafer".equals(cpSBLTemplates.get(p)
+									.getTestRange())) {
+								for (int q = 0; q < tskInfoList.size(); q++) {
+									String yield = tskInfoList
+											.get(q)
+											.getYield()
+											.substring(
+													0,
+													tskInfoList.get(q)
+															.getYield()
+															.indexOf("%"));
+									double yieldDouble = Double
+											.parseDouble(yield);
+									if (cpSBLTemplates.get(p).getLowerLimit() > yieldDouble) {
+										throw new RuntimeException("出站失败：wafer"
+												+ tskInfoList.get(q)
+														.getWaferId() + "良率过低");
+									}
+								}
+							} else if ("by lot".equals(cpSBLTemplates.get(p)
+									.getTestRange())) {
+								int sumTotalDice = 0;
+								int sumPassDice = 0;
+								for (int q = 0; q < tskInfoList.size(); q++) {
+									sumTotalDice += tskInfoList.get(q)
+											.getTotalDice();
+									sumPassDice += tskInfoList.get(q)
+											.getPassDice();
+								}
+								if (cpSBLTemplates.get(p).getLowerLimit() > (double) sumPassDice
+										/ sumTotalDice) {
+									throw new RuntimeException(
+											"出站失败：by lot卡控良率过低");
+								}
+							}
+						}
+					}
+				}
 				return;
 
 			case UNREACHED:
@@ -244,10 +347,34 @@ public class CPLotNodeOperationApplicationImpl implements
 		}
 	}
 
+	private void saveCheckLog(CPWafer cpWafer, CPNode cpNode) {
+		if (cpWafer.getCpWaferCheck() != null
+				&& cpWafer.getCpWaferCheck().ordinal() == CPWaferCheck.CHECKED
+						.ordinal()) {
+			CPWaferCheckLog cpWaferCheckLog = new CPWaferCheckLog();
+			cpWaferCheckLog.setCpWafer(cpWafer);
+			cpWaferCheckLog.setCpLot(cpWafer.getCpLot());
+			cpWaferCheckLog.setNode(cpNode.getName());
+			cpWaferCheckLog.setCpNode(cpNode);
+			cpWaferCheckLog.setCreateTimestamp(new Date());
+			cpWaferCheckLog.setLastModifyTimestamp(cpWaferCheckLog
+					.getCreateTimestamp());
+			cpWaferCheckLog.save();
+		}
+	}
+
 	private void updateExtraOnEndCPNode(CPLot cpLot, CPNode cpNode,
 			List<CPNode> cpNodes) {
-		if (cpNode instanceof CPTestingNode) {
-			List<CPProductionSchedule> cpProductionSchedules = ((CPTestingNode) cpNode)
+		CPTestingNode cpTestingNode;
+		try {
+			cpTestingNode = CPTestingNode.get(CPTestingNode.class,
+					cpNode.getId());
+		} catch (EntityNotFoundException e) {
+			e.printStackTrace();
+			cpTestingNode = null;
+		}
+		if (cpNode instanceof CPTestingNode || cpTestingNode != null) {
+			List<CPProductionSchedule> cpProductionSchedules = cpTestingNode
 					.getCpProductionSchedules();
 			for (CPProductionSchedule cpProductionSchedule : cpProductionSchedules) {
 				productionScheduleApplication.endTesting(cpProductionSchedule
@@ -286,13 +413,25 @@ public class CPLotNodeOperationApplicationImpl implements
 	 * @param cpWafers
 	 * @throws RuntimeException
 	 */
-	private void checkCpWaferAllPassed(List<CPWafer> cpWafers)
+	private void checkCpWaferAllPassed(List<CPWafer> cpWafers, String node)
 			throws RuntimeException {
+		int checkIndex = 0;
 		for (CPWafer cpWafer : cpWafers) {
 			if (CPWaferState.getIntValue(CPWaferState.UNPASS) == CPWaferState
 					.getIntValue(cpWafer.getState())) {
 				throw new RuntimeException("出站失败：wafer"
 						+ cpWafer.getInternalWaferCode() + "没有通过本站");
+			}
+			if (cpWafer.getCpWaferCheck().ordinal() == CPWaferCheck.CHECKED
+					.ordinal()) {
+				checkIndex++;
+			}
+		}
+		if ("IQC".equalsIgnoreCase(node) || "FQC".equalsIgnoreCase(node)) {
+			if (cpWafers.size() <= 5 && checkIndex != cpWafers.size()) {
+				throw new RuntimeException("批次小于等于5片必须全检！");
+			} else if (cpWafers.size() > 5 && checkIndex < 5) {
+				throw new RuntimeException("批次大于5片必须至少抽检5片！");
 			}
 		}
 	}
@@ -321,7 +460,6 @@ public class CPLotNodeOperationApplicationImpl implements
 			case ENDED: // 已经出站的跳过
 				break;
 			case TO_START: // 到这个站没进站
-
 				if (turn > targetNodeTurn) {
 					throw new RuntimeException("跳站失败：请选择后续站点进行跳站");
 				} else if (turn == targetNodeTurn) {
@@ -337,6 +475,7 @@ public class CPLotNodeOperationApplicationImpl implements
 						}
 					}
 				}
+				updateExtraOnEndCPNode(cpLot, cpNode, cpNodes);
 				cpNode.setState(CPNodeState.UNREACHED); // 更新状态未来到这个站
 				CPNode targetCPNode = cpNodes.get(index
 						+ (targetNodeTurn - turn));
@@ -367,7 +506,8 @@ public class CPLotNodeOperationApplicationImpl implements
 	}
 
 	@Override
-	public void separateCPLot(Long cpLotId, Long[] separateQuantities) {
+	public void separateCPLot(Long cpLotId, Long[] separateQuantities,
+			SaveBaseBean sbb) {
 		CPLot parent = cpLotApplication.get(cpLotId);
 		Set<CPLot> children = new HashSet<CPLot>();
 		Long quantity = parent.getQuantity();
@@ -392,7 +532,7 @@ public class CPLotNodeOperationApplicationImpl implements
 	}
 
 	@Override
-	public void integrateCPLots(Long[] cpLotIds) {
+	public void integrateCPLots(Long[] cpLotIds, SaveBaseBean sbb) {
 		if (cpLotIds.length == 0)
 			return;
 
@@ -471,7 +611,7 @@ public class CPLotNodeOperationApplicationImpl implements
 				// 检查所有的wafer都通过本站
 				if (checkWafer
 						&& !cpNode.getName().equalsIgnoreCase("Incoming"))
-					this.checkCpWaferAllPassed(cpWafers);
+					this.checkCpWaferAllPassed(cpWafers, cpNode.getName());
 				for (CPWafer cpWafer : cpWafers) {
 					cpWafer.setState(CPWaferState.UNPASS);
 					cpWafer.save();
@@ -504,9 +644,9 @@ public class CPLotNodeOperationApplicationImpl implements
 	@Override
 	public void separateCPLotCheck(CPLot cpLot) {
 		CPProcess process = cpLot.getCpProcess(); // 找到流程
-		if (Objects.equals(cpLot.getHoldState(), CPLot.HOLD_STATE_HOLD)) {
-			throw new RuntimeException("分批失败：开HOLD");
-		}
+		// if (Objects.equals(cpLot.getHoldState(), CPLot.HOLD_STATE_HOLD)) {
+		// throw new RuntimeException("分批失败：开HOLD");
+		// }
 
 		// 出站更新信息
 		List<CPNode> cpNodes = process.getCpNodes();

@@ -84,23 +84,20 @@
 		<div class="col-lg-12">
             <table class="table table-condensed table-center QDNINFO" style="margin-top:10px;">
                 <tr>
-                    <th >AVG</th><th>1#</th><th>2#</th><th>3#</th><th>4#</th><th>5#</th><th>6#</th>
-                    <th>7#</th><th>8#</th><th>9#</th><th>10#</th><th>11#</th><th>12#</th>
+                    <th>AVG</th><th>1#</th><th>2#</th><th>3#</th><th>4#</th><th>5#</th><th>6#</th>
+                    <th>7#</th><th>8#</th>
                 </tr>
             	<tr>
-            	    <th><input style="width:25px" size="1" type="text" name="AVG" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="1#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="2#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="3#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="4#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="5#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="6#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="7#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="8#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="9#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="10#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="11#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="12#" value="0"></th>
+            	    <th><input style="width:45px" size="1" type="text" name="AVG" value="0" id="AVG"></th>
+                    <th><input style="width:45px" size="1" type="text" name="1#" value="0" id="num01"></th>
+                    <th><input style="width:45px" size="1" type="text" name="2#" value="0" id="num02"></th>
+                    <th><input style="width:45px" size="1" type="text" name="3#" value="0" id="num03"></th>
+                    <th><input style="width:45px" size="1" type="text" name="4#" value="0" id="num04"></th>
+                    <th><input style="width:45px" size="1" type="text" name="5#" value="0" id="num05"></th>
+                    <th><input style="width:45px" size="1" type="text" name="6#" value="0" id="num06"></th>
+                    <th><input style="width:45px" size="1" type="text" name="7#" value="0" id="num07"></th>
+                    <th><input style="width:45px" size="1" type="text" name="8#" value="0" id="num08"></th>
+                    
             	</tr>
             	 <tr>
                     <th><input type="checkbox" name="AVG" onclick="toRed(0);"></th>
@@ -112,45 +109,57 @@
                     <th><input type="checkbox" name="6" onclick="toRed(6);"></th>
                     <th><input type="checkbox" name="7" onclick="toRed(7);"></th>
                     <th><input type="checkbox" name="8" onclick="toRed(8);"></th>
-                    <th><input type="checkbox" name="9" onclick="toRed(9);"></th>
+                 </tr>
+                <tr>
+                    <th>9#</th><th>10#</th><th>11#</th><th>12#</th><th>13#</th><th>14#</th>
+                    <th>15#</th><th>16#</th><th>17#</th>
+                </tr>
+            	<tr>
+            	    <th><input style="width:45px" size="1" type="text" name="9#" value="0" id="num09"></th>
+                    <th><input style="width:45px" size="1" type="text" name="10#" value="0" id="num10"></th>
+                    <th><input style="width:45px" size="1" type="text" name="11#" value="0" id="num11"></th>
+                    <th><input style="width:45px" size="1" type="text" name="12#" value="0" id="num12"></th>
+            	    <th><input style="width:45px" size="1" type="text" name="13#" value="0" id="num13"></th>
+                    <th><input style="width:45px" size="1" type="text" name="14#" value="0" id="num14"></th>
+                    <th><input style="width:45px" size="1" type="text" name="15#" value="0" id="num15"></th>
+                    <th><input style="width:45px" size="1" type="text" name="16#" value="0" id="num16"></th>
+                    <th><input style="width:45px" size="1" type="text" name="17#" value="0" id="num17"></th>
+            	</tr>
+            	 <tr>
+            	    <th><input type="checkbox" name="9" onclick="toRed(9);"></th>
                     <th><input type="checkbox" name="10" onclick="toRed(10);"></th>
                     <th><input type="checkbox" name="11" onclick="toRed(11);"></th>
                     <th><input type="checkbox" name="12" onclick="toRed(12);"></th>
-                 </tr>
-                <tr>
-                    <th>13#</th><th>14#</th><th>15#</th><th>16#</th><th>17#</th><th>18#</th><th>19#</th>
-                    <th>20#</th><th>21#</th><th>22#</th><th>23#</th><th>24#</th><th>25#</th>
-                </tr>
-            	<tr>
-            	    <th><input style="width:25px" size="1" type="text" name="13#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="14#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="15#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="16#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="17#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="18#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="19#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="20#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="21#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="22#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="23#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="24#" value="0"></th>
-                    <th><input style="width:25px" size="1" type="text" name="25#" value="0"></th>
-            	</tr>
-            	 <tr>
                     <th><input type="checkbox" name="13" onclick="toRed(13);"></th>
                     <th><input type="checkbox" name="14" onclick="toRed(14);"></th>
                     <th><input type="checkbox" name="15" onclick="toRed(15);"></th>
                     <th><input type="checkbox" name="16" onclick="toRed(16);"></th>
                     <th><input type="checkbox" name="17" onclick="toRed(17);"></th>
-                    <th><input type="checkbox" name="18" onclick="toRed(18);"></th>
-                    <th><input type="checkbox" name="19" onclick="toRed(19);"></th>
+                 </tr>
+                 <tr>
+                    <th>18#</th><th>19#</th>
+                    <th>20#</th><th>21#</th><th>22#</th><th>23#</th><th>24#</th><th>25#</th>
+                 </tr>
+                 <tr>
+                    <th><input style="width:45px" size="1" type="text" name="18#" value="0" id="num18"></th>
+                    <th><input style="width:45px" size="1" type="text" name="19#" value="0" id="num19"></th>
+                    <th><input style="width:45px" size="1" type="text" name="20#" value="0" id="num20"></th>
+                    <th><input style="width:45px" size="1" type="text" name="21#" value="0" id="num21"></th>
+                    <th><input style="width:45px" size="1" type="text" name="22#" value="0" id="num22"></th>
+                    <th><input style="width:45px" size="1" type="text" name="23#" value="0" id="num23"></th>
+                    <th><input style="width:45px" size="1" type="text" name="24#" value="0" id="num24"></th>
+                    <th><input style="width:45px" size="1" type="text" name="25#" value="0" id="num25"></th>
+            	 </tr>
+            	 <tr>
+            	    <th><input type="checkbox" name="18" onclick="toRed(18);"></th>
+            	    <th><input type="checkbox" name="19" onclick="toRed(19);"></th>
                     <th><input type="checkbox" name="20" onclick="toRed(20);"></th>
                     <th><input type="checkbox" name="21" onclick="toRed(21);"></th>
                     <th><input type="checkbox" name="22" onclick="toRed(22);"></th>
                     <th><input type="checkbox" name="23" onclick="toRed(23);"></th>
                     <th><input type="checkbox" name="24" onclick="toRed(24);"></th>
                     <th><input type="checkbox" name="25" onclick="toRed(25);"></th>
-                 </tr>
+            	 </tr>
             </table>
         </div>
     </div>

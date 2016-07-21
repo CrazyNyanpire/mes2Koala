@@ -40,7 +40,7 @@ public interface CustomerFTLotFacade {
      */
     InvokeResult order(Long customerFTLotId, FTLotDTO ftLotDTO,String operatorName);
 
-    InvokeResult orderInBatches(Long[] customerFTLotId,String operatorName);
+    InvokeResult orderInBatches(Long[] customerFTLotId,String operatorName,FTLotDTO ftLotDTO);
 
     InvokeResult separateMany(Long parentCustomerFTLotId, List<Long> separationQuantities,String operatorName);
 

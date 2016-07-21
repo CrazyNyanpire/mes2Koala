@@ -7,6 +7,7 @@
 <object class="hidden" id="activeX" classid="clsid:8738EBCB-92B1-4dcb-8E86-A4703EBD191E"> </object>
 <form class="form-horizontal">
 <input  type="text" class="hidden" id="labelNameID" />
+<input  type="text" class="hidden" name="lblCount"  id="qtyID"/>
 	<div class="form-group">
 		<div class="form-group">
 	        <label class="col-lg-2 control-label">出货型号:</label>
@@ -35,13 +36,13 @@
 			</div>
 			<label class="col-lg-2 control-label">客户名称:</label>
 			<div class="col-lg-4">
-				<input name="lblClient" style="display:inline; width:94%;" class="form-control sum" type="text" dataType="Require" readonly id="warningTypeID" />
+				<input name="lblClient" style="display:inline; width:94%;" class="form-control sum" type="text" dataType="Require" readonly id="customerNameID" />
 			</div>
 		</div>
 		<div class="form-group">
 	        <label class="col-lg-2 control-label">Good Die:</label>
 			<div class="col-lg-4">
-				<input name="lblgoodDie" style="display:inline; width:94%;" class="form-control sum" type="text" readonly id="waferSizeID" />
+				<input name="lblGoodDie" style="display:inline; width:94%;" class="form-control sum" type="text" readonly id="goodDieID" />
 			</div>
 	        <label class="col-lg-2 control-label">GROSS DIE:</label>
 			<div class="col-lg-4">

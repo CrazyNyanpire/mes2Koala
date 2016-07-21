@@ -138,13 +138,36 @@
 			</activation>
 			<properties>
 				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
-				<hibernate.show_sql>true</hibernate.show_sql>
+				<hibernate.show_sql>false</hibernate.show_sql>
 				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
 				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
 				<db.connectionURL>jdbc:mysql://192.168.0.3:3306/mes2-ft?useUnicode=true&amp;characterEncoding=UTF-8
 				</db.connectionURL>
 				<db.username>root</db.username>
 				<db.password>mes2123!@#</db.password>
+				<db.Type>MYSQL</db.Type>
+				<db.testsql>select 1</db.testsql>
+				<db.generateDdl>true</db.generateDdl>
+				<db.groupId>mysql</db.groupId>
+				<db.artifactId>mysql-connector-java</db.artifactId>
+			</properties>
+		</profile>
+		
+		<!-- MYSQL 上海DB 不要删除了  -->
+		<profile>
+			<id>MySQLAcetec-SH</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+				<hibernate.show_sql>true</hibernate.show_sql>
+				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
+				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
+				<db.connectionURL>jdbc:mysql://192.168.60.12:3306/mes2-sh?useUnicode=true&amp;characterEncoding=UTF-8
+				</db.connectionURL>
+				<db.username>root</db.username>
+				<db.password>minai@123</db.password>
 				<db.Type>MYSQL</db.Type>
 				<db.testsql>select 1</db.testsql>
 				<db.generateDdl>true</db.generateDdl>

@@ -22,13 +22,13 @@ public class TestProgramTemplatePageVo {
 
     private String revision;
 
-    private Integer UPHTheory;
+    private Float UPHTheory;
 
     private String testSys;
 
     private Boolean isYellow;
 
-    private Integer UPHReality;
+    private Float UPHReality;
 
     private String name;
 
@@ -86,11 +86,11 @@ public class TestProgramTemplatePageVo {
         this.revision = revision;
     }
 
-    public Integer getUPHTheory() {
+    public Float getUPHTheory() {
         return UPHTheory;
     }
 
-    public void setUPHTheory(Integer UPHTheory) {
+    public void setUPHTheory(Float UPHTheory) {
         this.UPHTheory = UPHTheory;
     }
 
@@ -110,11 +110,11 @@ public class TestProgramTemplatePageVo {
         isYellow = yellow;
     }
 
-    public Integer getUPHReality() {
+    public Float getUPHReality() {
         return UPHReality;
     }
 
-    public void setUPHReality(Integer UPHReality) {
+    public void setUPHReality(Float UPHReality) {
         this.UPHReality = UPHReality;
     }
 

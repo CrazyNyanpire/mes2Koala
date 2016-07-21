@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 
 /**
- * @author 阙宇翔
- * @version 2016/2/13
+ * @author HongYu
+ * @version 2016/6/6
  */
 public class TSKInfoDTO implements Serializable {
 
@@ -80,6 +80,28 @@ public class TSKInfoDTO implements Serializable {
     
     // 文件名称
     private String fileName;
+    
+    private int map[][][];
+    
+    private int waferSize;
+    
+    private double standard_Orientation_Flat_Direction;
+    
+    private long rowSize;
+    
+    private long columnsize;
+    
+    private int tested_dice;
+    
+    private int tested_pass_dice;
+    
+    private int tested_fail_dice;
+    
+    private int machine_No;
+    
+    private int x;
+    
+    private int y;
 
 	public int getIndex_X() {
 		return index_X;
@@ -314,4 +336,92 @@ public class TSKInfoDTO implements Serializable {
 		this.fileName = fileName;
 	}
 
+	public int[][][] getMap() {
+		return map;
+	}
+
+	public void setMap(int map[][][]) {
+		this.map = map;
+	}
+
+	public double getStandard_Orientation_Flat_Direction() {
+		return standard_Orientation_Flat_Direction;
+	}
+
+	public void setStandard_Orientation_Flat_Direction(
+			double standard_Orientation_Flat_Direction) {
+		this.standard_Orientation_Flat_Direction = standard_Orientation_Flat_Direction;
+	}
+
+	public long getRowSize() {
+		return rowSize;
+	}
+
+	public void setRowSize(long rowSize) {
+		this.rowSize = rowSize;
+	}
+
+	public long getColumnsize() {
+		return columnsize;
+	}
+
+	public void setColumnsize(long columnsize) {
+		this.columnsize = columnsize;
+	}
+
+	public int getTested_dice() {
+		return tested_dice;
+	}
+
+	public void setTested_dice(int tested_dice) {
+		this.tested_dice = tested_dice;
+	}
+
+	public int getTested_pass_dice() {
+		return tested_pass_dice;
+	}
+
+	public void setTested_pass_dice(int tested_pass_dice) {
+		this.tested_pass_dice = tested_pass_dice;
+	}
+
+	public int getTested_fail_dice() {
+		return tested_fail_dice;
+	}
+
+	public void setTested_fail_dice(int tested_fail_dice) {
+		this.tested_fail_dice = tested_fail_dice;
+	}
+
+	public int getMachine_No() {
+		return machine_No;
+	}
+
+	public void setMachine_No(int machine_No) {
+		this.machine_No = machine_No;
+	}
+
+	public int getWaferSize() {
+		return waferSize;
+	}
+
+	public void setWaferSize(int waferSize) {
+		this.waferSize = waferSize;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
 }

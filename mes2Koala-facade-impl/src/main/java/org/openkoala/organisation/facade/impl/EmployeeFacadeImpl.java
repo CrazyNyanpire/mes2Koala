@@ -402,7 +402,9 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 		StringBuilder sBuilder = new StringBuilder();
 		for ( String sn : accounts ) {
 			if ( sn != null && !"".equals(sn) ){
+				sBuilder.append("'");
 				sBuilder.append(sn);
+				sBuilder.append("'");
 				sBuilder.append(',');
 			}
 		}

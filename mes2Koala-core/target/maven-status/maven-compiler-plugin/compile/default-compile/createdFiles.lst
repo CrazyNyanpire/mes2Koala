@@ -30,6 +30,7 @@ org\openkoala\organisation\core\domain\Organization.class
 org\seu\acetec\mes2Koala\core\domain\SpecialFormTemplate.class
 org\seu\acetec\mes2Koala\core\enums\CPWaferState.class
 org\seu\acetec\mes2Koala\core\common\BeanClassUtils.class
+org\seu\acetec\mes2Koala\core\domain\PlaceHolderCP.class
 org\seu\acetec\mes2Koala\core\enums\TransferStorageState$1.class
 org\seu\acetec\mes2Koala\core\domain\Customer.class
 org\openkoala\gqc\core\domain\utils\SqlStatmentMode.class
@@ -95,14 +96,16 @@ org\seu\acetec\mes2Koala\core\domain\CPLot.class
 org\openkoala\organisation\core\EmployeeMustHaveAtLeastOnePostException.class
 org\seu\acetec\mes2Koala\core\domain\CPStorage.class
 org\seu\acetec\mes2Koala\core\domain\CPPassNode.class
+org\seu\acetec\mes2Koala\core\domain\CPWaferLog.class
 org\seu\acetec\mes2Koala\core\domain\FTRework.class
 org\openkoala\organisation\core\HasPrincipalPostYetException.class
 org\openkoala\gqc\core\domain\utils\SqlServerPagingQueryDialect.class
 org\openkoala\gqc\core\domain\WidgetType.class
 org\seu\acetec\mes2Koala\core\domain\IncrementNumber.class
-org\seu\acetec\mes2Koala\core\domain\FTTest.class
 org\seu\acetec\mes2Koala\core\enums\StorageType.class
+org\seu\acetec\mes2Koala\core\domain\FTTest.class
 org\openkoala\organisation\core\domain\Company.class
+org\seu\acetec\mes2Koala\core\domain\TskInfo.class
 org\openkoala\security\core\domain\MenuResource.class
 org\seu\acetec\mes2Koala\core\domain\EQCSetting.class
 org\seu\acetec\mes2Koala\core\enums\CPWaferState$1.class
@@ -158,6 +161,7 @@ org\seu\acetec\mes2Koala\core\domain\CustomerCPLot.class
 org\openkoala\organisation\core\OrganizationHasNotHadTheEmployee.class
 org\seu\acetec\mes2Koala\core\domain\FTResult.class
 org\seu\acetec\mes2Koala\core\domain\FTStorage.class
+org\seu\acetec\mes2Koala\core\domain\AbstractQueryEntity.class
 org\openkoala\security\core\domain\UrlAccessResource.class
 org\openkoala\security\core\AuthorizationIsNotExisted.class
 org\seu\acetec\mes2Koala\core\domain\TestProgram.class

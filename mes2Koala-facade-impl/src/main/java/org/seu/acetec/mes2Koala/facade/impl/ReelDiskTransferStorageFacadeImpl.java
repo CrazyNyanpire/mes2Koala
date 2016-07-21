@@ -175,9 +175,15 @@ public class ReelDiskTransferStorageFacadeImpl implements
 		}
 		if (queryVo.getCustomerLotNumber() != null
 				&& !"".equals(queryVo.getCustomerLotNumber())) {
-			jpql.append(" and _reelDisk.ftLot.customerLot.customerLotNumber like ?");
+			jpql.append(" and _reelDisk.ftLot.customerFTLot.customerLotNumber like ?");
 			conditionVals.add(MessageFormat.format("%{0}%",
 					queryVo.getCustomerLotNumber()));
+		}
+		if (queryVo.getInternalLotNumber() != null
+				&& !"".equals(queryVo.getInternalLotNumber() )) {
+			jpql.append(" and _reelDisk.ftLot.internalLotNumber like ?");
+			conditionVals.add(MessageFormat.format("%{0}%",
+					queryVo.getInternalLotNumber()));
 		}
 		if (queryVo.getQuality() != null && !"".equals(queryVo.getQuality())) {
 			jpql.append(" and _reelDisk.quality like ?");
@@ -333,7 +339,9 @@ public class ReelDiskTransferStorageFacadeImpl implements
 			reworkInternalDTO.setParentSeparationId(ftLot.getId());
 			reworkInternalDTO.setMaterialType(ftLot.getCustomerFTLot()
 					.getMaterialType());
-			getFTLotRework(parentLot, reelDiskTransferStorageDTO.getQty(),
+			//getFTLotRework(parentLot, reelDiskTransferStorageDTO.getQty(),
+			//		reworkInternalDTO);
+			getFTLotRework(parentLot, (long)reelDiskTransferStorageDTO.getQuantity(),
 					reworkInternalDTO);
 			parentLot.setQty(parentLot.getQty() - reworkInternalDTO.getQty());
 			invokeResult = ftLotFacade.createCheckedFTLot(reworkInternalDTO);
@@ -395,7 +403,7 @@ public class ReelDiskTransferStorageFacadeImpl implements
 				"LAT PASS(数量)", "备注" };
 		String title = "lat打印";
 		ReelDiskTransferStorageDTO reelDiskTransferStorageDTO = new ReelDiskTransferStorageDTO();
-		reelDiskTransferStorageDTO.setLatPackageNo("20160322001");
+		reelDiskTransferStorageDTO.setLatPackageNo(latPackageNo);
 		Page<ReelDiskTransferStorageDTO> page = this.pageQueryReelDisk(
 				reelDiskTransferStorageDTO, 0, 100);
 		this.exportExcel(title, titles, page.getData(), outputStream,
@@ -403,7 +411,6 @@ public class ReelDiskTransferStorageFacadeImpl implements
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void exportExcel(String title, String[] titles,
 			Collection<ReelDiskTransferStorageDTO> dataset,
 			ServletOutputStream outputStream, String latPackageNo) {

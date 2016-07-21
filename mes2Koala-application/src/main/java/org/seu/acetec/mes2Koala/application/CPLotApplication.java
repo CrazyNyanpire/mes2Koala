@@ -17,4 +17,6 @@ public interface CPLotApplication extends GenericMES2Application<CPLot> {
     public void createCheckedCPLot(CPLot cpLot,boolean checkLotNo,boolean checkRCNumber);
     
     CPLot findByProductionId(Long id);
+
+	CPLot findByLotNumber(String id);
 }

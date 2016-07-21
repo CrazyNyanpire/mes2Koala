@@ -18,6 +18,7 @@ org\seu\acetec\mes2Koala\application\CustomerLotApplication.class
 org\seu\acetec\mes2Koala\application\CPTestingNodeApplication.class
 org\seu\acetec\mes2Koala\application\CustomerCPLotApplication.class
 org\seu\acetec\mes2Koala\application\impl\CPLotNodeOperationApplicationImpl$1.class
+org\seu\acetec\mes2Koala\application\impl\CPRuncardApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\LabelPlanApplicationImpl.class
 org\seu\acetec\mes2Koala\application\AcetecAuthorizationApplication.class
 org\seu\acetec\mes2Koala\application\FTReworkItemApplication.class
@@ -40,6 +41,7 @@ org\seu\acetec\mes2Koala\application\impl\CustomerApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CPWaferApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\AcetecAuthorizationApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CustomerFTLotApplicationImpl$3.class
+org\seu\acetec\mes2Koala\application\bean\SaveBaseBean.class
 org\seu\acetec\mes2Koala\application\impl\ProductionScheduleApplicationImpl$TaskState.class
 org\seu\acetec\mes2Koala\application\impl\FTReworkApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\FTLotNodeOperationApplicationImpl$1.class
@@ -59,6 +61,7 @@ org\openkoala\organisation\application\PostApplication.class
 org\seu\acetec\mes2Koala\application\impl\TestProgramApplicationImpl.class
 org\openkoala\security\application\systeminit\SystemInit$MenuResource.class
 org\seu\acetec\mes2Koala\application\impl\CustomerFTLotApplicationImpl$1.class
+org\seu\acetec\mes2Koala\application\impl\CPWaferLogApplicationImpl.class
 org\seu\acetec\mes2Koala\application\FTProcessApplication.class
 org\seu\acetec\mes2Koala\application\impl\FTNodeApplicationImpl.class
 org\seu\acetec\mes2Koala\application\TestProgramTemplateApplication.class
@@ -72,6 +75,7 @@ org\seu\acetec\mes2Koala\application\impl\FTResultApplicationImpl.class
 org\seu\acetec\mes2Koala\application\ProcessTemplateApplication.class
 org\openkoala\organisation\application\impl\PostApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\FTLotApplicationImpl.class
+org\seu\acetec\mes2Koala\application\impl\TskInfoApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CPNodeApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CPLotApplicationImpl.class
 org\seu\acetec\mes2Koala\application\CPReworkApplication.class
@@ -99,6 +103,7 @@ org\seu\acetec\mes2Koala\application\SBLApplication.class
 org\seu\acetec\mes2Koala\application\CPSBLTemplateApplication.class
 org\seu\acetec\mes2Koala\application\BomTemplateApplication.class
 org\openkoala\organisation\application\impl\EmployeeApplicationImpl.class
+org\seu\acetec\mes2Koala\application\CPRuncardApplication.class
 org\seu\acetec\mes2Koala\application\impl\FTStatisticValueApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CPQDNApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\RawDataApplicationImpl.class
@@ -115,6 +120,7 @@ org\seu\acetec\mes2Koala\application\impl\SpecialFormApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\CPProcuctionScheduleApplicationImpl.class
 org\seu\acetec\mes2Koala\application\FTStatisticsApplication.class
 org\seu\acetec\mes2Koala\application\impl\IncrementNumberApplicationImpl.class
+org\seu\acetec\mes2Koala\application\TskInfoApplication.class
 org\seu\acetec\mes2Koala\application\impl\CustomerCPLotApplicationImpl.class
 org\seu\acetec\mes2Koala\application\utils\Mes2EntityOperator.class
 org\seu\acetec\mes2Koala\application\CPLotNodeOperationApplication.class
@@ -146,6 +152,7 @@ org\seu\acetec\mes2Koala\application\BomUseApplication.class
 org\seu\acetec\mes2Koala\application\ProcessInfoApplication.class
 org\openkoala\security\application\systeminit\ObjectFactory.class
 org\seu\acetec\mes2Koala\application\impl\FTReworkItemApplicationImpl.class
+org\seu\acetec\mes2Koala\application\CPWaferLogApplication.class
 org\seu\acetec\mes2Koala\application\CPProcessApplication.class
 org\seu\acetec\mes2Koala\application\impl\SBLTemplateApplicationImpl.class
 org\seu\acetec\mes2Koala\application\impl\TestingTemplateApplicationImpl.class

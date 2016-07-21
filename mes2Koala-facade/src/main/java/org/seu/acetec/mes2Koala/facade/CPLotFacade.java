@@ -39,7 +39,7 @@ public interface CPLotFacade {
 	 * @return
 	 * @version 2016/4/12 harlow
 	 */
-	InvokeResult startCPNode(Long processId);
+	InvokeResult startCPNode(Long processId,CPLotDTO cpLotDTO);
 
 	/**
 	 * 出站 1. 首先检查外部的DTO中的state状态，保证不会又客户端修改状态 2. 然后检查状态必须是进站而没出战 3.
@@ -51,7 +51,7 @@ public interface CPLotFacade {
 	 * @return
 	 * @version 2016/4/12 harlow
 	 */
-	InvokeResult endCPNode(Long processId);
+	InvokeResult endCPNode(Long processId,CPLotDTO cpLotDTO);
 
 	/**
 	 * 良率放行
@@ -71,7 +71,9 @@ public interface CPLotFacade {
 	 */
 	InvokeResult saveCPNode(Long processId, FTNodeDTO currentNode);
 
-	InvokeResult endCPNodeIncoming(Long processId, JSONArray wafers);
+	InvokeResult endCPNodeIncoming(Long processId, JSONArray wafers,CPLotDTO cpLotDTO);
 
 	List<CPLotDTO> getChildsLot(Long id);
+	
+	public InvokeResult changePid(CPLotDTO cpLotDTO,String ids);
 }

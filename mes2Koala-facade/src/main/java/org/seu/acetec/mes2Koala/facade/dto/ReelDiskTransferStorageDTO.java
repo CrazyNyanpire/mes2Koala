@@ -40,6 +40,8 @@ public class ReelDiskTransferStorageDTO extends ReelDiskDTO implements
 	private Date unHoldDate;
 
 	private Long internalLotId;
+	
+	private String internalLotNumber;
 
 	private String ids;
 
@@ -246,6 +248,14 @@ public class ReelDiskTransferStorageDTO extends ReelDiskDTO implements
 
 	public void setQty(Long qty) {
 		this.qty = qty;
+	}
+
+	public String getInternalLotNumber() {
+		return internalLotNumber;
+	}
+
+	public void setInternalLotNumber(String internalLotNumber) {
+		this.internalLotNumber = internalLotNumber;
 	}
 
 }

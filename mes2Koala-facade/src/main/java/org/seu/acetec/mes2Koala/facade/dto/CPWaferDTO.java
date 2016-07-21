@@ -1,7 +1,6 @@
 package org.seu.acetec.mes2Koala.facade.dto;
 
 import java.util.Date;
-
 import java.io.Serializable;
 
 public class CPWaferDTO implements Serializable {
@@ -43,6 +42,8 @@ public class CPWaferDTO implements Serializable {
 	private String customerWaferIndex;
 	
 	private Integer isCheck;
+	
+    private String yield;
 
 	public void setLastModifyEmployNo(String lastModifyEmployNo) {
 		this.lastModifyEmployNo = lastModifyEmployNo;
@@ -194,6 +195,14 @@ public class CPWaferDTO implements Serializable {
 
 	public void setIsCheck(Integer isCheck) {
 		this.isCheck = isCheck;
+	}
+
+	public String getYield() {
+		return yield;
+	}
+
+	public void setYield(String yield) {
+		this.yield = yield;
 	}
 
 	@Override

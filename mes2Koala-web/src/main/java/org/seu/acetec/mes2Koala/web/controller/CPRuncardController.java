@@ -173,12 +173,12 @@ public class CPRuncardController {
      */
     @ResponseBody
     @RequestMapping(value = "/saveSpecialForm", method = RequestMethod.POST)
-    public InvokeResult saveSpecialForm(@RequestParam String json) {
+    public InvokeResult saveSpecialForm(@RequestBody String json) {
         JSONObject jsonObject = JSONObject.fromObject(json);
         Long id = Long.valueOf(jsonObject.optString("cpinfoId"));
         String formType = jsonObject.optString("formType");
-        //TODO
-        return InvokeResult.success();
+        String data = jsonObject.optString("data");
+        return cpRuncardfacade.saveSpecialForm(id, formType, data);
     }
 
 
@@ -194,6 +194,13 @@ public class CPRuncardController {
     }
 
 
+    /**
+     * 获得ue编辑器的页面
+     * @param model
+     * @param cpinfoId
+     * @param formType
+     * @return
+     */
     @RequestMapping(value = "/getSpecialFormEditorPage", method = RequestMethod.GET)
     public String getSpecialFormEditorPage(Model model, @RequestParam String cpinfoId, @RequestParam String formType) {
         model.addAttribute("cpinfoId", cpinfoId);
@@ -202,6 +209,11 @@ public class CPRuncardController {
     }
 
 
+    /**
+     * 保存特殊表单的打印状态
+     * @param json
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/saveSpecialFormStaus", method = RequestMethod.POST)
     public InvokeResult saveSpecialFormStaus(@RequestBody String json) {
@@ -226,11 +238,30 @@ public class CPRuncardController {
     }
 
 
+    /**
+     * 获得特殊表单的打印状态
+     * @param cpinfoId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getSpecialFormStatus", method = RequestMethod.GET)
     public InvokeResult getSpecialFormStatus(@RequestParam String cpinfoId) {
         Long id = Long.parseLong(cpinfoId);
         return cpRuncardfacade.getSpecialFormStatus(id);
+    }
+
+
+
+    /**
+     * 获得特殊表单的打印状态
+     * @param cpLotId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getSpecialFormStatusByCPLotId", method = RequestMethod.GET)
+    public InvokeResult getSpecialFormStatusByCPLotId(@RequestParam String cpLotId) {
+        Long id = Long.parseLong(cpLotId);
+        return cpRuncardfacade.getSpecialFormStatusByCPLotId(id);
     }
 
 
@@ -254,6 +285,12 @@ public class CPRuncardController {
     }
 
 
+    /**
+     * 获得runcard中各自站点的完成状态
+     * @param cpinfoId
+     * @param totalSites
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getRuncardFinishedStatus", method = RequestMethod.GET)
     public InvokeResult getRuncardFinishedStatus(@RequestParam String cpinfoId, @RequestParam String totalSites){
@@ -262,8 +299,6 @@ public class CPRuncardController {
 
         return cpRuncardfacade.getRuncardFinishedStatus(id,totalSitesArr);
     }
-
-
 
 
 
@@ -290,5 +325,38 @@ public class CPRuncardController {
 
 
 
+
+    /**
+     * 根据state数据展现不同的runcard数据
+     * @param cpLotId
+     * @param specialFormStr
+     * @param state
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getRuncardInfoByState", method = RequestMethod.GET)
+    public InvokeResult getRuncardInfoByState( @RequestParam String cpLotId, @RequestParam String specialFormStr, @RequestParam String state) {
+
+        String[] specialFormStrArr = specialFormStr.split(",");
+
+        return cpRuncardfacade.getRuncardInfoByState(Long.parseLong(cpLotId), specialFormStrArr, Long.parseLong(state));
+    }
+
+
+    /**
+     * 获得ue编辑器的页面  实际数据的请求在页面中完成
+     * @param model
+     * @param cpLotId
+     * @param specialFormStr
+     * @param state
+     * @return
+     */
+    @RequestMapping(value = "/getPageForRuncard", method = RequestMethod.GET)
+    public String getPageForRuncard(Model model, @RequestParam String cpLotId, @RequestParam String specialFormStr, @RequestParam String state) {
+        model.addAttribute("cpLotId", cpLotId);
+        model.addAttribute("specialFormStr", specialFormStr);
+        model.addAttribute("state", state);
+        return "/ueditor/cpTest/runcardPageForCPTest";
+    }
 
 }

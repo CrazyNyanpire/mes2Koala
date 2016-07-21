@@ -68,7 +68,7 @@
         <table class="table table-bordered table-condensed" id="tableIntegratedReelDisk">
         </table>
     </div>
-    <div style="padding-left:30px;"><a id="printsingleID" href="#">打印</a>|<a id="printID" href="#">打印全部</a></div>
+<!--     <div style="padding-left:30px;"><a id="printsingleID" href="#">打印</a>|<a id="printID" href="#">打印全部</a></div> -->
     <div class="form-group" style="padding-left: 30px;">
         <label class="">备注：</label><br>
         <textarea id="noteID" cols="100" rows="5"></textarea>

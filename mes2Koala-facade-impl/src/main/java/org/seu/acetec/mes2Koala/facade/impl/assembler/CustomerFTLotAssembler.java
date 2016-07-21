@@ -54,7 +54,8 @@ public class CustomerFTLotAssembler {
         result.setWaferLot(customerFTLot.getWaferLot());
         result.setMFGPN(customerFTLot.getMFGPN());
         result.setWaferManufacturer(customerFTLot.getWaferManufacturer());
-
+        result.setPackageType(customerFTLot.getFtInfo().getPackageType());
+        
         // 提取processTemplate内容
         FTInfo internalProduct = customerFTLot.getFtInfo();
         if (internalProduct != null) {

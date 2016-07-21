@@ -98,7 +98,7 @@
                                 action: 'maintainUPHReal'
                             },
                             {
-                                content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-star"><span>授权</button>',
+                                content: '<ks:hasSecurityResource identifier="testProgramTemplateAuthorize"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-star"><span>授权</button></ks:hasSecurityResource>',
                                 action: 'authorize'
                             }
                         ],
@@ -363,9 +363,9 @@
                     });
                     dialog.find('#save').on('click', {grid: grid}, function (e) {
 //                        if (!Validator.Validate(dialog.find('form')[0], 3))return;
-                        var uph = parseInt(dialog.find("#uphrealityID").val());
+                        var uph = parseFloat(dialog.find("#uphrealityID").val());
 
-//                        debugger
+//                        debugger;
                         $.post('${pageContext.request.contextPath}/TestProgramTemplate/setUPHReal.koala?id=' + id + '&uph=' + uph).done(function (result) {
 //                            debugger
                             if (result.success) {
@@ -752,12 +752,16 @@
                                 type: 'POST',
                                 dataType: 'json'
                             }).done(function (msg) {
+                            	form.find("#internalProduct_list").empty();
+                            	var option="";
                                 for (var i = 0; i < msg.length; i++) {
+                                	option+="<option index='"+msg[i]['id']+"' value='"+msg[i]['customerDirectDTO']['code']+" | "+msg[i]['customerProductNumber']+" | "+msg[i]['internalProductNumber']+"'>";
                                     contents.push({
-                                        title: msg[i]['customerProductNumber'],
+                                        title: msg[i]['customerDirectDTO']['code']+" | "+msg[i]['customerProductNumber']+" | "+msg[i]['internalProductNumber'],
                                         value: msg[i]['id']
                                     });
                                 }
+                                form.find("#internalProduct_list").append(option);
                                 selectItems['internalProductDTOID'] = contents;
                                 $('#internalProductDTOID').each(function () {
                                     var select = $(this);
@@ -777,12 +781,16 @@
                                 type: 'POST',
                                 dataType: 'json'
                             }).done(function (msg) {
+                            	form.find("#internalProduct_list").empty();
+                            	var option="";
                                 for (var i = 0; i < msg.length; i++) {
-                                    contents.push({
-                                        title: msg[i]['customerProductNumber'],
+                                	option+="<option index='"+msg[i]['id']+"' value='"+msg[i]['customerDirectDTO']['code']+" | "+msg[i]['customerProductNumber']+" | "+msg[i]['internalProductNumber']+"'>";
+                                	contents.push({
+                                        title: msg[i]['customerDirectDTO']['code']+" | "+msg[i]['customerProductNumber']+" | "+msg[i]['internalProductNumber'],
                                         value: msg[i]['id']
                                     });
                                 }
+                                form.find("#internalProduct_list").append(option);
                                 selectItems['internalProductDTOID'] = contents;
                                 $('#internalProductDTOID').each(function () {
                                     var select = $(this);

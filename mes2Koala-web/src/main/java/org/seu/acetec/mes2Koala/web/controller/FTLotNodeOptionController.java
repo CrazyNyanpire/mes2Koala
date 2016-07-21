@@ -35,6 +35,9 @@ public class FTLotNodeOptionController extends BaseController {
     ExcelFacade excelFacade;
     
     @Inject
+    EmsFetcher emsFetcher;
+    
+    @Inject
     private FTLotNodeOptionFacade ftLotNodeOptionFacade;
 
     private static boolean uploadFile(MultipartFile multipartFile, String path, String filename) {
@@ -235,8 +238,8 @@ public class FTLotNodeOptionController extends BaseController {
     @RequestMapping("/getOven")
     public List<String> getOven() {
         List<String> result = new ArrayList<String>();
-        final String QUERY_ALL_OVEN = "http://192.168.1.44:8280/Equipment/pageJson.koala?page=0&pagesize=10000000&equipmentCategory=oven";
-        String ovenInfo = EmsFetcher.fetch(QUERY_ALL_OVEN);
+        final String QUERY_ALL_OVEN = emsFetcher.getEmsAddress() + "/Equipment/pageJson.koala?page=0&pagesize=10000000&equipmentCategory=oven";
+        String ovenInfo = emsFetcher.fetch(QUERY_ALL_OVEN);
         int index1 = 0, index2 = 0;
         while(true){
         	index1 = ovenInfo.indexOf("equipmentNo",index1);

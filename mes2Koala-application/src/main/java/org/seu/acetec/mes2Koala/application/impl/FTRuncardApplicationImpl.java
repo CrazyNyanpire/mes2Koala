@@ -14,23 +14,23 @@ import javax.inject.Named;
 @Named
 @Transactional
 public class FTRuncardApplicationImpl extends
-		GenericMES2ApplicationImpl<FTRuncard> implements FTRuncardApplication {
+        GenericMES2ApplicationImpl<FTRuncard> implements FTRuncardApplication {
 
-	@Override
-	public boolean deleteRuncardByLotId(Long lotId) {
-		FTRuncard runcard = this.findOne(
-				"select a from FTRuncard a where a.ftLot.id = ?", lotId);
-		if(runcard == null){
-			return true;
-		}
-		runcard.setSpecialFormTemplate(null);
-		runcard.setKeyQuantityAuthorization(null);
-		runcard.setAssistQuantityAuthorization(null);
-		runcard.setKeyProductionAuthorization(null);
-		runcard.setAssistProductionAuthorization(null);
-		runcard.setKeyTDEAuthorization(null);
-		runcard.setAssistTDEAuthorization(null);
-		this.remove(runcard);
-		return true;
-	}
+    @Override
+    public boolean deleteRuncardByLotId(Long lotId) {
+        FTRuncard runcard = this.findOne(
+                "select a from FTRuncard a where a.ftLot.id = ?", lotId);
+        if (runcard == null) {
+            return true;
+        }
+        runcard.setSpecialFormTemplate(null);
+        runcard.setKeyQuantityAuthorization(null);
+        runcard.setAssistQuantityAuthorization(null);
+        runcard.setKeyProductionAuthorization(null);
+        runcard.setAssistProductionAuthorization(null);
+        runcard.setKeyTDEAuthorization(null);
+        runcard.setAssistTDEAuthorization(null);
+        this.remove(runcard);
+        return true;
+    }
 }

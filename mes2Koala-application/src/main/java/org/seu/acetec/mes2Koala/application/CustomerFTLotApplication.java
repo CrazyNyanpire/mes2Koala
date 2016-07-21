@@ -41,7 +41,7 @@ public interface CustomerFTLotApplication extends GenericMES2Application<Custome
 	 * @version 2016/1/17 Howad
 	 * @version 2016/3/27 YuxiangQue
 	 */
-	List<Long> orderInBatches(Long[] customerFTLotIds, Map<String, Integer> messages);
+	List<Long> orderInBatches(Long[] customerFTLotIds, Map<String, Integer> messages,Long ftInfoId);
 
 
 	/**

@@ -25,6 +25,7 @@ import org.seu.acetec.mes2Koala.core.domain.TestSys;
 import org.seu.acetec.mes2Koala.facade.ProductionScheduleFacade;
 import org.seu.acetec.mes2Koala.facade.dto.ProductionScheduleDTO;
 import org.seu.acetec.mes2Koala.facade.impl.assembler.ProductionScheduleAssembler;
+import org.springframework.transaction.annotation.Transactional;
 
 import ch.qos.logback.core.joran.conditional.ThenOrElseActionBase;
 
@@ -86,11 +87,12 @@ public class ProductionScheduleFacadeImpl implements ProductionScheduleFacade {
         return ProductionScheduleAssembler.toDTOs(application.findAll());
     }
     
+    @Transactional
     public Page<ProductionScheduleDTO> pageQueryProductionsWaitToBeScheduled( ProductionScheduleDTO queryVo, int currentPage, int pageSize ){
     	List<Object> conditionVals = new ArrayList<>();
     	StringBuilder jpql;
     	String testType = queryVo.getTestType();
-    	if ( testType != null && testType.toLowerCase().equals("ft") )
+    	if ( testType != null && testType.toLowerCase().equals("ft"))
     		jpql = new StringBuilder("select _p from FTProductionSchedule _p where _p.testSys is null and _p.logic is null");
     	else if ( testType != null && testType.toLowerCase().equals("cp") )
     		jpql = new StringBuilder("select _p from CPProductionSchedule _p where _p.testSys is null and _p.logic is null");
@@ -111,15 +113,16 @@ public class ProductionScheduleFacadeImpl implements ProductionScheduleFacade {
         return new Page<ProductionScheduleDTO>(pages.getStart(), pages.getResultCount(), pageSize, ProductionScheduleAssembler.toDTOs(pages.getData()));
     }
 
+    @Transactional
     public Page<ProductionScheduleDTO> pageQueryProductionSchedule(ProductionScheduleDTO queryVo, int currentPage, int pageSize, String sortname, String sortorder) {
         List<Object> conditionVals = new ArrayList<Object>();
         StringBuilder jpql = null;
-        if ( queryVo.getTestType() == null ){
-        	jpql = new StringBuilder("select _productionSchedule from ProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null");
+        if ( queryVo.getTestType() == null || "".equals(queryVo.getTestType())){
+        	jpql = new StringBuilder("select _productionSchedule from ProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null and _productionSchedule.testSys is not null ");
         } else if ( queryVo.getTestType().toLowerCase().equals("ft") ) {
-        	jpql = new StringBuilder("select _productionSchedule from FTProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null");
+        	jpql = new StringBuilder("select _productionSchedule from FTProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null and _productionSchedule.testSys is not null ");
         } else if ( queryVo.getTestType().toLowerCase().equals("cp") ) {
-        	jpql = new StringBuilder("select _productionSchedule from CPProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null");
+        	jpql = new StringBuilder("select _productionSchedule from CPProductionSchedule _productionSchedule   where 1=1 and _productionSchedule.logic is null and _productionSchedule.testSys is not null ");
         } else {
         	throw new IllegalArgumentException();
         }

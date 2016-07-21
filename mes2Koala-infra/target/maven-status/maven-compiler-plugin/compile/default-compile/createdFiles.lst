@@ -1,5 +1,6 @@
 help\openoffice\SpreadsheetHelper.class
 org\jxls\demo\RuncardHelper.class
+org\seu\acetec\mes2Koala\infra\impl\EmsFetcherImpl.class
 org\seu\acetec\mes2Koala\infra\httpclient\Node.class
 help\ExcelTemplateHelper.class
 help\openoffice\TextHelper.class
